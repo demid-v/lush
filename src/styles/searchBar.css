@@ -1,0 +1,81 @@
+.search-bar {
+  margin: 25px 200px 15px;
+  display: grid;
+  grid-template-rows: 30px auto;
+}
+
+.search-bar__first-row {
+  display: grid;
+  grid-template-columns: auto min-content;
+  column-gap: 10px;
+}
+
+.search-bar__input-bar {
+  position: relative;
+  border: 1px solid rgb(180, 180, 180);
+}
+
+.search-bar__field {
+  width: 100%;
+  height: 100%;
+  border: 0px;
+}
+
+.search-bar__clear-input {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  right: 5px;
+  width: 25px;
+  background: white url("../assets/icons/cancel.svg") center/10px no-repeat;
+  border: none;
+}
+
+.search-bar__right-tab {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  column-gap: 10px;
+}
+
+.search-bar__button {
+  width: 45px;
+  border: 1px solid #b4b4b4;
+}
+
+.search-bar__search-button {
+  background: white url("../assets/icons/loupe.svg") center/10px no-repeat;
+  border: 1px solid #b4b4b4;
+}
+
+.search-bar__add-button {
+  background: white url("../assets/icons/plus.svg") center/10px no-repeat;
+}
+
+.search-bar__shuffle-button {
+  background: white url("../assets/icons/shuffle.svg") center/15px no-repeat;
+}
+
+.search-bar__shuffle-button_checked {
+  background-color: rgb(214, 214, 214);
+}
+
+.search-bar__genres {
+  display: flex;
+  align-self: flex-start;
+  font-size: 0.75em;
+}
+
+.search-bar__genre {
+  margin-right: 10px;
+  padding: 0px 5px;
+  z-index: 1;
+  text-decoration: none;
+  color: black;
+  border: 1px solid rgb(189, 189, 189);
+  border-radius: 2.5px;
+  cursor: pointer;
+}
+
+.search-bar__genre:last-child {
+  margin-right: 0;
+}

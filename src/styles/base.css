@@ -1,0 +1,78 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Quicksand", "Montserrat",
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.lush-input {
+  padding-left: 2px;
+  padding-right: 2px;
+  font-size: 1.02em;
+  color: black;
+  border: 1px solid rgb(180, 180, 180);
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+.display-block {
+  display: block;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgb(170, 170, 170);
+}
+
+.compensate-header {
+  padding-top: 40px;
+  min-height: 100vh;
+}
+
+.main-items-container {
+  max-height: calc(100vh - 40px - 70px - 30px);
+  padding: 0px 200px;
+}
+
+.main-items-container.scroll-y {
+  padding-right: calc(200px - 15px);
+}
+
+.main-items-container:focus {
+  outline: none;
+}
+
+.scroll-y {
+  overflow-y: scroll;
+}
+
+.loading {
+  height: 100px;
+  background: no-repeat center/50px url("../assets/icons/spinner-of-dots.png");
+}
+
+.youtube-video {
+  position: fixed;
+  bottom: 15px;
+  right: 25px;
+  height: 280px;
+  width: 500px;
+  z-index: 2;
+}

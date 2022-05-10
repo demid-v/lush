@@ -1,0 +1,215 @@
+.header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 50px;
+  width: 100%;
+  height: 40px;
+  z-index: 3;
+  background-color: rgb(255, 255, 255);
+  padding: 0px 35px;
+}
+
+.header__logo {
+  position: relative;
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.header__logo-link {
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  font-style: italic;
+  font-size: 1.4em;
+  letter-spacing: 0.7em;
+  z-index: 1;
+}
+
+.header__current-audio {
+  cursor: pointer;
+}
+
+.header__audio-main {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  column-gap: 7px;
+  height: 100%;
+  padding: 0px;
+}
+
+.header__buttons-container {
+  display: flex;
+  height: 100%;
+}
+
+.header__button:hover {
+  background-color: rgb(223, 223, 223);
+}
+
+.header__buttons-container > button {
+  height: 100%;
+  width: 36px;
+}
+
+.header__prev-button {
+  background: url("../assets/icons/next.svg") center/10px no-repeat;
+  transform: scaleX(-1);
+}
+
+.header__play-button {
+  background: url("../assets/icons/right-chevron.svg") center/15px no-repeat;
+}
+
+.header__next-button {
+  background: url("../assets/icons/next.svg") center/10px no-repeat;
+}
+
+.header__audio-content {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+}
+
+.header__audio-header-container {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.header__audio-header {
+  display: flex;
+  flex-direction: initial;
+  align-items: flex-start;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.8em;
+}
+
+.header__artists {
+  color: rgb(0, 0, 0);
+  z-index: 2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 1.3em;
+  padding-right: 5px;
+  .header::after {
+    content: " —";
+  }
+}
+
+.header__progress-bar {
+  display: block;
+  grid-column: 1 / 3;
+  width: 100%;
+  height: 5px;
+  margin: 0px;
+  border-radius: 2.5px;
+  color: lightblue;
+  background-color: rgba(116, 116, 116, 0.322);
+  z-index: 2;
+}
+
+.header__progress-bar::-webkit-progress-value {
+  border-radius: 2.5px;
+  background-color: rgb(102, 102, 102);
+}
+
+.header__progress-bar::-webkit-progress-bar {
+  background-color: rgba(216, 216, 216, 0);
+}
+
+.header__repeat {
+  background: url("../assets/icons/repeat.svg") center/15px no-repeat;
+}
+
+.header__audio-hud {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.header__right-tab {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header__right-tab button {
+  width: 25px;
+  height: 25px;
+  margin: auto 0;
+  border: none;
+  cursor: pointer;
+}
+
+.header__repeat.active {
+  background-color: rgb(212, 212, 212);
+}
+
+.header__pages-container {
+  position: relative;
+  display: inline-block;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.header__pages {
+  bottom: 10px;
+  right: 0;
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  font-size: 0.9em;
+}
+
+.header__page-link:hover {
+  text-decoration: underline;
+}
+
+.header__tab {
+  margin-right: 5px;
+}
+
+.header__tab:last-child {
+  margin-right: 0px;
+}
+
+.header__page-link {
+  display: block;
+  height: 100%;
+  padding: 0 15px;
+  text-decoration: none;
+  color: rgb(0, 0, 0);
+  cursor: pointer;
+}
+.header.no-color .header__current-audio:hover {
+  background-color: rgb(238, 238, 238);
+}
+
+.header__current-audio.playing .header__play-button {
+  background-image: url("../assets/icons/pause.svg");
+}
+
+.header.white-theme .header__logo-link,
+.header.white-theme .header__artists,
+.header.white-theme .header__title,
+.header.white-theme .header__page-link {
+  color: rgb(255, 255, 255);
+}
+
+.header.white-theme .header__page-link {
+  text-decoration-color: white;
+}
+
+.header.white-theme .header__button {
+  filter: invert(1);
+}
+
+.header.white-theme .progress-bar::-webkit-progress-value {
+  background-color: rgb(207, 207, 207);
+}
+
+.header.white-theme .progress-bar::-webkit-progress-bar {
+  background-color: rgb(128, 128, 128);
+}

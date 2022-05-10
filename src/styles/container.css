@@ -1,0 +1,17 @@
+.container {
+  padding-bottom: 30px;
+}
+
+.container-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container-grid {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 40px 25px;
+  list-style: none;
+}
