@@ -2,9 +2,13 @@ import { FormEvent, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import "../styles/searchBar.css";
 
-function SearchBar({ abortController }: { abortController: AbortController }) {
+function SearchBar({
+  abortController,
+}: {
+  abortController: AbortController | null;
+}) {
   function clearField() {
-    console.log("clearField");
+    setSearchParams({});
   }
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -18,7 +22,6 @@ function SearchBar({ abortController }: { abortController: AbortController }) {
   }, [searchParams]);
 
   function handleInputChange(event: FormEvent) {
-    abortController.abort();
     setInputValue((event.target as HTMLInputElement).value);
   }
 
@@ -32,6 +35,7 @@ function SearchBar({ abortController }: { abortController: AbortController }) {
 
   function search() {
     if (inputValue !== query) {
+      abortController?.abort();
       changeQueryParams(inputValue);
     }
   }

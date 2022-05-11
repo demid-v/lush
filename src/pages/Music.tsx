@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Track from "../components/Track";
 import Container from "../components/Container";
 import { transformTracks } from "../utils/functions";
@@ -7,17 +7,20 @@ import { useSearchParams } from "react-router-dom";
 
 function Music() {
   const limit = 100;
-  const [offset, setOffset] = useState(0);
+  let offset = useRef(0);
 
   const [tracks, setTracks] = useState<TGroupedTrack[]>([]);
 
   const [searchParams] = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q"));
 
-  let abortController = new AbortController();
+  useEffect(() => setQuery(searchParams.get("q")), [searchParams.get("q")]);
+
+  const [bottomHit, setBottomHit] = useState(false);
+
+  let abortController: AbortController | null = null;
 
   async function getTracks() {
-    setHitBottom(false);
-
     abortController = new AbortController();
 
     const response = await fetch("http://localhost:5500/audiosData", {
@@ -25,39 +28,51 @@ function Music() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         limit,
-        offset,
+        offset: offset.current,
+        query,
       }),
       signal: abortController.signal,
     });
     const data = await response.json();
-    const tracksGrouped = transformTracks(data.audios[0]);
+    const tracksGrouped = transformTracks(data.tracks[0]);
 
-    setTracks([...tracks, ...tracksGrouped]);
+    return tracksGrouped;
   }
 
-  useEffect(() => {
-    getTracks();
-  }, [offset]);
+  async function updateTracks() {
+    const tracksGrouped = await getTracks();
 
-  const [hitBottom, setHitBottom] = useState(false);
+    if (offset.current === 0) {
+      setTracks(tracksGrouped);
+    } else {
+      setTracks((tracks) => [...tracks, ...tracksGrouped]);
+    }
+
+    setBottomHit(false);
+  }
 
   function incrementOffset() {
-    setOffset(offset + limit);
+    offset.current += limit;
   }
 
-  function refetch() {
-    tracks.splice(0);
-    setOffset(0);
+  function updateTracksOnScroll() {
+    incrementOffset();
+    updateTracks();
   }
 
-  useEffect(refetch, [searchParams.get("q")]);
+  function updateTracksOnQueryChange() {
+    offset.current = 0;
+    updateTracks();
+  }
+
+  useEffect(updateTracksOnQueryChange, [query]);
 
   return (
     <Container
       layout="flex"
-      hitBottom={hitBottom}
-      setHitBottom={setHitBottom}
-      onBottomHit={incrementOffset}
+      bottomHit={bottomHit}
+      setBottomHit={setBottomHit}
+      updateData={updateTracksOnScroll}
       abortController={abortController}
     >
       {tracks?.map((track) => (
