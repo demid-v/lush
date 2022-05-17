@@ -13,7 +13,7 @@ function Container({
   abortController,
 }: {
   children: ReactNode;
-  layout: "flex" | "block";
+  layout: "flex" | "grid";
   bottomHit: boolean;
   setBottomHit: Function;
   updateData: Function;
@@ -57,7 +57,7 @@ function Container({
         ref={mainItemContainer}
         onScroll={checkPosition}
       >
-        <ol className={"container-" + layout}>{children}</ol>
+        <ul className={"container-" + layout}>{children}</ul>
       </div>
     </div>
   );

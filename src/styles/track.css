@@ -1,4 +1,4 @@
-.audio-li {
+.track {
   width: 100%;
   list-style: none;
   cursor: pointer;
@@ -6,47 +6,47 @@
   background-color: rgba(255, 255, 255);
 }
 
-.audio-li:last-child {
+.track:last-child {
   border-bottom: 1px solid rgb(230, 230, 230);
 }
 
-.audio-li.chosen {
+.track.chosen {
   background-color: rgb(241, 241, 241);
 }
 
-.audio-li__container:hover,
-.audio-li.phantom > .audio-li__container:hover,
-.current > .audio-li__container,
-.playing > .audio-li__container {
+.track__container:hover,
+.track.phantom > .track__container:hover,
+.current > .track__container,
+.playing > .track__container {
   background-color: rgb(238, 238, 238);
 }
 
-.audio-li__container {
+.track__container {
   padding: 0 5px;
 }
 
-.audio-li__container:hover .audio-li__play-button {
+.track__container:hover .track__play-button {
   display: block;
 }
 
-.audio-li__container {
+.track__container {
   position: relative;
   display: grid;
   grid-template-rows: auto auto;
 }
 
-.audio-li__left-side {
+.track__left-side {
   width: 36px;
   height: inherit;
   position: relative;
 }
 
-.audio-li__artist-image-wrapper {
+.track__artist-image-wrapper {
   height: 100%;
   background: center/cover no-repeat;
 }
 
-.audio-li__play-button {
+.track__play-button {
   display: none;
   width: 100%;
   height: 100%;
@@ -54,56 +54,56 @@
   bottom: 100%;
 }
 
-.audio-li__artist-image-wrapper_no-cover + .audio-li__play-button {
+.track__artist-image-wrapper_no-cover + .track__play-button {
   display: block;
   background-color: rgba(0, 0, 0, 0);
 }
 
-.audio-li__artist-image-wrapper_no-cover
-  + .audio-li__play-button
-  > .audio-li__white-circle {
+.track__artist-image-wrapper_no-cover
+  + .track__play-button
+  > .track__white-circle {
   display: none;
 }
 
-.audio-li__artist-image-wrapper_no-cover
-  + .audio-li__play-button
-  > .audio-li__action-icon {
+.track__artist-image-wrapper_no-cover
+  + .track__play-button
+  > .track__action-icon {
   background-size: 20px;
 }
 
-.audio-li__play-button-element {
+.track__play-button-element {
   width: inherit;
   height: inherit;
   position: absolute;
 }
 
-.audio-li__white-circle {
+.track__white-circle {
   background: rgba(0, 0, 0, 0.6) url("../assets/icons/White_Circle.svg")
     center/25px no-repeat;
 }
 
-.audio-li__action-icon {
+.track__action-icon {
   background: url("../assets/icons/right-chevron.svg") center/15px no-repeat;
 }
 
-.playing .audio-li__action-icon {
+.playing .track__action-icon {
   background-image: url("../assets/icons/pause.svg");
 }
 
-.no-cover + .audio-li__play-button {
+.no-cover + .track__play-button {
   display: block;
   background-color: rgba(0, 0, 0, 0);
 }
 
-.no-cover + .audio-li__white-circle {
+.no-cover + .track__white-circle {
   display: none;
 }
 
-.no-cover + .audio-li__action-icon {
+.no-cover + .track__action-icon {
   background-size: 20px;
 }
 
-.audio-li__main {
+.track__main {
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 7px;
@@ -111,7 +111,7 @@
   width: 100%;
 }
 
-.audio-li__clickable-background {
+.track__clickable-background {
   position: absolute;
   width: 100%;
   left: 0;
@@ -119,13 +119,13 @@
   z-index: 1;
 }
 
-.audio-li__content {
+.track__content {
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto auto;
 }
 
-.audio-li__header {
+.track__header {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -137,18 +137,18 @@
   color: black;
 }
 
-.audio-li__header-element {
+.track__header-element {
   line-height: 1.3em;
   padding-right: 5px;
 }
 
-.audio-li__title {
+.track__title {
   cursor: default;
   z-index: 2;
   white-space: nowrap;
 }
 
-.audio-li__artists {
+.track__artists {
   color: rgb(141, 141, 141);
   z-index: 2;
   overflow: hidden;
@@ -156,22 +156,22 @@
   text-overflow: ellipsis;
 }
 
-.audio-li__artists-link {
+.track__artists-link {
   text-decoration: none;
   color: rgb(141, 141, 141);
   font-size: 0.95em;
 }
 
-.audio-li__artists-link:hover {
+.track__artists-link:hover {
   text-decoration: underline;
 }
 
-.audio-li__player {
+.track__player {
   width: 100%;
   margin: 0;
 }
 
-.audio-li__genres {
+.track__genres {
   display: flex;
   align-self: flex-start;
   overflow: hidden;
@@ -179,7 +179,7 @@
   padding-right: 10px;
 }
 
-.audio-li__genre {
+.track__genre {
   margin-right: 10px;
   padding: 0px 5px;
   z-index: 1;
@@ -191,44 +191,44 @@
   white-space: nowrap;
 }
 
-.audio-li__genres.colored .audio-li__genre {
+.track__genres.colored .track__genre {
   border: 0px;
 }
 
-.audio-li__genres.white-theme .audio-li__genre {
+.track__genres.white-theme .track__genre {
   color: rgb(255, 255, 255);
 }
 
-.audio-li__genre:last-child {
+.track__genre:last-child {
   margin-right: 0;
 }
 
-.audio-li__genre:hover {
+.track__genre:hover {
   background-color: rgb(189, 189, 189);
 }
 
-.audio-li__hud {
+.track__hud {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.audio-li__first-row {
+.track__first-row {
   display: flex;
   justify-content: flex-end;
 }
 
-.audio-li__second-row {
+.track__second-row {
   display: flex;
   align-self: flex-end;
   justify-content: flex-end;
 }
 
-.audio-li__curr-time-container {
+.track__curr-time-container {
   display: flex;
 }
 
-.audio-li__time {
+.track__time {
   display: flex;
   bottom: 0px;
   font-size: 0.65em;
@@ -236,31 +236,31 @@
   z-index: 2;
 }
 
-.audio-li__duration-container {
+.track__duration-container {
   text-align: right;
 }
 
-.audio-li__curr-time,
-.audio-li__duration {
+.track__curr-time,
+.track__duration {
   width: 100%;
   height: 100%;
   cursor: default;
 }
 
-.audio-li__duration {
+.track__duration {
   text-align: right;
 }
 
-.audio-li__time-slash {
+.track__time-slash {
   margin: 0 3px;
 }
 
-.audio-li__right-tab {
+.track__right-tab {
   display: flex;
   justify-content: flex-end;
 }
 
-.audio-li__right-tab-button {
+.track__right-tab-button {
   width: 18px;
   height: 15px;
   margin-right: 2px;
@@ -270,14 +270,14 @@
   z-index: 2;
 }
 
-.audio-li__right-tab-button:hover {
+.track__right-tab-button:hover {
   background-color: rgb(184, 184, 184);
 }
 
-.audio-li__right-tab-button:last-child {
+.track__right-tab-button:last-child {
   margin: 0;
 }
 
-.audio-li__edit-button {
+.track__edit-button {
   background-image: url("../assets/icons/pencil.svg");
 }

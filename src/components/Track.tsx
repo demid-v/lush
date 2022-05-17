@@ -67,37 +67,36 @@ function Track({ track }: { track: TGroupedTrack }) {
   }, []);
 
   return (
-    <li className="audio-li">
-      <div className="audio-li__container">
-        <div className="audio-li__main">
-          <div className="audio-li__clickable-background"></div>
+    <li className="track">
+      <div className="track__container">
+        <div className="track__main">
+          <div className="track__clickable-background"></div>
 
-          <div className="audio-li__left-side">
+          <div className="track__left-side">
             <div
-              className={`audio-li__artist-image-wrapper ${
-                trackCover && "audio-li__artist-image-wrapper_no-cover"
-              }`}
+              className={
+                "track__artist-image-wrapper" +
+                (trackCover ? "" : " track__artist-image-wrapper_no-cover")
+              }
               style={{ backgroundImage: trackCover }}
             ></div>
-            <div className="audio-li__play-button">
-              <div className="audio-li__white-circle audio-li__play-button-element"></div>
-              <div className="audio-li__action-icon audio-li__play-button-element"></div>
+            <div className="track__play-button">
+              <div className="track__white-circle track__play-button-element"></div>
+              <div className="track__action-icon track__play-button-element"></div>
             </div>
           </div>
 
-          <div className="audio-li__content">
-            <div className="audio-li__header">
-              <div className="audio-li__title audio-li__header-element">
-                {title}
-              </div>
+          <div className="track__content">
+            <div className="track__header">
+              <div className="track__title track__header-element">{title}</div>
               {artists?.map((artist) => (
                 <div
                   key={artist.id}
-                  className="audio-li__artists audio-li__header-element"
+                  className="track__artists track__header-element"
                 >
                   <a
                     href={`/artists/${artist.id}/${constructLink(artist.name)}`}
-                    className="audio-li__artists-link"
+                    className="track__artists-link"
                   >
                     {artist.name}
                   </a>
@@ -105,34 +104,34 @@ function Track({ track }: { track: TGroupedTrack }) {
               ))}
             </div>
 
-            <div className="audio-li__hud">
-              <div className="audio-li__first-row">
-                <div className="audio-li__genres no-color">
+            <div className="track__hud">
+              <div className="track__first-row">
+                <div className="track__genres no-color">
                   {genres?.map((genre) => (
                     <button
                       key={genre.id}
-                      className="audio-li__genre"
+                      className="track__genre"
                       data-param={`${constructLink(genre.name)}`}
                     >
                       {genre.name}
                     </button>
                   ))}
                 </div>
-                <div className="audio-li__right-tab">
-                  <button className="audio-li__right-tab-button audio-li__edit-button"></button>
+                <div className="track__right-tab">
+                  <button className="track__right-tab-button track__edit-button"></button>
                 </div>
               </div>
 
-              <div className="audio-li__second-row">
-                <div className="audio-li__time">
+              <div className="track__second-row">
+                <div className="track__time">
                   <div className={playing ? "" : "hidden"}>
-                    <div className="audio-li__curr-time-container">
-                      <span className="audio-li__curr-time">00:00</span>
-                      <div className="audio-li__time-slash">/</div>
+                    <div className="track__curr-time-container">
+                      <span className="track__curr-time">00:00</span>
+                      <div className="track__time-slash">/</div>
                     </div>
                   </div>
-                  <div className="audio-li__duration-container">
-                    <span className="audio-li__duration">{parsedDuration}</span>
+                  <div className="track__duration-container">
+                    <span className="track__duration">{parsedDuration}</span>
                   </div>
                 </div>
               </div>

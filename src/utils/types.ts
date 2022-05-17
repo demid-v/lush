@@ -8,8 +8,8 @@ type TTrack = {
   image_id: string;
   domain_name: string;
   domain_id: number;
-  audio_id: number;
-  audio_title: string;
+  track_id: number;
+  track_title: string;
   duration: number;
   genre_id: number;
   genre_name: string;
@@ -67,11 +67,35 @@ type TGroupedTrackWrapped = {
 };
 
 type TArtist = {
+  artist_id: number;
+  artist_name: string;
+  artist_domain_id: number;
+  artist_domain_name: string;
+  artist_image_id: string;
+  genre_id: number;
+  genre_name: string;
+};
+
+type TGroupedArtist = {
   id: number;
   name: string;
   domain_id: number;
   domain_name: string;
   image_id: string;
+  genres?: TGroupedGenre[];
+};
+
+type TGroupedArtistNested = {
+  id: number;
+  name: string;
+  domain_id: number;
+  domain_name: string;
+  image_id: string;
+  genres?: { [id: number]: TGroupedGenre };
+};
+
+type TGroupedArtistkWrapped = {
+  [id: number | string]: TGroupedArtistNested;
 };
 
 type TAlbum = {
@@ -139,6 +163,9 @@ export type {
   TGroupedTrack,
   TGroupedTrackWrapped,
   TArtist,
+  TGroupedArtist,
+  TGroupedArtistNested,
+  TGroupedArtistkWrapped,
   TAlbum,
   TGroupedAlbum,
   TGroupedAlbumNested,

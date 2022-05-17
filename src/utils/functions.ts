@@ -1,7 +1,10 @@
 import type {
   TAlbum,
+  TArtist,
   TGroupedAlbum,
   TGroupedAlbumWrapped,
+  TGroupedArtist,
+  TGroupedArtistkWrapped,
   TGroupedTrack,
   TGroupedTrackWrapped,
   TTrack,
@@ -10,7 +13,7 @@ import type {
 const constructLink = (str: string) =>
   str.replace(/ /g, "+").replace(/\//g, "%2F");
 
-function albumsGroupBy(albums: TAlbum[], key: keyof TAlbum = "album_id") {
+function albumsGroupBy(albums: TAlbum[]) {
   return albums.reduce((albumsAcc: TGroupedAlbumWrapped, album) => {
     const albumId = album["album_id"];
 
@@ -53,23 +56,20 @@ function unwrapAlbums(albumsGrouped: TGroupedAlbumWrapped) {
 }
 
 function transformAlbums(albums: TAlbum[]) {
-  const albumsGrouped = albumsGroupBy(albums, "album_id");
+  const albumsGrouped = albumsGroupBy(albums);
   const albumsUnwrapped = unwrapAlbums(albumsGrouped);
 
   return albumsUnwrapped;
 }
 
-const tracksGroupBy = function (
-  tracks: TTrack[],
-  key: keyof TTrack = "audio_id"
-) {
+const tracksGroupBy = function (tracks: TTrack[]) {
   return tracks.reduce(function (tracksAcc: TGroupedTrackWrapped, track) {
-    const trackId = track["audio_id"];
+    const trackId = track["track_id"];
 
     if (!(trackId in tracksAcc)) {
       tracksAcc[trackId] = {
-        id: track.audio_id,
-        title: track.audio_title,
+        id: track.track_id,
+        title: track.track_title,
         duration: track.duration,
         youtubeVideoId: track.youtubeVideoId,
       };
@@ -130,10 +130,56 @@ function unwrapTracks(albumsGrouped: TGroupedTrackWrapped) {
 }
 
 function transformTracks(tracks: TTrack[]) {
-  const tracksGrouped = tracksGroupBy(tracks, "audio_id");
+  const tracksGrouped = tracksGroupBy(tracks);
   const tracksUnwrapped = unwrapTracks(tracksGrouped);
 
   return tracksUnwrapped;
 }
 
-export { constructLink, transformAlbums, transformTracks };
+function artistsGroupBy(artists: TArtist[]) {
+  return artists.reduce((artistsAcc: TGroupedArtistkWrapped, artist) => {
+    const artistId = artist["artist_id"];
+
+    if (!(artistId in artistsAcc)) {
+      artistsAcc[artistId] = {
+        id: artist.artist_id,
+        name: artist.artist_name,
+        domain_id: artist.artist_domain_id,
+        domain_name: artist.artist_domain_name,
+        image_id: artist.artist_image_id,
+      };
+    }
+
+    if (artist.genre_id != null) {
+      let genres = artistsAcc[artistId].genres;
+      if (genres === undefined) genres = artistsAcc[artistId].genres = {};
+      genres[artist.genre_id] = {
+        id: artist.genre_id,
+        name: artist.genre_name,
+      };
+    }
+
+    return artistsAcc;
+  }, {});
+}
+
+function unwrapArtists(artistsGrouped: TGroupedArtistkWrapped) {
+  return Object.values(artistsGrouped)
+    .map((artist) => {
+      if (artist.genres !== undefined) {
+        artist.genres = Object.values(artist.genres);
+      }
+
+      return artist as TGroupedArtist;
+    })
+    .reverse();
+}
+
+function transformArtists(artists: TArtist[]) {
+  const artistsGrouped = artistsGroupBy(artists);
+  const artistsUnwrapped = unwrapArtists(artistsGrouped);
+
+  return artistsUnwrapped;
+}
+
+export { constructLink, transformAlbums, transformTracks, transformArtists };

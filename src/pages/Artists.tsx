@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import Track from "../components/Track";
 import Container from "../components/Container";
-import { transformTracks } from "../utils/functions";
-import { TGroupedTrack } from "../utils/types";
+import { transformArtists } from "../utils/functions";
+import { TGroupedArtist } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
+import Artist from "../components/Artist";
 
-function Music() {
+function Artists() {
   let limit = 100;
   let offset = useRef(0);
 
-  const [tracks, setTracks] = useState<TGroupedTrack[]>([]);
+  const [artists, setTracks] = useState<TGroupedArtist[]>([]);
 
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q"));
@@ -20,10 +20,10 @@ function Music() {
 
   let abortController: AbortController | null = null;
 
-  async function getTracks() {
+  async function getArtists() {
     abortController = new AbortController();
 
-    const response = await fetch("http://localhost:5500/tracks", {
+    const response = await fetch("http://localhost:5500/artists", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -36,13 +36,14 @@ function Music() {
     const data = await response.json();
     console.log(data);
 
-    const tracksGrouped = transformTracks(data.tracks[0]);
+    const artistsGrouped = transformArtists(data.artists[0]);
+    console.log(artistsGrouped);
 
-    return tracksGrouped;
+    return artistsGrouped;
   }
 
-  async function updateTracks() {
-    const tracksGrouped = await getTracks();
+  async function updateArtists() {
+    const tracksGrouped = await getArtists();
 
     if (offset.current === 0) {
       setTracks(tracksGrouped);
@@ -57,32 +58,32 @@ function Music() {
     offset.current += limit;
   }
 
-  function updateTracksOnScroll() {
+  function updateArtistsOnScroll() {
     incrementOffset();
-    updateTracks();
+    updateArtists();
   }
 
-  function updateTracksOnQueryChange() {
+  function updateArtistsOnQueryChange() {
     setTracks([]);
     offset.current = 0;
-    updateTracks();
+    updateArtists();
   }
 
-  useEffect(updateTracksOnQueryChange, [query]);
+  useEffect(updateArtistsOnQueryChange, [query]);
 
   return (
     <Container
-      layout="flex"
+      layout="grid"
       bottomHit={bottomHit}
       setBottomHit={setBottomHit}
-      updateData={updateTracksOnScroll}
+      updateData={updateArtistsOnScroll}
       abortController={abortController}
     >
-      {tracks?.map((track) => (
-        <Track key={track.id} track={track} />
+      {artists?.map((artist) => (
+        <Artist key={artist.id} artist={artist} />
       ))}
     </Container>
   );
 }
 
-export default Music;
+export default Artists;
