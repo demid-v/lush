@@ -1,0 +1,114 @@
+.album {
+  background-color: white;
+}
+
+.album-container {
+  position: relative;
+}
+
+.album-options {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.album-options button {
+  width: 18px;
+  height: 15px;
+  margin-right: 2px;
+  background: rgba(255, 255, 255, 0.9) center/10px no-repeat;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.hovered .album-options {
+  display: block;
+}
+
+.album-options button:last-child {
+  margin: 0;
+}
+
+.album-options > button:hover {
+  background-color: rgb(189, 189, 189);
+}
+
+.album-options .button-edit {
+  background-image: url("../assets/icons/pencil.svg");
+}
+
+.album-options .button-delete {
+  background-image: url("../assets/icons/cancel.svg");
+}
+
+.album__image-wrapper {
+  width: 100%;
+}
+
+.image-wrapper {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 100%;
+}
+
+.album__image {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #efeeef;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.album__image_no-cover {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #efeeef;
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  object-fit: cover;
+}
+
+.album__image.no-cover {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+.album-link {
+  display: block;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 15px;
+}
+
+.album-container .album-name {
+  text-decoration: none;
+  color: black;
+  font-size: 0.9em;
+  font-weight: bold;
+  white-space: pre-wrap;
+}
+
+.hovered .album-link {
+  display: block;
+}
+
+.hovered .album-name {
+  text-decoration: underline;
+}
+
+.album-container .album-description {
+  font-size: 0.8em;
+}

@@ -95,7 +95,7 @@ function Track({ track }: { track: TGroupedTrack }) {
                   className="track__artists track__header-element"
                 >
                   <a
-                    href={`/artists/${artist.id}/${constructLink(artist.name)}`}
+                    href={`/artists/${artist.id}+${constructLink(artist.name)}`}
                     className="track__artists-link"
                   >
                     {artist.name}

@@ -11,56 +11,13 @@ import type {
 } from "./types";
 
 const constructLink = (str: string) =>
-  str.replace(/ /g, "+").replace(/\//g, "%2F");
-
-function albumsGroupBy(albums: TAlbum[]) {
-  return albums.reduce((albumsAcc: TGroupedAlbumWrapped, album) => {
-    const albumId = album["album_id"];
-
-    if (!(albumId in albumsAcc)) {
-      albumsAcc[albumId] = {
-        id: album.album_id,
-        title: album.album_title,
-        domain_id: album.album_domain_id,
-        domain_name: album.album_domain_name,
-        image_id: album.album_image_id,
-        r: album.r,
-        g: album.g,
-        b: album.b,
-      };
-    }
-
-    if (album.genre_id != null) {
-      let genres = albumsAcc[albumId].genres;
-      if (genres === undefined) genres = albumsAcc[albumId].genres = {};
-      genres[album.genre_id] = {
-        id: album.genre_id,
-        name: album.genre_name,
-      };
-    }
-
-    return albumsAcc;
-  }, {});
-}
-
-function unwrapAlbums(albumsGrouped: TGroupedAlbumWrapped) {
-  return Object.values(albumsGrouped)
-    .map((album) => {
-      if (album.genres !== undefined) {
-        album.genres = Object.values(album.genres);
-      }
-
-      return album as TGroupedAlbum;
-    })
-    .reverse();
-}
-
-function transformAlbums(albums: TAlbum[]) {
-  const albumsGrouped = albumsGroupBy(albums);
-  const albumsUnwrapped = unwrapAlbums(albumsGrouped);
-
-  return albumsUnwrapped;
-}
+  str
+    .split("")
+    .map((char) =>
+      ["?", "#"].includes(char) ? encodeURIComponent(char) : char
+    )
+    .join("")
+    .replaceAll(" ", "+");
 
 const tracksGroupBy = function (tracks: TTrack[]) {
   return tracks.reduce(function (tracksAcc: TGroupedTrackWrapped, track) {
@@ -76,8 +33,8 @@ const tracksGroupBy = function (tracks: TTrack[]) {
     }
 
     if (track.genre_id != null) {
-      let genres = tracksAcc[trackId].genres;
-      if (genres === undefined) genres = tracksAcc[trackId].genres = {};
+      let genres =
+        tracksAcc[trackId].genres || (tracksAcc[trackId].genres = {});
       genres[track.genre_id] = {
         id: track.genre_id,
         name: track.genre_name,
@@ -85,8 +42,8 @@ const tracksGroupBy = function (tracks: TTrack[]) {
     }
 
     if (track.artist_id != null) {
-      let artists = tracksAcc[trackId].artists;
-      if (artists === undefined) artists = tracksAcc[trackId].artists = {};
+      let artists =
+        tracksAcc[trackId].artists || (tracksAcc[trackId].artists = {});
       artists[track.artist_id] = {
         id: track.artist_id,
         name: track.name,
@@ -97,8 +54,8 @@ const tracksGroupBy = function (tracks: TTrack[]) {
     }
 
     if (track.album_image_id != null) {
-      let albums = tracksAcc[trackId].albums;
-      if (albums === undefined) albums = tracksAcc[trackId].albums = {};
+      let albums =
+        tracksAcc[trackId].albums || (tracksAcc[trackId].albums = {});
       albums[track.album_id] = {
         album_id: track.album_id,
         domain_name: track.album_domain_name,
@@ -182,4 +139,53 @@ function transformArtists(artists: TArtist[]) {
   return artistsUnwrapped;
 }
 
-export { constructLink, transformAlbums, transformTracks, transformArtists };
+function albumsGroupBy(albums: TAlbum[]) {
+  return albums.reduce((albumsAcc: TGroupedAlbumWrapped, album) => {
+    const albumId = album["album_id"];
+
+    if (!(albumId in albumsAcc)) {
+      albumsAcc[albumId] = {
+        id: album.album_id,
+        title: album.album_title,
+        domain_id: album.album_domain_id,
+        domain_name: album.album_domain_name,
+        image_id: album.album_image_id,
+        r: album.r,
+        g: album.g,
+        b: album.b,
+      };
+    }
+
+    if (album.genre_id != null) {
+      let genres = albumsAcc[albumId].genres;
+      if (genres === undefined) genres = albumsAcc[albumId].genres = {};
+      genres[album.genre_id] = {
+        id: album.genre_id,
+        name: album.genre_name,
+      };
+    }
+
+    return albumsAcc;
+  }, {});
+}
+
+function unwrapAlbums(albumsGrouped: TGroupedAlbumWrapped) {
+  return Object.values(albumsGrouped)
+    .map((album) => {
+      if (album.genres !== undefined) {
+        album.genres = Object.values(album.genres);
+      }
+
+      return album as TGroupedAlbum;
+    })
+    .reverse();
+}
+
+function transformAlbums(albums: TAlbum[]) {
+  const albumsGrouped = albumsGroupBy(albums);
+  const albumsUnwrapped = unwrapAlbums(albumsGrouped);
+
+  return albumsUnwrapped;
+}
+
+export { constructLink, transformTracks, transformArtists, transformAlbums };

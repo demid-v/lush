@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import Container from "../components/Container";
-import { transformArtists } from "../utils/functions";
-import { TGroupedArtist } from "../utils/types";
+import { transformAlbums } from "../utils/functions";
+import { TGroupedAlbum } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
-import Artist from "../components/ArtistTile";
+import Album from "../components/AlbumTile";
 
-function Artists() {
+function Albums() {
   let limit = 100;
   let offset = useRef(0);
 
-  const [artists, setTracks] = useState<TGroupedArtist[]>([]);
+  const [albums, setAlbums] = useState<TGroupedAlbum[]>([]);
 
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q"));
@@ -20,10 +20,10 @@ function Artists() {
 
   let abortController: AbortController | null = null;
 
-  async function getArtists() {
+  async function getAlbums() {
     abortController = new AbortController();
 
-    const response = await fetch("http://localhost:5500/artists", {
+    const response = await fetch("http://localhost:5500/albums", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -36,19 +36,19 @@ function Artists() {
     const data = await response.json();
     console.log(data);
 
-    const artistsGrouped = transformArtists(data.artists[0]);
-    console.log(artistsGrouped);
+    const albumsGrouped = transformAlbums(data.albums[0]);
+    console.log(albumsGrouped);
 
-    return artistsGrouped;
+    return albumsGrouped;
   }
 
-  async function updateArtists() {
-    const tracksGrouped = await getArtists();
+  async function updateAlbums() {
+    const tracksGrouped = await getAlbums();
 
     if (offset.current === 0) {
-      setTracks(tracksGrouped);
+      setAlbums(tracksGrouped);
     } else {
-      setTracks((tracks) => [...tracks, ...tracksGrouped]);
+      setAlbums((tracks) => [...tracks, ...tracksGrouped]);
     }
 
     setBottomHit(false);
@@ -58,32 +58,32 @@ function Artists() {
     offset.current += limit;
   }
 
-  function updateArtistsOnScroll() {
+  function updateAlbumsOnScroll() {
     incrementOffset();
-    updateArtists();
+    updateAlbums();
   }
 
-  function updateArtistsOnQueryChange() {
-    setTracks([]);
+  function updateAlbumsOnQueryChange() {
+    setAlbums([]);
     offset.current = 0;
-    updateArtists();
+    updateAlbums();
   }
 
-  useEffect(updateArtistsOnQueryChange, [query]);
+  useEffect(updateAlbumsOnQueryChange, [query]);
 
   return (
     <Container
       layout="grid"
       bottomHit={bottomHit}
       setBottomHit={setBottomHit}
-      updateData={updateArtistsOnScroll}
+      updateData={updateAlbumsOnScroll}
       abortController={abortController}
     >
-      {artists?.map((artist) => (
-        <Artist key={artist.id} artist={artist} />
+      {albums?.map((album) => (
+        <Album key={album.id} album={album} />
       ))}
     </Container>
   );
 }
 
-export default Artists;
+export default Albums;

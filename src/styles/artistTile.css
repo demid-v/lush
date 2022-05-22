@@ -1,0 +1,114 @@
+.artist {
+  background-color: white;
+}
+
+.artist-container {
+  position: relative;
+}
+
+.artist-options {
+  display: none;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.artist-options button {
+  width: 18px;
+  height: 15px;
+  margin-right: 2px;
+  background: rgba(255, 255, 255, 0.9) center/10px no-repeat;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.hovered .artist-options {
+  display: block;
+}
+
+.artist-options button:last-child {
+  margin: 0;
+}
+
+.artist-options > button:hover {
+  background-color: rgb(189, 189, 189);
+}
+
+.artist-options .button-edit {
+  background-image: url("../assets/icons/pencil.svg");
+}
+
+.artist-options .button-delete {
+  background-image: url("../assets/icons/cancel.svg");
+}
+
+.artist__image-wrapper {
+  width: 100%;
+}
+
+.image-wrapper {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 100%;
+}
+
+.artist__image {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #efeeef;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.artist__image_no-cover {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  color: #efeeef;
+  width: 100px;
+  height: 100px;
+  margin: auto;
+  object-fit: cover;
+}
+
+.artist__image.no-cover {
+  width: 100px;
+  height: 100px;
+  margin: auto;
+}
+
+.artist-link {
+  display: block;
+  background-color: rgba(255, 255, 255, 0.1);
+  margin-bottom: 15px;
+}
+
+.artist-container .artist-name {
+  text-decoration: none;
+  color: black;
+  font-size: 0.9em;
+  font-weight: bold;
+  white-space: pre-wrap;
+}
+
+.hovered .artist-link {
+  display: block;
+}
+
+.hovered .artist-name {
+  text-decoration: underline;
+}
+
+.artist-container .artist-description {
+  font-size: 0.8em;
+}
