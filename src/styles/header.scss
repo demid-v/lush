@@ -25,11 +25,15 @@
   z-index: 1;
 }
 
-.header__current-audio {
+.header__logo-link_light {
+  color: rgb(255, 255, 255);
+}
+
+.header__current-track {
   cursor: pointer;
 }
 
-.header__audio-main {
+.header__track-main {
   display: grid;
   grid-template-columns: auto 1fr auto;
   column-gap: 7px;
@@ -64,18 +68,18 @@
   background: url("../assets/icons/next.svg") center/10px no-repeat;
 }
 
-.header__audio-content {
+.header__track-content {
   position: relative;
   display: grid;
   grid-template-columns: 1fr auto auto;
 }
 
-.header__audio-header-container {
+.header__track-header-container {
   margin-top: auto;
   margin-bottom: auto;
 }
 
-.header__audio-header {
+.header__track-header {
   display: flex;
   flex-direction: initial;
   align-items: flex-start;
@@ -124,7 +128,7 @@
   background: url("../assets/icons/repeat.svg") center/15px no-repeat;
 }
 
-.header__audio-hud {
+.header__track-hud {
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
@@ -183,33 +187,7 @@
   color: rgb(0, 0, 0);
   cursor: pointer;
 }
-.header.no-color .header__current-audio:hover {
-  background-color: rgb(238, 238, 238);
-}
 
-.header__current-audio.playing .header__play-button {
-  background-image: url("../assets/icons/pause.svg");
-}
-
-.header.white-theme .header__logo-link,
-.header.white-theme .header__artists,
-.header.white-theme .header__title,
-.header.white-theme .header__page-link {
+.header__page-link_light {
   color: rgb(255, 255, 255);
-}
-
-.header.white-theme .header__page-link {
-  text-decoration-color: white;
-}
-
-.header.white-theme .header__button {
-  filter: invert(1);
-}
-
-.header.white-theme .progress-bar::-webkit-progress-value {
-  background-color: rgb(207, 207, 207);
-}
-
-.header.white-theme .progress-bar::-webkit-progress-bar {
-  background-color: rgb(128, 128, 128);
 }

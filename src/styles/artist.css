@@ -1,114 +1,99 @@
-.artist {
-  background-color: white;
+.artist-info {
+  position: relative;
+  height: 400px;
+  margin-bottom: 30px;
+}
+
+.artist-image-wrapper {
+  width: 100%;
+  height: inherit;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 25%;
+}
+
+.artist-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  margin-left: auto;
+  z-index: 1;
 }
 
 .artist-container {
+  display: flex;
   position: relative;
+  height: inherit;
 }
 
-.artist-options {
-  display: none;
+.artist-overlay {
   position: absolute;
-  top: 5px;
-  right: 5px;
-}
-
-.artist-options button {
-  width: 18px;
-  height: 15px;
-  margin-right: 2px;
-  background: rgba(255, 255, 255, 0.9) center/10px no-repeat;
-  border: none;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.hovered .artist-options {
-  display: block;
-}
-
-.artist-options button:last-child {
-  margin: 0;
-}
-
-.artist-options > button:hover {
-  background-color: rgb(189, 189, 189);
-}
-
-.artist-options .button-edit {
-  background-image: url("../assets/icons/pencil.svg");
-}
-
-.artist-options .button-delete {
-  background-image: url("../assets/icons/cancel.svg");
-}
-
-.artist__image-wrapper {
   width: 100%;
-}
-
-.image-wrapper {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  padding-bottom: 100%;
-}
-
-.artist__image {
-  display: block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: #efeeef;
   height: 100%;
-  width: 100%;
-  object-fit: cover;
+  z-index: 1;
 }
 
-.artist__image_no-cover {
-  display: block;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  color: #efeeef;
-  width: 100px;
-  height: 100px;
-  margin: auto;
-  object-fit: cover;
-}
-
-.artist__image.no-cover {
-  width: 100px;
-  height: 100px;
-  margin: auto;
-}
-
-.artist-link {
-  display: block;
-  background-color: rgba(255, 255, 255, 0.1);
-  margin-bottom: 15px;
-}
-
-.artist-container .artist-name {
-  text-decoration: none;
-  color: black;
-  font-size: 0.9em;
+.artist-name {
+  margin-top: 60px;
+  margin-left: 200px;
+  max-width: calc(50% - 130px);
+  color: rgb(0, 0, 0);
+  font-size: 2.5em;
   font-weight: bold;
-  white-space: pre-wrap;
+  cursor: default;
 }
 
-.hovered .artist-link {
-  display: block;
+.artist-name_light {
+  color: rgb(255, 255, 255);
 }
 
-.hovered .artist-name {
-  text-decoration: underline;
+.artist-play-button {
+  margin: 30px 0 100px 200px;
+  width: 170px;
+  height: 40px;
+  background-color: rgba(255, 255, 255);
+  text-transform: uppercase;
+  font-size: 0.78em;
+  font-family: Barlow, Open Sans, Lucida Grande, Helvetica Neue, Helvetica,
+    Arial, Sans-serif;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  border: 1px solid rgb(180, 180, 180);
 }
 
-.artist-container .artist-description {
-  font-size: 0.8em;
+.artist-play-button:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.artist-content {
+  display: flex;
+  padding: 0 auto;
+  justify-content: center;
+}
+
+.arrow-play-artist {
+  width: 15px;
+  background: url("../assets/icons/free-icon-play-button-153752.svg")
+    center/15px no-repeat;
+  margin-right: 10px;
+}
+
+.artist__albums {
+  padding-top: 10px;
+  margin: 0 200px 25px;
+}
+
+.artist__albums-list {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  column-gap: 50px;
+  list-style: none;
+  overflow: hidden;
+}
+
+.artist__album {
+  padding: 5px 0;
+  width: calc((1920px - 15px - 2 * 200px - 5 * 50px) / 6);
 }

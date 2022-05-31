@@ -1,19 +1,19 @@
-.album {
+.tile {
   background-color: white;
 }
 
-.album-container {
+.tile__container {
   position: relative;
 }
 
-.album-options {
+.tile__options {
   display: none;
   position: absolute;
   top: 5px;
   right: 5px;
 }
 
-.album-options button {
+.tile__button {
   width: 18px;
   height: 15px;
   margin-right: 2px;
@@ -23,38 +23,35 @@
   z-index: 2;
 }
 
-.hovered .album-options {
+.tile__options_hover {
   display: block;
 }
 
-.album-options button:last-child {
+.tile__button:last-child {
   margin: 0;
 }
 
-.album-options > button:hover {
+.tile__button:hover {
   background-color: rgb(189, 189, 189);
 }
 
-.album-options .button-edit {
+.tile__button-edit {
   background-image: url("../assets/icons/pencil.svg");
 }
 
-.album-options .button-delete {
+.tile__button-delete {
   background-image: url("../assets/icons/cancel.svg");
 }
 
-.album__image-wrapper {
+.tile__image-wrapper {
   width: 100%;
-}
-
-.image-wrapper {
   display: block;
   position: relative;
   overflow: hidden;
   padding-bottom: 100%;
 }
 
-.album__image {
+.tile__image {
   display: block;
   position: absolute;
   top: 0;
@@ -67,7 +64,7 @@
   object-fit: cover;
 }
 
-.album__image_no-cover {
+.tile__image_no-cover {
   display: block;
   position: absolute;
   top: 0;
@@ -81,19 +78,13 @@
   object-fit: cover;
 }
 
-.album__image.no-cover {
-  width: 100px;
-  height: 100px;
-  margin: auto;
-}
-
-.album-link {
+.tile__link {
   display: block;
   background-color: rgba(255, 255, 255, 0.1);
   margin-bottom: 15px;
 }
 
-.album-container .album-name {
+.tile__name {
   text-decoration: none;
   color: black;
   font-size: 0.9em;
@@ -101,14 +92,10 @@
   white-space: pre-wrap;
 }
 
-.hovered .album-link {
+.tile__link_hover {
   display: block;
 }
 
-.hovered .album-name {
+.tile__name_hover {
   text-decoration: underline;
-}
-
-.album-container .album-description {
-  font-size: 0.8em;
 }

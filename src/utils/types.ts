@@ -146,6 +146,49 @@ type TGroupedAlbumWrapped = {
   [id: number | string]: TGroupedAlbumNested;
 };
 
+type TArtistAlbum = {
+  album_id: number;
+  album_release_day: number;
+  album_release_month: number;
+  album_release_year: number;
+  album_title: string;
+  domain_id: number;
+  domain_name: string;
+  genre_id: number;
+  genre_name: string;
+  image_id: string;
+};
+
+type TGroupedArtistAlbum = {
+  id: number;
+  title: string;
+  release_day: number;
+  release_month: number;
+  release_year: number;
+  domain_id: number;
+  domain_name: string;
+  image_id: string;
+  genres?: TGroupedGenre[];
+};
+
+type TGroupedArtistAlbumNested = {
+  id: number;
+  title: string;
+  release_day: number;
+  release_month: number;
+  release_year: number;
+  domain_id: number;
+  domain_name: string;
+  image_id: string;
+  genres?: {
+    [id: number]: TGroupedGenre;
+  };
+};
+
+type TGroupedArtistAlbumWrapped = {
+  [id: number | string]: TGroupedArtistAlbumNested;
+};
+
 type TPlaylist = {
   id: number;
   name: string;
@@ -170,5 +213,9 @@ export type {
   TGroupedAlbum,
   TGroupedAlbumNested,
   TGroupedAlbumWrapped,
+  TArtistAlbum,
+  TGroupedArtistAlbum,
+  TGroupedArtistAlbumNested,
+  TGroupedArtistAlbumWrapped,
   TPlaylist,
 };

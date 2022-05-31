@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { constructLink } from "../utils/functions";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { TGroupedTrack } from "../utils/types";
+import { Link } from "react-router-dom";
 
 function Track({ track }: { track: TGroupedTrack }) {
   const { albums, artists, title, duration, genres } = track;
@@ -94,12 +95,12 @@ function Track({ track }: { track: TGroupedTrack }) {
                   key={artist.id}
                   className="track__artists track__header-element"
                 >
-                  <a
-                    href={`/artists/${artist.id}+${constructLink(artist.name)}`}
+                  <Link
+                    to={`/artists/${artist.id}+${constructLink(artist.name)}`}
                     className="track__artists-link"
                   >
                     {artist.name}
-                  </a>
+                  </Link>
                 </div>
               ))}
             </div>

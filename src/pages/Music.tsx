@@ -6,15 +6,18 @@ import { TGroupedTrack } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
 
 function Music() {
-  let limit = 100;
-  let offset = useRef(0);
+  const limit = 100;
+  const offset = useRef(0);
 
   const [tracks, setTracks] = useState<TGroupedTrack[]>([]);
 
   const [searchParams] = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q"));
+  const [query, setQuery] = useState("");
 
-  useEffect(() => setQuery(searchParams.get("q")), [searchParams.get("q")]);
+  useEffect(
+    () => setQuery(searchParams.get("q") || ""),
+    [searchParams.get("q")]
+  );
 
   const [bottomHit, setBottomHit] = useState(false);
 
@@ -23,18 +26,15 @@ function Music() {
   async function getTracks() {
     abortController = new AbortController();
 
-    const response = await fetch("http://localhost:5500/tracks", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        limit,
-        offset: offset.current,
-        search: query,
-      }),
-      signal: abortController.signal,
-    });
+    const response = await fetch(
+      `http://localhost:5500/tracks?limit=${limit}&offset=${offset.current}&search=${query}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        signal: abortController.signal,
+      }
+    );
     const data = await response.json();
-    console.log(data);
 
     const tracksGrouped = transformTracks(data.tracks[0]);
 

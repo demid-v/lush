@@ -6,15 +6,18 @@ import { useSearchParams } from "react-router-dom";
 import Album from "../components/AlbumTile";
 
 function Albums() {
-  let limit = 100;
-  let offset = useRef(0);
+  const limit = 100;
+  const offset = useRef(0);
 
   const [albums, setAlbums] = useState<TGroupedAlbum[]>([]);
 
   const [searchParams] = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q"));
+  const [query, setQuery] = useState("");
 
-  useEffect(() => setQuery(searchParams.get("q")), [searchParams.get("q")]);
+  useEffect(
+    () => setQuery(searchParams.get("q") || ""),
+    [searchParams.get("q")]
+  );
 
   const [bottomHit, setBottomHit] = useState(false);
 
@@ -23,21 +26,17 @@ function Albums() {
   async function getAlbums() {
     abortController = new AbortController();
 
-    const response = await fetch("http://localhost:5500/albums", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        limit,
-        offset: offset.current,
-        search: query,
-      }),
-      signal: abortController.signal,
-    });
+    const response = await fetch(
+      `http://localhost:5500/albums?limit=${limit}&offset=${offset.current}&search=${query}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        signal: abortController.signal,
+      }
+    );
     const data = await response.json();
-    console.log(data);
 
     const albumsGrouped = transformAlbums(data.albums[0]);
-    console.log(albumsGrouped);
 
     return albumsGrouped;
   }

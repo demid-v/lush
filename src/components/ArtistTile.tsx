@@ -1,10 +1,11 @@
-import "../styles/artistTile.css";
+import "../styles/tile.css";
 
 import { useEffect, useState } from "react";
 import { constructLink } from "../utils/functions";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import { TGroupedArtist } from "../utils/types";
 import musicNoteIcon from "../assets/icons/musical-note.svg";
+import { Link } from "react-router-dom";
 
 function Artist({ artist }: { artist: TGroupedArtist }) {
   const { id, name, domain_id, domain_name, image_id } = artist;
@@ -24,17 +25,17 @@ function Artist({ artist }: { artist: TGroupedArtist }) {
   }, []);
 
   return (
-    <li className="artist">
-      <div className="artist-container">
-        <a
-          href={`/artists/${id}+${constructLink(name)}`}
-          className="artist-link"
+    <li className="tile">
+      <div className="tile__container">
+        <Link
+          to={`/artists/${id}+${constructLink(name)}`}
+          className="tile__link"
         >
-          <picture className={"artist__image-wrapper image-wrapper"}>
+          <picture className={"tile__image-wrapper"}>
             {artistCover && (
               <img
                 className={
-                  "artist__image" +
+                  "tile__image" +
                   (artistCover === musicNoteIcon ? "_no-cover" : "")
                 }
                 src={artistCover}
@@ -42,12 +43,12 @@ function Artist({ artist }: { artist: TGroupedArtist }) {
               />
             )}
           </picture>
-        </a>
-        <div className="artist-options">
-          <button className="button-edit"></button>
-          <button className="button-delete"></button>
+        </Link>
+        <div className="tile__options">
+          <button className="tile__button tile__button-edit"></button>
+          <button className="tile__button tile__button-delete"></button>
         </div>
-        <div className="artist-name">{name}</div>
+        <div className="tile__name">{name}</div>
       </div>
     </li>
   );
