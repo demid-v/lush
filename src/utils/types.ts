@@ -94,7 +94,7 @@ type TGroupedArtistNested = {
   genres?: { [id: number]: TGroupedGenre };
 };
 
-type TGroupedArtistkWrapped = {
+type TGroupedArtistWrapped = {
   [id: number | string]: TGroupedArtistNested;
 };
 
@@ -142,9 +142,7 @@ type TGroupedAlbumNested = {
   };
 };
 
-type TGroupedAlbumWrapped = {
-  [id: number | string]: TGroupedAlbumNested;
-};
+type TGroupedAlbumWrapped = { [id: number | string]: TGroupedAlbumNested };
 
 type TArtistAlbum = {
   album_id: number;
@@ -185,9 +183,10 @@ type TGroupedArtistAlbumNested = {
   };
 };
 
-type TGroupedArtistAlbumWrapped = {
-  [id: number | string]: TGroupedArtistAlbumNested;
-};
+type TGroupedArtistAlbumWrapped = Map<
+  number | string,
+  TGroupedArtistAlbumNested
+>;
 
 type TPlaylist = {
   id: number;
@@ -208,7 +207,7 @@ export type {
   TArtist,
   TGroupedArtist,
   TGroupedArtistNested,
-  TGroupedArtistkWrapped,
+  TGroupedArtistWrapped,
   TAlbum,
   TGroupedAlbum,
   TGroupedAlbumNested,

@@ -10,16 +10,19 @@ import { useState } from "react";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
-  console.log(mode);
+
+  const [color, setColor] = useState<{
+    r: number;
+    g: number;
+    b: number;
+  }>();
 
   function calcBrightness(r: number, g: number, b: number) {
     return Math.round((r * 299 + g * 587 + b * 114) / 1000);
   }
 
   function checkMode(r: number, g: number, b: number) {
-    console.log(r, g, b, calcBrightness(r, g, b));
-
-    if (calcBrightness(r, g, b) < 125) {
+    if (r != null && g != null && b != null && calcBrightness(r, g, b) < 125) {
       setMode("dark");
     }
   }
@@ -27,12 +30,6 @@ function App() {
   function setLightMode() {
     setMode("light");
   }
-
-  const [color, setColor] = useState<{
-    r: number;
-    g: number;
-    b: number;
-  }>();
 
   return (
     <>

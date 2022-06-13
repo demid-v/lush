@@ -6,8 +6,9 @@ import type {
   TGroupedAlbumWrapped,
   TGroupedArtist,
   TGroupedArtistAlbum,
+  TGroupedArtistAlbumNested,
   TGroupedArtistAlbumWrapped,
-  TGroupedArtistkWrapped,
+  TGroupedArtistWrapped,
   TGroupedTrack,
   TGroupedTrackWrapped,
   TTrack,
@@ -97,7 +98,7 @@ function transformTracks(tracks: TTrack[]) {
 }
 
 function artistsGroupBy(artists: TArtist[]) {
-  return artists.reduce((artistsAcc: TGroupedArtistkWrapped, artist) => {
+  return artists.reduce((artistsAcc: TGroupedArtistWrapped, artist) => {
     const artistId = artist.artist_id;
 
     if (!(artistId in artistsAcc)) {
@@ -123,7 +124,7 @@ function artistsGroupBy(artists: TArtist[]) {
   }, {});
 }
 
-function unwrapArtists(artistsGrouped: TGroupedArtistkWrapped) {
+function unwrapArtists(artistsGrouped: TGroupedArtistWrapped) {
   return Object.values(artistsGrouped)
     .map((artist) => {
       if (artist.genres !== undefined) {
@@ -195,8 +196,8 @@ function artistAlbumsGroupBy(albums: TArtistAlbum[]) {
   return albums.reduce((albumsAcc: TGroupedArtistAlbumWrapped, album) => {
     const albumId = album.album_id;
 
-    if (!(albumId in albumsAcc)) {
-      albumsAcc[albumId] = {
+    if (!albumsAcc.has(albumId)) {
+      albumsAcc.set(albumId, {
         id: album.album_id,
         title: album.album_title,
         release_day: album.album_release_day,
@@ -205,12 +206,14 @@ function artistAlbumsGroupBy(albums: TArtistAlbum[]) {
         domain_id: album.domain_id,
         domain_name: album.domain_name,
         image_id: album.image_id,
-      };
+      });
     }
 
     if (album.genre_id != null) {
-      let genres = albumsAcc[albumId].genres;
-      if (genres === undefined) genres = albumsAcc[albumId].genres = {};
+      let genres = albumsAcc.get(albumId)?.genres;
+      if (genres === undefined)
+        genres = (albumsAcc.get(albumId) as TGroupedArtistAlbumNested).genres =
+          {};
       genres[album.genre_id] = {
         id: album.genre_id,
         name: album.genre_name,
@@ -218,19 +221,17 @@ function artistAlbumsGroupBy(albums: TArtistAlbum[]) {
     }
 
     return albumsAcc;
-  }, {});
+  }, new Map());
 }
 
 function unwrapArtistAlbums(albumsGrouped: TGroupedArtistAlbumWrapped) {
-  return Object.values(albumsGrouped)
-    .map((album) => {
-      if (album.genres !== undefined) {
-        album.genres = Object.values(album.genres);
-      }
+  return Array.from(albumsGrouped.values()).map((album) => {
+    if (album.genres !== undefined) {
+      album.genres = Object.values(album.genres);
+    }
 
-      return album as TGroupedArtistAlbum;
-    })
-    .reverse();
+    return album as TGroupedArtistAlbum;
+  });
 }
 
 function transformArtistAlbums(albums: TArtistAlbum[]) {
