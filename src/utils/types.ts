@@ -4,7 +4,7 @@ type TTrack = {
   album_domain_id: number;
   album_image_id: string;
   artist_id: number;
-  name: string;
+  artist_name: string;
   image_id: string;
   domain_name: string;
   domain_id: number;
@@ -13,14 +13,14 @@ type TTrack = {
   duration: number;
   genre_id: number;
   genre_name: string;
-  youtubeVideoId: string;
+  youtube_video_id: string;
 };
 
 type TGroupedTrack = {
   id: number;
   title: string;
   duration: number;
-  youtubeVideoId: string;
+  youtube_video_id: string;
   genres?: TGroupedGenre[];
   albums?: {
     album_id: number;
@@ -41,7 +41,7 @@ type TGroupedTrackNested = {
   id: number;
   title: string;
   duration: number;
-  youtubeVideoId: string;
+  youtube_video_id: string;
   genres?: { [id: number]: TGroupedGenre };
   artists?: {
     [id: number]: {
@@ -199,6 +199,31 @@ type TPlaylist = {
   b: number;
   genres: TGroupedGenre[];
 };
+
+type Player = {
+  i: HTMLIFrameElement;
+  loadVideoById: Function;
+  playVideo: Function;
+};
+
+declare global {
+  interface Window {
+    onYouTubeIframeAPIReady: Function;
+    YT: {
+      Player: {
+        new (
+          nodeId: string,
+          options: {
+            height: string;
+            width: string;
+            origin: string;
+          }
+        ): Player;
+      };
+    };
+    player: Player;
+  }
+}
 
 export type {
   TTrack,

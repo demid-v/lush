@@ -6,7 +6,7 @@ import Music from "./pages/Music";
 import Artists from "./pages/Artists";
 import Albums from "./pages/Albums";
 import Artist from "./pages/Artist";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -31,30 +31,43 @@ function App() {
     setMode("light");
   }
 
+  useEffect(() => {
+    window.onYouTubeIframeAPIReady = function () {
+      window.player = new window.YT.Player("youtube-video", {
+        height: "280",
+        width: "500",
+        origin,
+      });
+    };
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
+  }, []);
+
   return (
-    <>
-      <BrowserRouter>
-        <Header mode={mode} color={color} />
-        <Routes>
-          <Route path="/music" element={<Music />}></Route>
-          <Route path="/artists" element={<Artists />}></Route>
-          <Route
-            path="/artists/:artist"
-            element={
-              <Artist
-                mode={mode}
-                checkMode={checkMode}
-                setLightMode={setLightMode}
-                color={color}
-                setColor={setColor}
-              />
-            }
-          ></Route>
-          <Route path="/albums" element={<Albums />}></Route>
-        </Routes>
-      </BrowserRouter>
-      <div className="youtube-video hidden"></div>
-    </>
+    <BrowserRouter>
+      <Header mode={mode} color={color} />
+      <Routes>
+        <Route path="/music" element={<Music />}></Route>
+        <Route path="/artists" element={<Artists />}></Route>
+        <Route
+          path="/artists/:artist"
+          element={
+            <Artist
+              mode={mode}
+              checkMode={checkMode}
+              setLightMode={setLightMode}
+              color={color}
+              setColor={setColor}
+            />
+          }
+        ></Route>
+        <Route path="/albums" element={<Albums />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

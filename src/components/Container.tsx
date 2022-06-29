@@ -32,21 +32,17 @@ function Container({
     }
   }
 
-  const mainItemContainer = useRef(null);
+  const mainItemContainer = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    (mainItemContainer?.current as HTMLElement | null)?.focus();
-  }, []);
+  useEffect(() => mainItemContainer?.current?.focus(), []);
 
   function scrollToTop() {
-    (mainItemContainer?.current as HTMLElement | null)?.scrollTo(0, 0);
+    mainItemContainer?.current?.scrollTo(0, 0);
   }
 
   const [searchParams] = useSearchParams();
 
-  useEffect(() => {
-    scrollToTop();
-  }, [searchParams]);
+  useEffect(scrollToTop, [searchParams]);
 
   return (
     <div className="container">

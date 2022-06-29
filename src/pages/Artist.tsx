@@ -24,15 +24,10 @@ function Artist({
 }) {
   const { artist } = useParams();
 
-  let idEndIndex = artist?.indexOf("+");
-  if (idEndIndex === -1) {
-    idEndIndex = artist?.length;
-  }
-  const artistId = artist?.substring(0, idEndIndex);
-
   const limit = 100;
   const offset = useRef(0);
 
+  const [artistId, setArtistId] = useState<string>();
   const [artistName, setArtistName] = useState();
   const [artistImage, setArtistImage] = useState<string>();
   const [albums, setAlbums] = useState<TGroupedArtistAlbum[]>([]);
@@ -94,7 +89,8 @@ function Artist({
     }
   }
 
-  function getArtistStaticData() {
+  function getArtistData() {
+    updateTracks();
     getArtist().then(({ name, domain_id, domain_name, image_id, r, g, b }) => {
       setArtistName(name);
       setColor({ r, g, b });
@@ -104,20 +100,11 @@ function Artist({
     getArtistAlbums().then(setAlbums);
   }
 
-  useEffect(() => {
-    getArtistStaticData();
-
-    return function cleanup() {
-      setColor();
-      setLightMode();
-    };
-  }, []);
-
   async function getTracks() {
     abortController = new AbortController();
 
     const response = await fetch(
-      `http://localhost:5500/artistTracks?artistId=${artistId}&limit=${limit}&offset=${offset.current}&search=${query}`,
+      `http://localhost:5500/tracks?artistId=${artistId}&limit=${limit}&offset=${offset.current}&search=${query}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -126,7 +113,7 @@ function Artist({
     );
     const data = await response.json();
 
-    const tracks = transformTracks(data.tracks[0]);
+    const tracks = transformTracks(data.tracks);
 
     return tracks;
   }
@@ -143,12 +130,28 @@ function Artist({
     setBottomHit(false);
   }
 
-  function incrementOffset() {
-    offset.current += limit;
-  }
+  useEffect(() => {
+    let idEndIndex = artist?.indexOf("+");
+    if (idEndIndex === -1) {
+      idEndIndex = artist?.length;
+    }
+    setArtistId(artist?.substring(0, idEndIndex));
+
+    return function cleanup() {
+      setColor();
+      setLightMode();
+    };
+  }, [artist]);
+
+  useEffect(() => {
+    if (artistId != null) {
+      offset.current = 0;
+      getArtistData();
+    }
+  }, [artistId]);
 
   function updateTracksOnScroll() {
-    incrementOffset();
+    offset.current += limit;
     updateTracks();
   }
 
@@ -158,7 +161,11 @@ function Artist({
     updateTracks();
   }
 
-  useEffect(updateTracksOnQueryChange, [query]);
+  useEffect(() => {
+    if (artistId != null) {
+      updateTracksOnQueryChange();
+    }
+  }, [query]);
 
   return (
     <main>

@@ -72,7 +72,5 @@
   position: fixed;
   bottom: 15px;
   right: 25px;
-  height: 280px;
-  width: 500px;
   z-index: 2;
 }

@@ -12,7 +12,10 @@ function Music() {
   const [tracks, setTracks] = useState<TGroupedTrack[]>([]);
 
   const [searchParams] = useSearchParams();
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState<string>();
+
+  const playableTracks = useRef<number[]>([]);
+  const currentTrack = useRef<number>();
 
   useEffect(
     () => setQuery(searchParams.get("q") || ""),
@@ -36,7 +39,7 @@ function Music() {
     );
     const data = await response.json();
 
-    const tracksGrouped = transformTracks(data.tracks[0]);
+    const tracksGrouped = transformTracks(data.tracks);
 
     return tracksGrouped;
   }
@@ -68,7 +71,11 @@ function Music() {
     updateTracks();
   }
 
-  useEffect(updateTracksOnQueryChange, [query]);
+  useEffect(() => {
+    if (query != null) {
+      updateTracksOnQueryChange();
+    }
+  }, [query]);
 
   return (
     <Container
@@ -78,9 +85,23 @@ function Music() {
       updateData={updateTracksOnScroll}
       abortController={abortController}
     >
-      {tracks?.map((track) => (
-        <Track key={track.id} track={track} />
-      ))}
+      {tracks?.map((track, index) => {
+        if (track.youtube_video_id != null) {
+          playableTracks.current.push(track.id);
+
+          if (playableTracks.current.length === 1) {
+            currentTrack.current = track.id;
+          }
+        }
+
+        return (
+          <Track
+            key={track.id}
+            track={track}
+            currentTrack={currentTrack.current}
+          />
+        );
+      })}
     </Container>
   );
 }

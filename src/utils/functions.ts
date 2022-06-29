@@ -32,7 +32,7 @@ const tracksGroupBy = function (tracks: TTrack[]) {
         id: track.track_id,
         title: track.track_title,
         duration: track.duration,
-        youtubeVideoId: track.youtubeVideoId,
+        youtube_video_id: track.youtube_video_id,
       };
     }
 
@@ -50,7 +50,7 @@ const tracksGroupBy = function (tracks: TTrack[]) {
         tracksAcc[trackId].artists || (tracksAcc[trackId].artists = {});
       artists[track.artist_id] = {
         id: track.artist_id,
-        name: track.name,
+        name: track.artist_name,
         image_id: track.image_id,
         domain_id: track.domain_id,
         domain_name: track.domain_name,

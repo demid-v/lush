@@ -98,9 +98,10 @@
   overflow: hidden;
   line-height: 1.3em;
   padding-right: 5px;
-  .header::after {
-    content: " —";
-  }
+}
+
+.header__artists::after {
+  content: " —";
 }
 
 .header__progress-bar {

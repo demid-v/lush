@@ -6,8 +6,14 @@ import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { TGroupedTrack } from "../utils/types";
 import { Link } from "react-router-dom";
 
-function Track({ track }: { track: TGroupedTrack }) {
-  const { albums, artists, title, duration, genres } = track;
+function Track({
+  track,
+  currentTrack,
+}: {
+  track: TGroupedTrack;
+  currentTrack?: number;
+}) {
+  const { albums, artists, title, duration, genres, youtube_video_id } = track;
 
   const [playing, setPlaying] = useState(false);
 
@@ -67,11 +73,34 @@ function Track({ track }: { track: TGroupedTrack }) {
     }
   }, []);
 
+  function playVideo() {
+    if (window.player && "loadVideoById" in window.player) {
+      window.player.i.classList.remove("hidden");
+
+      window.player.loadVideoById(youtube_video_id);
+      window.player.playVideo();
+    } else {
+      setTimeout(playVideo, 1000);
+    }
+  }
+
+  useEffect(() => {
+    if (currentTrack === track.id) {
+      setPlaying(true);
+      playVideo();
+    } else {
+      setPlaying(false);
+    }
+  }, [currentTrack]);
+
   return (
     <li className="track">
       <div className="track__container">
         <div className="track__main">
-          <div className="track__clickable-background"></div>
+          <div
+            className="track__clickable-background"
+            onClick={playVideo}
+          ></div>
 
           <div className="track__left-side">
             <div
