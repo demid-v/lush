@@ -9,9 +9,11 @@ import { Link } from "react-router-dom";
 function Track({
   track,
   currentTrack,
+  setCurrentTrack,
 }: {
   track: TGroupedTrack;
   currentTrack?: number;
+  setCurrentTrack?: Function;
 }) {
   const { albums, artists, title, duration, genres, youtube_video_id } = track;
 
@@ -84,6 +86,10 @@ function Track({
     }
   }
 
+  function onTrackClicked() {
+    setCurrentTrack?.(track.id);
+  }
+
   useEffect(() => {
     if (currentTrack === track.id) {
       setPlaying(true);
@@ -99,7 +105,7 @@ function Track({
         <div className="track__main">
           <div
             className="track__clickable-background"
-            onClick={playVideo}
+            onClick={onTrackClicked}
           ></div>
 
           <div className="track__left-side">

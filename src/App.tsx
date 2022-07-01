@@ -6,7 +6,8 @@ import Music from "./pages/Music";
 import Artists from "./pages/Artists";
 import Albums from "./pages/Albums";
 import Artist from "./pages/Artist";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { YoutubePlayerEvent } from "./utils/types";
 
 function App() {
   const [mode, setMode] = useState<"light" | "dark">("light");
@@ -16,6 +17,10 @@ function App() {
     g: number;
     b: number;
   }>();
+
+  const playableTracks = useRef<number[]>([]);
+  const [currentTrack, setCurrentTrack] = useState<number>();
+  const [playerState, setPlayerState] = useState<string>("idle");
 
   function calcBrightness(r: number, g: number, b: number) {
     return Math.round((r * 299 + g * 587 + b * 114) / 1000);
@@ -31,12 +36,36 @@ function App() {
     setMode("light");
   }
 
+  function playNextTrack() {
+    if (currentTrack != null) {
+      const currentIndex = playableTracks.current.indexOf(currentTrack);
+      setCurrentTrack(playableTracks.current[currentIndex + 1]);
+    }
+  }
+
+  function onPlayerStateChange(event: YoutubePlayerEvent) {
+    if (event.data == window.YT.PlayerState.ENDED) {
+      setPlayerState("ended");
+    } else if (event.data == window.YT.PlayerState.PLAYING) {
+      setPlayerState("playing");
+    }
+  }
+
+  useEffect(() => {
+    if (playerState === "ended") {
+      playNextTrack();
+    }
+  }, [playerState]);
+
   useEffect(() => {
     window.onYouTubeIframeAPIReady = function () {
       window.player = new window.YT.Player("youtube-video", {
         height: "280",
         width: "500",
         origin,
+        events: {
+          onStateChange: onPlayerStateChange,
+        },
       });
     };
 
@@ -51,7 +80,16 @@ function App() {
     <BrowserRouter>
       <Header mode={mode} color={color} />
       <Routes>
-        <Route path="/music" element={<Music />}></Route>
+        <Route
+          path="/music"
+          element={
+            <Music
+              playableTracks={playableTracks.current}
+              currentTrack={currentTrack}
+              setCurrentTrack={setCurrentTrack}
+            />
+          }
+        ></Route>
         <Route path="/artists" element={<Artists />}></Route>
         <Route
           path="/artists/:artist"

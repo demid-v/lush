@@ -5,7 +5,15 @@ import { transformTracks } from "../utils/functions";
 import { TGroupedTrack } from "../utils/types";
 import { useSearchParams } from "react-router-dom";
 
-function Music() {
+function Music({
+  playableTracks,
+  currentTrack,
+  setCurrentTrack,
+}: {
+  playableTracks: number[];
+  currentTrack?: number;
+  setCurrentTrack: Function;
+}) {
   const limit = 100;
   const offset = useRef(0);
 
@@ -13,9 +21,6 @@ function Music() {
 
   const [searchParams] = useSearchParams();
   const [query, setQuery] = useState<string>();
-
-  const playableTracks = useRef<number[]>([]);
-  const currentTrack = useRef<number>();
 
   useEffect(
     () => setQuery(searchParams.get("q") || ""),
@@ -85,20 +90,17 @@ function Music() {
       updateData={updateTracksOnScroll}
       abortController={abortController}
     >
-      {tracks?.map((track, index) => {
+      {tracks?.map((track) => {
         if (track.youtube_video_id != null) {
-          playableTracks.current.push(track.id);
-
-          if (playableTracks.current.length === 1) {
-            currentTrack.current = track.id;
-          }
+          playableTracks.push(track.id);
         }
 
         return (
           <Track
             key={track.id}
             track={track}
-            currentTrack={currentTrack.current}
+            currentTrack={currentTrack}
+            setCurrentTrack={setCurrentTrack}
           />
         );
       })}
