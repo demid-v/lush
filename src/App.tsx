@@ -100,6 +100,9 @@ function App() {
               setLightMode={setLightMode}
               color={color}
               setColor={setColor}
+              playableTracks={playableTracks.current}
+              currentTrack={currentTrack}
+              setCurrentTrack={setCurrentTrack}
             />
           }
         ></Route>

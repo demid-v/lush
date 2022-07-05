@@ -15,12 +15,18 @@ function Artist({
   setLightMode,
   color,
   setColor,
+  playableTracks,
+  currentTrack,
+  setCurrentTrack,
 }: {
   mode: "light" | "dark";
   checkMode: Function;
   setLightMode: Function;
   color?: { r: number; g: number; b: number };
   setColor: Function;
+  playableTracks: number[];
+  currentTrack?: number;
+  setCurrentTrack: Function;
 }) {
   const { artist } = useParams();
 
@@ -45,12 +51,13 @@ function Artist({
 
   let abortController: AbortController | null = null;
 
-  async function getArtist() {
+  async function getArtist(signal?: AbortSignal) {
     const response = await fetch(
       `http://localhost:5500/artist?artistId=${artistId}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
+        signal,
       }
     );
     const data = await response.json();
@@ -58,12 +65,13 @@ function Artist({
     return data.artist;
   }
 
-  async function getArtistAlbums() {
+  async function getArtistAlbums(signal?: AbortSignal) {
     const response = await fetch(
       `http://localhost:5500/artistAlbums?artistId=${artistId}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
+        signal,
       }
     );
     const data = await response.json();
@@ -89,26 +97,13 @@ function Artist({
     }
   }
 
-  function getArtistData() {
-    updateTracks();
-    getArtist().then(({ name, domain_id, domain_name, image_id, r, g, b }) => {
-      setArtistName(name);
-      setColor({ r, g, b });
-      checkMode(r, g, b);
-      checkArtistImage(domain_id, domain_name, image_id);
-    });
-    getArtistAlbums().then(setAlbums);
-  }
-
-  async function getTracks() {
-    abortController = new AbortController();
-
+  async function getTracks(signal?: AbortSignal) {
     const response = await fetch(
       `http://localhost:5500/tracks?artistId=${artistId}&limit=${limit}&offset=${offset.current}&search=${query}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
-        signal: abortController.signal,
+        signal,
       }
     );
     const data = await response.json();
@@ -118,8 +113,8 @@ function Artist({
     return tracks;
   }
 
-  async function updateTracks() {
-    const tracksGrouped = await getTracks();
+  async function updateTracks(signal?: AbortSignal) {
+    const tracksGrouped = await getTracks(signal);
 
     if (offset.current === 0) {
       setTracks(tracksGrouped);
@@ -136,18 +131,46 @@ function Artist({
       idEndIndex = artist?.length;
     }
     setArtistId(artist?.substring(0, idEndIndex));
-
-    return function cleanup() {
-      setColor();
-      setLightMode();
-    };
   }, [artist]);
 
   useEffect(() => {
+    let artistAbortController: null | AbortController;
+    let tracksAbortController: null | AbortController;
+    let albumsAbortController: null | AbortController;
+
     if (artistId != null) {
       offset.current = 0;
-      getArtistData();
+
+      artistAbortController = new AbortController();
+      tracksAbortController = new AbortController();
+      albumsAbortController = new AbortController();
+
+      getArtist(artistAbortController.signal)
+        .then(({ name, domain_id, domain_name, image_id, r, g, b }) => {
+          setArtistName(name);
+          setColor({ r, g, b });
+          checkMode(r, g, b);
+          checkArtistImage(domain_id, domain_name, image_id);
+        })
+        .finally(() => (artistAbortController = null));
+
+      updateTracks(tracksAbortController.signal).finally(
+        () => (tracksAbortController = null)
+      );
+
+      getArtistAlbums(albumsAbortController.signal)
+        .then(setAlbums)
+        .finally(() => (albumsAbortController = null));
     }
+
+    return function cleanup() {
+      artistAbortController?.abort();
+      tracksAbortController?.abort();
+      albumsAbortController?.abort();
+
+      setColor();
+      setLightMode();
+    };
   }, [artistId]);
 
   function updateTracksOnScroll() {
@@ -254,9 +277,20 @@ function Artist({
         updateData={updateTracksOnScroll}
         abortController={abortController}
       >
-        {tracks?.map((track) => (
-          <Track key={track.id} track={track} />
-        ))}
+        {tracks?.map((track) => {
+          if (track.youtube_video_id != null) {
+            playableTracks.push(track.id);
+          }
+
+          return (
+            <Track
+              key={track.id}
+              track={track}
+              currentTrack={currentTrack}
+              setCurrentTrack={setCurrentTrack}
+            />
+          );
+        })}
       </Container>
     </main>
   );

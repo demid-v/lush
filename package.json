@@ -16,7 +16,8 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "serve": "serve -s build"
+    "serve": "serve -s build",
+    "build-serve": "npm run build && npm run serve"
   },
   "eslintConfig": {
     "extends": [
