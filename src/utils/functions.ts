@@ -241,10 +241,27 @@ function transformArtistAlbums(albums: TArtistAlbum[]) {
   return albumsUnwrapped;
 }
 
+function stringifyParams(
+  params: { [key: string]: string | undefined },
+  entrySeparator: string,
+  pairSeparator: string
+) {
+  let stringifiedParams = "";
+
+  for (const [key, value] of Object.entries(params)) {
+    if (value != null) {
+      stringifiedParams += `${entrySeparator}${key}${pairSeparator}${value}`;
+    }
+  }
+
+  return stringifiedParams;
+}
+
 export {
   constructLink,
   transformTracks,
   transformArtists,
   transformAlbums,
   transformArtistAlbums,
+  stringifyParams,
 };

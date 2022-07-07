@@ -1,7 +1,13 @@
 import "../styles/container.css";
 
 import SearchBar from "./SearchBar";
-import { FormEvent, ReactNode, useEffect, useRef } from "react";
+import {
+  FormEvent,
+  ReactNode,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import { useSearchParams } from "react-router-dom";
 
 function Container({
@@ -34,7 +40,7 @@ function Container({
 
   const mainItemContainer = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => mainItemContainer?.current?.focus(), []);
+  useLayoutEffect(() => mainItemContainer?.current?.focus(), []);
 
   function scrollToTop() {
     mainItemContainer?.current?.scrollTo(0, 0);

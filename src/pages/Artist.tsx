@@ -1,13 +1,12 @@
 import "../styles/artist.css";
 
 import { useEffect, useRef, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
-import Container from "../components/Container";
-import Track from "../components/Track";
-import { transformArtistAlbums, transformTracks } from "../utils/functions";
-import { TGroupedArtistAlbum, TGroupedTrack } from "../utils/types";
+import { useParams } from "react-router-dom";
+import { transformArtistAlbums } from "../utils/functions";
+import { TGroupedArtistAlbum } from "../utils/types";
 import vynilIcon from "../assets/icons/vynil.svg";
 import { DOMAIN_MID_PATH } from "../utils/globals";
+import TracksBlock from "../components/TracksBlock";
 
 function Artist({
   mode,
@@ -29,27 +28,11 @@ function Artist({
   setCurrentTrack: Function;
 }) {
   const { artist } = useParams();
-
-  const limit = 100;
-  const offset = useRef(0);
-
   const [artistId, setArtistId] = useState<string>();
+
   const [artistName, setArtistName] = useState();
   const [artistImage, setArtistImage] = useState<string>();
   const [albums, setAlbums] = useState<TGroupedArtistAlbum[]>([]);
-  const [tracks, setTracks] = useState<TGroupedTrack[]>([]);
-
-  const [searchParams] = useSearchParams();
-  const [query, setQuery] = useState("");
-
-  useEffect(
-    () => setQuery(searchParams.get("q") || ""),
-    [searchParams.get("q")]
-  );
-
-  const [bottomHit, setBottomHit] = useState(false);
-
-  let abortController: AbortController | null = null;
 
   async function getArtist(signal?: AbortSignal) {
     const response = await fetch(
@@ -97,34 +80,6 @@ function Artist({
     }
   }
 
-  async function getTracks(signal?: AbortSignal) {
-    const response = await fetch(
-      `http://localhost:5500/tracks?artistId=${artistId}&limit=${limit}&offset=${offset.current}&search=${query}`,
-      {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        signal,
-      }
-    );
-    const data = await response.json();
-
-    const tracks = transformTracks(data.tracks);
-
-    return tracks;
-  }
-
-  async function updateTracks(signal?: AbortSignal) {
-    const tracksGrouped = await getTracks(signal);
-
-    if (offset.current === 0) {
-      setTracks(tracksGrouped);
-    } else {
-      setTracks((tracks) => [...tracks, ...tracksGrouped]);
-    }
-
-    setBottomHit(false);
-  }
-
   useEffect(() => {
     let idEndIndex = artist?.indexOf("+");
     if (idEndIndex === -1) {
@@ -139,8 +94,6 @@ function Artist({
     let albumsAbortController: null | AbortController;
 
     if (artistId != null) {
-      offset.current = 0;
-
       artistAbortController = new AbortController();
       tracksAbortController = new AbortController();
       albumsAbortController = new AbortController();
@@ -153,10 +106,6 @@ function Artist({
           checkArtistImage(domain_id, domain_name, image_id);
         })
         .finally(() => (artistAbortController = null));
-
-      updateTracks(tracksAbortController.signal).finally(
-        () => (tracksAbortController = null)
-      );
 
       getArtistAlbums(albumsAbortController.signal)
         .then(setAlbums)
@@ -172,23 +121,6 @@ function Artist({
       setLightMode();
     };
   }, [artistId]);
-
-  function updateTracksOnScroll() {
-    offset.current += limit;
-    updateTracks();
-  }
-
-  function updateTracksOnQueryChange() {
-    setTracks([]);
-    offset.current = 0;
-    updateTracks();
-  }
-
-  useEffect(() => {
-    if (artistId != null) {
-      updateTracksOnQueryChange();
-    }
-  }, [query]);
 
   return (
     <main>
@@ -270,28 +202,12 @@ function Artist({
           </ol>
         </div>
       </div>
-      <Container
-        layout="flex"
-        bottomHit={bottomHit}
-        setBottomHit={setBottomHit}
-        updateData={updateTracksOnScroll}
-        abortController={abortController}
-      >
-        {tracks?.map((track) => {
-          if (track.youtube_video_id != null) {
-            playableTracks.push(track.id);
-          }
-
-          return (
-            <Track
-              key={track.id}
-              track={track}
-              currentTrack={currentTrack}
-              setCurrentTrack={setCurrentTrack}
-            />
-          );
-        })}
-      </Container>
+      <TracksBlock
+        playableTracks={playableTracks}
+        currentTrack={currentTrack}
+        setCurrentTrack={setCurrentTrack}
+        queryParams={{ artistId }}
+      />
     </main>
   );
 }
