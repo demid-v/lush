@@ -27,7 +27,7 @@ const Theme: FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-export function useTheme() {
+function useTheme() {
   const context = useContext(ThemeContext);
 
   if (!context) {
@@ -38,3 +38,4 @@ export function useTheme() {
 }
 
 export default Theme;
+export { useTheme };

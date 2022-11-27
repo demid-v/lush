@@ -10,7 +10,7 @@ const TracksBlock: FC<{
   currentTrack?: number;
   setCurrentTrack: Function;
 }> = ({ playableTracks, currentTrack, setCurrentTrack }) => {
-  const limit = 100;
+  const limit = 10;
   const offset = useRef(0);
 
   const fetching = useRef(false);
@@ -25,7 +25,7 @@ const TracksBlock: FC<{
   const tracksResponse = trpc.tracks.getTracks.useQuery({
     limit,
     offset: offset.current,
-    q: typeof q === "object" ? q[0] : q,
+    q: typeof q === "object" ? q.join("") : q,
   });
 
   function updateTracksOnScroll() {

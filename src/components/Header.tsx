@@ -5,20 +5,18 @@ const Header = () => {
   const { theme } = useTheme();
 
   return (
-    <header className={"header bg-header"}>
-      <div className="header__logo">
-        <Link
-          href="/"
-          className={
-            "header__logo-link" +
-            (theme === "dark" ? " header__logo-link_light" : "")
-          }
-        >
-          Lush
-        </Link>
-      </div>
-      <div className="header__current-track invisible">
-        <div className="header__track-main">
+    <header className="flex h-10 items-center gap-x-12 bg-header px-header">
+      <Link
+        href="/"
+        className={
+          "text-header__logo italic leading-7 tracking-[.7em]" +
+          (theme === "dark" ? " text-white" : "")
+        }
+      >
+        Lush
+      </Link>
+      <div className="invisible h-full flex-1">
+        <div className="flex">
           <div className="header__buttons">
             <div className="header__buttons-container">
               <button className="header__prev-button header__button"></button>
@@ -62,25 +60,25 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="header__pages-container">
+      <div className="header__pages-container text-header-nav leading-none">
         <nav>
-          <ul className="header__pages">
+          <ul className="flex gap-header__nav">
             <li>
               <Link
                 href="/tracks"
                 className={
-                  "header__page-link" +
+                  "header__page-link px-header__link" +
                   (theme === "dark" ? " header__page-link_light" : "")
                 }
               >
-                Tracks
+                Music
               </Link>
             </li>
             <li>
               <Link
                 href="/artists"
                 className={
-                  "header__page-link" +
+                  "header__page-link px-header__link" +
                   (theme === "dark" ? " header__page-link_light" : "")
                 }
               >
@@ -91,7 +89,7 @@ const Header = () => {
               <Link
                 href="/albums"
                 className={
-                  "header__page-link" +
+                  "header__page-link px-header__link" +
                   (theme === "dark" ? " header__page-link_light" : "")
                 }
               >
@@ -102,7 +100,7 @@ const Header = () => {
               <Link
                 href="/playlists"
                 className={
-                  "header__page-link" +
+                  "header__page-link px-header__link" +
                   (theme === "dark" ? " header__page-link_light" : "")
                 }
               >
