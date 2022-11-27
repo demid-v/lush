@@ -15,7 +15,7 @@ const tracksRouter = router({
       const tracks = await ctx.prisma.track.findMany({
         take: input.limit,
         skip: input.offset,
-        where: { title: input.q },
+        ...(input.q && { where: { title: { contains: input.q } } }),
         orderBy: { id: "desc" },
       });
 
