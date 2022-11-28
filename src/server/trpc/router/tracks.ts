@@ -8,15 +8,38 @@ const tracksRouter = router({
       z.object({
         limit: z.number(),
         offset: z.number(),
-        q: z.string().nullish(),
+        search: z.string().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
       const tracks = await ctx.prisma.track.findMany({
+        select: {
+          id: true,
+          title: true,
+          duration: true,
+          youtube_video_id: true,
+          track_artist_rel: {
+            select: {
+              artist: {
+                select: {
+                  artist_image_rel: { select: { artist_image: true } },
+                },
+              },
+            },
+          },
+          track_genre_rel: { select: { genre: true } },
+          track_album_rel: {
+            select: {
+              album: {
+                select: { album_image_rel: { select: { album_image: true } } },
+              },
+            },
+          },
+        },
+        ...(input.search && { where: { title: { contains: input.search } } }),
+        orderBy: { id: "desc" },
         take: input.limit,
         skip: input.offset,
-        ...(input.q && { where: { title: { contains: input.q } } }),
-        orderBy: { id: "desc" },
       });
 
       return { tracks };

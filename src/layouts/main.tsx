@@ -1,4 +1,3 @@
-import Head from "next/head";
 import { FC, ReactNode } from "react";
 import Header from "../components/Header";
 import Theme from "../contexts/Theme";

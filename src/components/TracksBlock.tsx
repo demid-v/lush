@@ -23,9 +23,9 @@ const TracksBlock: FC<{
   const [bottomHit, setBottomHit] = useState(false);
 
   const tracksResponse = trpc.tracks.getTracks.useQuery({
+    ...(q && { search: typeof q === "object" ? q.join("") : q }),
     limit,
     offset: offset.current,
-    q: typeof q === "object" ? q.join("") : q,
   });
 
   function updateTracksOnScroll() {
