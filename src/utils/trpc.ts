@@ -40,3 +40,8 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  * @example type HelloOutput = RouterOutputs['example']['hello']
  **/
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
+
+type TracksData = RouterOutputs["tracks"]["getTracks"]["tracks"];
+type TrackData = TracksData[0];
+
+export type { TracksData, TrackData };

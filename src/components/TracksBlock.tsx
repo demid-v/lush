@@ -1,21 +1,16 @@
-import React, { useState, useRef, FC } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Track from "./Track";
 import Container from "./Container";
-import { TGroupedTrack } from "../utils/types";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
+import Tracks, { useTracks } from "../contexts/Tracks";
 
-const TracksBlock: FC<{
-  playableTracks: number[];
-  currentTrack?: number;
-  setCurrentTrack: Function;
-}> = ({ playableTracks, currentTrack, setCurrentTrack }) => {
+const TracksBlock = () => {
   const limit = 10;
   const offset = useRef(0);
 
-  const fetching = useRef(false);
-
-  const [tracks, setTracks] = useState<TGroupedTrack[]>([]);
+  const { setGlobalTracks, globalPlayableTracks, activeTrack, setActiveTrack } =
+    useTracks();
 
   const router = useRouter();
   const { q } = router.query;
@@ -33,10 +28,10 @@ const TracksBlock: FC<{
     tracksResponse.refetch();
   }
 
-  function updateTracksOnQueryChange() {
-    fetching.current = true;
-    offset.current = 0;
-    updateTracks();
+  function setGlobalTracksHandler() {
+    if (tracksResponse.data !== undefined) {
+      setGlobalTracks(tracksResponse.data.tracks);
+    }
   }
 
   return (
@@ -47,23 +42,25 @@ const TracksBlock: FC<{
       updateData={updateTracksOnScroll}
     >
       {tracksResponse.data
-        ? tracksResponse.data.tracks.map((track) => {
-            // if (track.youtube_video_id != null) {
-            //   playableTracks.push(track.id);
-            // }
-
-            return (
-              <Track
-                key={track.id}
-                track={track}
-                currentTrack={currentTrack}
-                setCurrentTrack={setCurrentTrack}
-              />
-            );
-          })
+        ? tracksResponse.data.tracks.map((track) => (
+            <Track
+              key={track.id}
+              track={track}
+              activeTrack={activeTrack}
+              setActiveTrack={setActiveTrack}
+              setGlobalTracks={setGlobalTracksHandler}
+              globalPlayableTracks={globalPlayableTracks}
+            />
+          ))
         : "Fetching tracks..."}
     </Container>
   );
 };
 
-export default TracksBlock;
+const TracksBlockWithContext = () => (
+  <Tracks>
+    <TracksBlock></TracksBlock>
+  </Tracks>
+);
+
+export default TracksBlockWithContext;

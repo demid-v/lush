@@ -1,15 +1,30 @@
 import { FC, useEffect, useState } from "react";
 import { constructLink } from "../utils/functions";
 import { DOMAIN_MID_PATH } from "../utils/globals";
-import type { TGroupedTrack } from "../utils/types";
 import Link from "next/link";
+import { TrackData } from "../utils/trpc";
 
 const Track: FC<{
-  track: TGroupedTrack;
-  currentTrack?: number;
-  setCurrentTrack?: Function;
-}> = ({ track, currentTrack, setCurrentTrack }) => {
-  const { albums, artists, title, duration, genres, youtube_video_id } = track;
+  track: TrackData;
+  activeTrack: number | null;
+  setActiveTrack?: Function;
+  setGlobalTracks: Function;
+  globalPlayableTracks: number[];
+}> = ({
+  track,
+  activeTrack,
+  setActiveTrack,
+  setGlobalTracks,
+  globalPlayableTracks,
+}) => {
+  const {
+    title,
+    duration,
+    youtube_video_id,
+    track_artist_rel: artists,
+    track_genre_rel: genres,
+    track_album_rel: albums,
+  } = track;
 
   const [playing, setPlaying] = useState(false);
 
@@ -81,17 +96,17 @@ const Track: FC<{
   }
 
   function onTrackClicked() {
-    setCurrentTrack?.(track.id);
+    setActiveTrack?.(track.id);
   }
 
   useEffect(() => {
-    if (currentTrack === track.id) {
+    if (activeTrack === track.id) {
       setPlaying(true);
       playVideo();
     } else {
       setPlaying(false);
     }
-  }, [currentTrack]);
+  }, [activeTrack]);
 
   return (
     <li className="track">
@@ -119,7 +134,7 @@ const Track: FC<{
           <div className="track__content">
             <div className="track__header">
               <div className="track__title track__header-element">{title}</div>
-              {artists?.map((artist) => (
+              {artists?.map(({ artist }) => (
                 <div
                   key={artist.id}
                   className="track__artists track__header-element"
@@ -137,7 +152,7 @@ const Track: FC<{
             <div className="track__hud">
               <div className="track__first-row">
                 <div className="track__genres no-color">
-                  {genres?.map((genre) => (
+                  {genres?.map(({ genre }) => (
                     <button
                       key={genre.id}
                       className="track__genre"

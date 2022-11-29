@@ -21,7 +21,7 @@ const tracksRouter = router({
           track_artist_rel: {
             select: {
               artist: {
-                select: {
+                include: {
                   artist_image_rel: { select: { artist_image: true } },
                 },
               },
@@ -31,7 +31,7 @@ const tracksRouter = router({
           track_album_rel: {
             select: {
               album: {
-                select: { album_image_rel: { select: { album_image: true } } },
+                include: { album_image_rel: { select: { album_image: true } } },
               },
             },
           },
