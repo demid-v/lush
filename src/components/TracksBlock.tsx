@@ -17,11 +17,14 @@ const TracksBlock = () => {
 
   const [bottomHit, setBottomHit] = useState(false);
 
-  const tracksResponse = trpc.tracks.getTracks.useQuery({
-    ...(q && { search: typeof q === "object" ? q.join("") : q }),
-    limit,
-    offset: offset.current,
-  });
+  const tracksResponse = trpc.tracks.getTracks.useQuery(
+    {
+      ...(q && { search: typeof q === "object" ? q.join("") : q }),
+      limit,
+      offset: offset.current,
+    },
+    { refetchOnWindowFocus: false }
+  );
 
   function updateTracksOnScroll() {
     offset.current += limit;
