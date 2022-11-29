@@ -8,7 +8,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => {
       <Theme>
         <Header />
       </Theme>
-      <main>{children}</main>
+      <main className="pt-10">{children}</main>
       <div id="youtube-video" className="youtube-video hidden"></div>
     </>
   );

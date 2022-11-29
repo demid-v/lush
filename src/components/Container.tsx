@@ -25,26 +25,10 @@ const Container: FC<{
 
   const mainItemContainer = useRef<HTMLDivElement | null>(null);
 
-  useLayoutEffect(() => mainItemContainer?.current?.focus(), []);
-
-  function scrollToTop() {
-    mainItemContainer?.current?.scrollTo(0, 0);
-  }
-
-  const router = useRouter();
-  const { q: query } = router.query;
-
-  useEffect(scrollToTop, [query]);
-
   return (
-    <div className="container">
+    <div className="px-[12.5rem]">
       <SearchBar />
-      <div
-        className="main-items-container scroll-y"
-        tabIndex={-1}
-        ref={mainItemContainer}
-        onScroll={checkPosition}
-      >
+      <div className="" onScroll={checkPosition}>
         <ul className={"container-" + layout}>{children}</ul>
       </div>
     </div>

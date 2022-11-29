@@ -6,11 +6,12 @@ module.exports = {
       colors: {
         header: "rgb(var(--color-header))",
       },
-      fontSize: { header__logo: "1.4rem", "header-nav": "0.9rem" },
       spacing: {
-        header: "2.1875rem",
-        header__nav: "0.313rem",
         header__link: "0.9375rem",
+      },
+      width: {
+        search_bar__first_row__button: "2.813rem",
+        search_bar__first_row__button_icon: "0.625rem",
       },
     },
   },

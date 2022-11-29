@@ -5,11 +5,11 @@ const Header = () => {
   const { theme } = useTheme();
 
   return (
-    <header className="flex h-10 items-center gap-x-12 bg-header px-header">
+    <header className="fixed flex h-10 w-full items-center gap-x-12 bg-header px-[2.1875rem]">
       <Link
         href="/"
         className={
-          "text-header__logo italic leading-7 tracking-[.7em]" +
+          "text-[1.4rem] italic leading-7 tracking-[0.7em]" +
           (theme === "dark" ? " text-white" : "")
         }
       >
@@ -60,56 +60,54 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <div className="header__pages-container text-header-nav leading-none">
-        <nav>
-          <ul className="flex gap-header__nav">
-            <li>
-              <Link
-                href="/tracks"
-                className={
-                  "header__page-link px-header__link" +
-                  (theme === "dark" ? " header__page-link_light" : "")
-                }
-              >
-                Music
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/artists"
-                className={
-                  "header__page-link px-header__link" +
-                  (theme === "dark" ? " header__page-link_light" : "")
-                }
-              >
-                Artists
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/albums"
-                className={
-                  "header__page-link px-header__link" +
-                  (theme === "dark" ? " header__page-link_light" : "")
-                }
-              >
-                Albums
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/playlists"
-                className={
-                  "header__page-link px-header__link" +
-                  (theme === "dark" ? " header__page-link_light" : "")
-                }
-              >
-                Playlists
-              </Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
+      <nav className="text-[0.9rem] leading-none">
+        <ul className="flex gap-[0.313rem]">
+          <li>
+            <Link
+              href="/tracks"
+              className={
+                "px-header__link hover:underline" +
+                (theme === "dark" ? " header__page-link_light" : "")
+              }
+            >
+              Music
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/artists"
+              className={
+                "px-header__link hover:underline" +
+                (theme === "dark" ? " header__page-link_light" : "")
+              }
+            >
+              Artists
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/albums"
+              className={
+                "px-header__link hover:underline" +
+                (theme === "dark" ? " header__page-link_light" : "")
+              }
+            >
+              Albums
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/playlists"
+              className={
+                "px-header__link hover:underline" +
+                (theme === "dark" ? " header__page-link_light" : "")
+              }
+            >
+              Playlists
+            </Link>
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 };
