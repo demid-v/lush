@@ -1,6 +1,5 @@
 import SearchBar from "./SearchBar";
-import { FC, ReactNode, useEffect, useLayoutEffect, useRef } from "react";
-import { useRouter } from "next/router";
+import { FC, ReactNode, useRef } from "react";
 
 const Container: FC<{
   children: ReactNode;
@@ -28,7 +27,7 @@ const Container: FC<{
   return (
     <div className="px-[12.5rem]">
       <SearchBar />
-      <div className="" onScroll={checkPosition}>
+      <div onScroll={checkPosition}>
         <ul className={"container-" + layout}>{children}</ul>
       </div>
     </div>

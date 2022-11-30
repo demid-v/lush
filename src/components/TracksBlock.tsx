@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Track from "./Track";
 import Container from "./Container";
 import { useRouter } from "next/router";
