@@ -4,7 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
-        <meta name="description" content="Music website" />
+        <meta name="description" content="Lush — Music website." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <body>
