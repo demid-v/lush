@@ -109,11 +109,11 @@ const Track: FC<{
   }, [activeTrack]);
 
   return (
-    <li className="border-t border-[#e6e6e6] last:border-b">
-      <div className=" p-[0.313rem]">
-        <div className="flex">
+    <li className="border-t border-[#e6e6e6] leading-none last:border-b">
+      <div className="relative p-[0.313rem]">
+        <div className="flex whitespace-nowrap">
           <div
-            className="track__clickable-background"
+            className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"
             onClick={onTrackClicked}
           ></div>
 
@@ -133,15 +133,14 @@ const Track: FC<{
 
           <div className="flex flex-1">
             <div className="flex-1">
-              <div className="text-[0.88rem]">{title}</div>
+              <div className="z-10 mb-2 w-min text-[0.88rem]">{title}</div>
               {artists?.map(({ artist }) => (
                 <div
                   key={artist.id}
-                  className="leading-1 text-[0.83rem] text-[#8d8d8d]"
+                  className="z-10 w-min text-[0.83rem] text-[#8d8d8d]"
                 >
                   <Link
                     href={`/artists/${artist.id}+${constructLink(artist.name)}`}
-                    className="track__artists-link"
                   >
                     {artist.name}
                   </Link>
@@ -149,13 +148,13 @@ const Track: FC<{
               ))}
             </div>
 
-            <div className="track__hud">
+            <div className="flex flex-col justify-between">
               <div className="flex">
-                <div className="text-[0.82rem] leading-[1rem]">
+                <div className="flex text-[0.82rem] leading-[1rem]">
                   {genres?.map(({ genre }) => (
                     <button
                       key={genre.id}
-                      className="mr-[0.625rem] rounded-sm border border-[#bdbdbd] px-[0.313rem]"
+                      className="z-10 mr-[0.625rem] rounded-sm border border-[#bdbdbd] px-[0.313rem]"
                     >
                       {genre.name}
                     </button>
@@ -166,14 +165,14 @@ const Track: FC<{
                 </div>
               </div>
 
-              <div className="ml-auto mt-auto flex w-min">
+              <div className="ml-auto flex w-min">
                 <div className={playing ? "" : "hidden"}>
                   <div className="track__curr-time-container">
                     <span className="track__curr-time">00:00</span>
                     <div className="track__time-slash">/</div>
                   </div>
                 </div>
-                <span className="text-[0.65rem] leading-none">
+                <span className="z-10 text-[0.65rem] leading-none">
                   {parsedDuration}
                 </span>
               </div>

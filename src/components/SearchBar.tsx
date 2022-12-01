@@ -37,7 +37,7 @@ const SearchBar = () => {
   return (
     <div className="mt-[1.563rem] mb-[0.938rem]">
       <div className="flex h-[1.875rem] w-full gap-[0.625rem]">
-        <div className="relative -z-10 flex-1 border border-[#b4b4b4]">
+        <div className="relative flex-1 border border-[#b4b4b4]">
           <input
             className="h-full w-full px-0.5 text-[1.02rem]"
             type="text"
