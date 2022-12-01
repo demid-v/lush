@@ -39,7 +39,6 @@ const TracksBlock = () => {
 
   return (
     <Container
-      layout="flex"
       bottomHit={bottomHit}
       setBottomHit={setBottomHit}
       updateData={updateTracksOnScroll}

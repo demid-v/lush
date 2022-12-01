@@ -3,11 +3,10 @@ import { FC, ReactNode, useRef } from "react";
 
 const Container: FC<{
   children: ReactNode;
-  layout: "flex" | "grid";
   bottomHit: boolean;
   setBottomHit: Function;
   updateData: Function;
-}> = ({ children, layout, bottomHit, setBottomHit, updateData }) => {
+}> = ({ children, bottomHit, setBottomHit, updateData }) => {
   function checkPosition() {
     if (
       !bottomHit &&
@@ -28,7 +27,7 @@ const Container: FC<{
     <div className="px-[12.5rem]">
       <SearchBar />
       <div onScroll={checkPosition}>
-        <ul className={"container-" + layout}>{children}</ul>
+        <ul>{children}</ul>
       </div>
     </div>
   );

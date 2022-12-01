@@ -109,9 +109,9 @@ const Track: FC<{
   }, [activeTrack]);
 
   return (
-    <li className="track">
-      <div className="track__container">
-        <div className="track__main">
+    <li className="border-t border-[#e6e6e6] last:border-b">
+      <div className=" p-[0.313rem]">
+        <div className="flex">
           <div
             className="track__clickable-background"
             onClick={onTrackClicked}
@@ -131,13 +131,13 @@ const Track: FC<{
             </div>
           </div>
 
-          <div className="track__content">
-            <div className="track__header">
-              <div className="track__title track__header-element">{title}</div>
+          <div className="flex flex-1">
+            <div className="flex-1">
+              <div className="text-[0.88rem]">{title}</div>
               {artists?.map(({ artist }) => (
                 <div
                   key={artist.id}
-                  className="track__artists track__header-element"
+                  className="leading-1 text-[0.83rem] text-[#8d8d8d]"
                 >
                   <Link
                     href={`/artists/${artist.id}+${constructLink(artist.name)}`}
@@ -150,13 +150,12 @@ const Track: FC<{
             </div>
 
             <div className="track__hud">
-              <div className="track__first-row">
-                <div className="track__genres no-color">
+              <div className="flex">
+                <div className="text-[0.82rem] leading-[1rem]">
                   {genres?.map(({ genre }) => (
                     <button
                       key={genre.id}
-                      className="track__genre"
-                      data-param={`${constructLink(genre.name)}`}
+                      className="mr-[0.625rem] rounded-sm border border-[#bdbdbd] px-[0.313rem]"
                     >
                       {genre.name}
                     </button>
@@ -167,18 +166,16 @@ const Track: FC<{
                 </div>
               </div>
 
-              <div className="track__second-row">
-                <div className="track__time">
-                  <div className={playing ? "" : "hidden"}>
-                    <div className="track__curr-time-container">
-                      <span className="track__curr-time">00:00</span>
-                      <div className="track__time-slash">/</div>
-                    </div>
-                  </div>
-                  <div className="track__duration-container">
-                    <span className="track__duration">{parsedDuration}</span>
+              <div className="ml-auto mt-auto flex w-min">
+                <div className={playing ? "" : "hidden"}>
+                  <div className="track__curr-time-container">
+                    <span className="track__curr-time">00:00</span>
+                    <div className="track__time-slash">/</div>
                   </div>
                 </div>
+                <span className="text-[0.65rem] leading-none">
+                  {parsedDuration}
+                </span>
               </div>
             </div>
           </div>
