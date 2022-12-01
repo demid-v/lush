@@ -111,13 +111,13 @@ const Track: FC<{
   return (
     <li className="border-t border-[#e6e6e6] leading-none last:border-b">
       <div className="relative p-[0.313rem]">
-        <div className="flex whitespace-nowrap">
-          <div
-            className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"
-            onClick={onTrackClicked}
-          ></div>
+        <div
+          className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"
+          onClick={onTrackClicked}
+        ></div>
 
-          <div className="track__left-side">
+        <div className="flex whitespace-nowrap">
+          <div>
             <div
               className={
                 "track__artist-image-wrapper" +
@@ -125,51 +125,68 @@ const Track: FC<{
               }
               style={{ backgroundImage: trackCover }}
             ></div>
-            <div className="track__play-button">
-              <div className="track__white-circle track__play-button-element"></div>
-              <div className="track__action-icon track__play-button-element"></div>
+            <div className="">
+              <div className=""></div>
+              <div className=""></div>
             </div>
           </div>
 
           <div className="flex flex-1">
-            <div className="flex-1">
-              <div className="z-10 mb-2 w-min text-[0.88rem]">{title}</div>
+            <div className="flex flex-1 flex-col">
+              <span className="z-10 mb-[0.18rem] w-min text-[0.92rem] leading-[1.1rem]">
+                {title}
+              </span>
               {artists?.map(({ artist }) => (
-                <div
+                <span
                   key={artist.id}
-                  className="z-10 w-min text-[0.83rem] text-[#8d8d8d]"
+                  className="z-10 w-min text-[0.83rem] leading-[1.05rem] text-[#8d8d8d]"
                 >
                   <Link
                     href={`/artists/${artist.id}+${constructLink(artist.name)}`}
                   >
                     {artist.name}
                   </Link>
-                </div>
+                </span>
               ))}
             </div>
 
             <div className="flex flex-col justify-between">
               <div className="flex">
-                <div className="flex text-[0.82rem] leading-[1rem]">
+                <ul className="flex text-[0.82rem] leading-[1rem]">
                   {genres?.map(({ genre }) => (
-                    <button
-                      key={genre.id}
-                      className="z-10 mr-[0.625rem] rounded-sm border border-[#bdbdbd] px-[0.313rem]"
-                    >
-                      {genre.name}
-                    </button>
+                    <li className="mr-[0.625rem]">
+                      <button
+                        key={genre.id}
+                        className="z-10 rounded-sm border border-[#bdbdbd] px-[0.313rem]"
+                      >
+                        {genre.name}
+                      </button>
+                    </li>
                   ))}
-                </div>
-                <div className="track__right-tab">
-                  <button className="track__right-tab-button track__edit-button"></button>
-                </div>
+                </ul>
+                <button className="z-10 h-4 w-5">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512.001 512.001"
+                    className="m-auto w-2.5"
+                  >
+                    <path
+                      d="M496.063,62.299l-46.396-46.4c-21.199-21.199-55.689-21.198-76.888,0C352.82,35.86,47.964,340.739,27.591,361.113
+			c-2.17,2.17-3.624,5.054-4.142,7.875L0.251,494.268c-0.899,4.857,0.649,9.846,4.142,13.339c3.497,3.497,8.487,5.042,13.338,4.143
+			L143,488.549c2.895-0.54,5.741-2.008,7.875-4.143l345.188-345.214C517.311,117.944,517.314,83.55,496.063,62.299z M33.721,478.276
+			l14.033-75.784l61.746,61.75L33.721,478.276z M140.269,452.585L59.41,371.721L354.62,76.488l80.859,80.865L140.269,452.585z
+			 M474.85,117.979l-18.159,18.161l-80.859-80.865l18.159-18.161c9.501-9.502,24.96-9.503,34.463,0l46.396,46.4
+			C484.375,93.039,484.375,108.453,474.85,117.979z"
+                    />
+                  </svg>
+                </button>
               </div>
 
               <div className="ml-auto flex w-min">
                 <div className={playing ? "" : "hidden"}>
-                  <div className="track__curr-time-container">
-                    <span className="track__curr-time">00:00</span>
-                    <div className="track__time-slash">/</div>
+                  <div className="">
+                    <span className="">00:00</span>
+                    <div className="">/</div>
                   </div>
                 </div>
                 <span className="z-10 text-[0.65rem] leading-none">
