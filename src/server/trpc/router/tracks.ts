@@ -21,22 +21,60 @@ const tracksRouter = router({
           track_artist_rel: {
             select: {
               artist: {
-                include: {
-                  artist_image_rel: { select: { artist_image: true } },
+                select: {
+                  id: true,
+                  name: true,
+                  artist_image_rel: {
+                    select: {
+                      artist_image: {
+                        select: { domain_id: true, image_id: true },
+                      },
+                    },
+                    where: { is_cover: 1 },
+                  },
                 },
               },
             },
+            orderBy: { artist_position: "asc" },
           },
-          track_genre_rel: { select: { genre: true } },
+          track_genre_rel: {
+            select: { genre: { select: { id: true, name: true } } },
+            where: { genre: { deleted: false } },
+            orderBy: { genre_position: "asc" },
+            take: 5,
+          },
           track_album_rel: {
             select: {
               album: {
-                include: { album_image_rel: { select: { album_image: true } } },
+                select: {
+                  album_image_rel: {
+                    select: {
+                      album_image: {
+                        select: { domain_id: true, image_id: true },
+                      },
+                    },
+                    where: { is_cover: 1 },
+                  },
+                },
               },
             },
+            orderBy: { album: { id: "asc" } },
+            take: 1,
           },
         },
-        ...(input.search && { where: { title: { contains: input.search } } }),
+        where: {
+          deleted: 0,
+          ...(input.search && {
+            OR: [
+              { title: { contains: input.search } },
+              {
+                track_artist_rel: {
+                  some: { artist: { name: { contains: input.search } } },
+                },
+              },
+            ],
+          }),
+        },
         orderBy: { id: "desc" },
         take: input.limit,
         skip: input.offset,

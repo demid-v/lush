@@ -148,11 +148,8 @@ const Track: FC<{
               <div className="flex">
                 <ul className="flex text-[0.82rem] leading-[1rem]">
                   {genres?.map(({ genre }) => (
-                    <li className="mr-[0.625rem]">
-                      <button
-                        key={genre.id}
-                        className="z-10 rounded-sm border border-[#bdbdbd] px-[0.313rem]"
-                      >
+                    <li key={genre.id} className="mr-[0.625rem]">
+                      <button className="z-10 rounded-sm border border-[#bdbdbd] px-[0.313rem]">
                         {genre.name}
                       </button>
                     </li>
