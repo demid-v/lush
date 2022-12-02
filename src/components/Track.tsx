@@ -109,31 +109,25 @@ const Track: FC<{
   }, [activeTrack]);
 
   return (
-    <li className="border-t border-[#e6e6e6] leading-none last:border-b">
-      <div className="relative p-[0.313rem]">
+    <li className="h-12 border-t border-[#e6e6e6] leading-none last:border-b">
+      <div className="relative h-full p-[0.3125rem]">
         <div
           className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"
           onClick={onTrackClicked}
         ></div>
 
-        <div className="flex whitespace-nowrap">
-          <div>
-            <div
-              className={
-                "track__artist-image-wrapper" +
-                (trackCover ? "" : " track__artist-image-wrapper_no-cover")
-              }
-              style={{ backgroundImage: trackCover }}
-            ></div>
-            <div className="">
-              <div className=""></div>
-              <div className=""></div>
-            </div>
+        <div className="flex h-full gap-2 whitespace-nowrap">
+          <div className="aspect-square h-full overflow-hidden">
+            <img
+              src="https://lastfm.freetls.fastly.net/i/u/300x300/1363a2273526a43f8cda4fe622be8818"
+              alt=""
+              className="h-full object-cover"
+            />
           </div>
 
           <div className="flex flex-1">
-            <div className="flex flex-1 flex-col">
-              <span className="z-10 mb-[0.18rem] w-min text-[0.92rem] leading-[1.1rem]">
+            <div className="flex flex-1 flex-col justify-between">
+              <span className="z-10 w-min text-[0.92rem] leading-[1.1rem]">
                 {title}
               </span>
               {artists?.map(({ artist }) => (

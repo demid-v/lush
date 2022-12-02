@@ -35,7 +35,7 @@ const SearchBar = () => {
   useEffect(checkQuery, [searchQuery]);
 
   return (
-    <div className="mt-[1.563rem] mb-[0.938rem]">
+    <div className="mt-[1.5625rem] mb-[0.9375rem]">
       <div className="flex h-[1.875rem] w-full gap-[0.625rem]">
         <div className="relative flex-1 border border-[#b4b4b4]">
           <input
