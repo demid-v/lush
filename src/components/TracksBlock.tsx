@@ -6,7 +6,7 @@ import { trpc } from "../utils/trpc";
 import Tracks, { useTracks } from "../contexts/Tracks";
 
 const TracksBlock = () => {
-  const limit = 10;
+  const limit = 100;
   const offset = useRef(0);
 
   const { setGlobalTracks, globalPlayableTracks, activeTrack, setActiveTrack } =

@@ -27,7 +27,10 @@ const tracksRouter = router({
                   artist_image_rel: {
                     select: {
                       artist_image: {
-                        select: { domain_id: true, image_id: true },
+                        select: {
+                          image_id: true,
+                          domain: true,
+                        },
                       },
                     },
                     where: { is_cover: 1 },

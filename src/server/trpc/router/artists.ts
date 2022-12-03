@@ -13,6 +13,22 @@ const artistsRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const artists = await ctx.prisma.artist.findMany({
+        select: {
+          id: true,
+          name: true,
+          artist_image_rel: {
+            select: {
+              artist_image: {
+                select: {
+                  image_id: true,
+                  domain: true,
+                },
+              },
+            },
+            where: { is_cover: 1 },
+            take: 1,
+          },
+        },
         orderBy: { id: "desc" },
         take: input.limit,
         skip: input.offset,

@@ -5,7 +5,7 @@ import { trpc } from "../utils/trpc";
 import Artist from "./ArtistTile";
 
 function Artists() {
-  const limit = 10;
+  const limit = 120;
   const offset = useRef(0);
 
   const router = useRouter();
@@ -34,7 +34,7 @@ function Artists() {
       updateData={updateOnScroll}
     >
       {artistsResponse.data ? (
-        <ul className="grid grid-cols-grid">
+        <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
           {artistsResponse.data.artists.map((artist) => (
             <Artist key={artist.id} artist={artist} />
           ))}

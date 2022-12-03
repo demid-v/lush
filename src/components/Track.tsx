@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { constructLink } from "../utils/functions";
 import Link from "next/link";
 import { TrackData } from "../utils/trpc";
+import { DOMAIN_MID_PATH } from "../utils/globals";
 
 const Track: FC<{
   track: TrackData;
@@ -26,9 +27,11 @@ const Track: FC<{
   } = track;
 
   const [playing, setPlaying] = useState(false);
-  const [durationStr, setDurationStr] = useState<string>("");
 
-  function durationToStr() {
+  const [durationStr, setDurationStr] = useState("");
+  const [artistImageUrl, setArtistImageUrl] = useState("");
+
+  function convertDurationToString() {
     if (duration === null) {
       return;
     }
@@ -54,7 +57,23 @@ const Track: FC<{
     setDurationStr(durationStrConstructor);
   }
 
-  useEffect(durationToStr, [duration]);
+  useEffect(convertDurationToString, [duration]);
+
+  function constructImageUrl() {
+    const artistImage = artists[0]?.artist.artist_image_rel[0]?.artist_image;
+
+    if (artistImage) {
+      const { image_id, domain } = artistImage;
+
+      setArtistImageUrl(
+        domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id
+      );
+    }
+  }
+
+  useEffect(constructImageUrl, [
+    artists[0]?.artist.artist_image_rel[0]?.artist_image,
+  ]);
 
   return (
     <li className="h-12 border-t border-[#e6e6e6] leading-none last:border-b">
@@ -63,11 +82,7 @@ const Track: FC<{
 
         <div className="flex h-full gap-2 whitespace-nowrap">
           <div className="aspect-square h-full overflow-hidden">
-            <img
-              src="https://lastfm.freetls.fastly.net/i/u/300x300/1363a2273526a43f8cda4fe622be8818"
-              alt=""
-              className="h-full object-cover"
-            />
+            <img src={artistImageUrl} alt="" className="h-full object-cover" />
           </div>
 
           <div className="flex flex-1">
