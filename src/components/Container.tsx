@@ -26,9 +26,7 @@ const Container: FC<{
   return (
     <div className="px-[12.5rem]">
       <SearchBar />
-      <div onScroll={checkPosition}>
-        <ul>{children}</ul>
-      </div>
+      <div onScroll={checkPosition}>{children}</div>
     </div>
   );
 };

@@ -44,4 +44,7 @@ export type RouterOutputs = inferRouterOutputs<AppRouter>;
 type TracksData = RouterOutputs["tracks"]["getTracks"]["tracks"];
 type TrackData = TracksData[0];
 
-export type { TracksData, TrackData };
+type ArtistsData = RouterOutputs["artists"]["getArtists"]["artists"];
+type ArtistData = ArtistsData[0];
+
+export type { TracksData, TrackData, ArtistsData, ArtistData };

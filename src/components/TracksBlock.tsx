@@ -43,8 +43,9 @@ const TracksBlock = () => {
       setBottomHit={setBottomHit}
       updateData={updateTracksOnScroll}
     >
-      {tracksResponse.data
-        ? tracksResponse.data.tracks.map((track) => (
+      {tracksResponse.data ? (
+        <ul>
+          {tracksResponse.data.tracks.map((track) => (
             <Track
               key={track.id}
               track={track}
@@ -53,8 +54,11 @@ const TracksBlock = () => {
               setGlobalTracks={setGlobalTracksHandler}
               globalPlayableTracks={globalPlayableTracks}
             />
-          ))
-        : "Fetching tracks..."}
+          ))}
+        </ul>
+      ) : (
+        "Fetching tracks..."
+      )}
     </Container>
   );
 };

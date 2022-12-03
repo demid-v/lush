@@ -1,6 +1,5 @@
 import { FC, useEffect, useState } from "react";
 import { constructLink } from "../utils/functions";
-import { DOMAIN_MID_PATH } from "../utils/globals";
 import Link from "next/link";
 import { TrackData } from "../utils/trpc";
 
@@ -27,94 +26,40 @@ const Track: FC<{
   } = track;
 
   const [playing, setPlaying] = useState(false);
+  const [durationStr, setDurationStr] = useState<string>("");
 
-  const parsedDuration = (() => {
+  function durationToStr() {
+    if (duration === null) {
+      return;
+    }
+
     const durationFloored: number = Math.floor(duration);
     const minutes: number = Math.floor(durationFloored / 60);
     const seconds: number = Math.floor(durationFloored - minutes * 60);
 
-    var durationStr: string = "";
+    let durationStrConstructor = "";
+
     if (minutes < 10) {
-      durationStr += "0";
+      durationStrConstructor += "0";
     }
-    durationStr += minutes + ":";
+
+    durationStrConstructor += minutes + ":";
 
     if (seconds < 10) {
-      durationStr += "0";
-    }
-    durationStr += seconds;
-
-    return durationStr;
-  })();
-
-  const [trackCover, setCover] = useState("");
-
-  useEffect(() => {
-    let domain_name: string | null = null,
-      domain_id: number | null = null,
-      image_id: string | null = null;
-
-    if (albums !== undefined) {
-      for (const album of Object.values(albums)) {
-        if (album.domain_id) {
-          domain_name = album.domain_name;
-          domain_id = album.domain_id;
-          image_id = album.image_id;
-          break;
-        }
-      }
+      durationStrConstructor += "0";
     }
 
-    if (image_id === null && artists !== undefined) {
-      for (const artist of artists) {
-        if (artist.image_id) {
-          domain_name = artist.domain_name;
-          domain_id = artist.domain_id;
-          image_id = artist.image_id;
-        }
-      }
-    }
+    durationStrConstructor += seconds;
 
-    if (domain_name !== null && domain_id !== null && image_id !== null) {
-      setCover(
-        `url("${domain_name}/${
-          DOMAIN_MID_PATH[domain_id as keyof typeof DOMAIN_MID_PATH]
-        }${domain_id === 2 ? "300x300/" : ""}${image_id}")`
-      );
-    }
-  }, []);
-
-  function playVideo() {
-    if (window.player && "loadVideoById" in window.player) {
-      window.player.h?.classList.remove("hidden");
-
-      window.player.loadVideoById(youtube_video_id);
-      window.player.playVideo();
-    } else {
-      setTimeout(playVideo, 1000);
-    }
+    setDurationStr(durationStrConstructor);
   }
 
-  function onTrackClicked() {
-    setActiveTrack?.(track.id);
-  }
-
-  useEffect(() => {
-    if (activeTrack === track.id) {
-      setPlaying(true);
-      playVideo();
-    } else {
-      setPlaying(false);
-    }
-  }, [activeTrack]);
+  useEffect(durationToStr, [duration]);
 
   return (
     <li className="h-12 border-t border-[#e6e6e6] leading-none last:border-b">
       <div className="relative h-full p-[0.3125rem]">
-        <div
-          className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"
-          onClick={onTrackClicked}
-        ></div>
+        <div className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"></div>
 
         <div className="flex h-full gap-2 whitespace-nowrap">
           <div className="aspect-square h-full overflow-hidden">
@@ -181,7 +126,7 @@ const Track: FC<{
                   </div>
                 </div>
                 <span className="z-10 text-[0.65rem] leading-none">
-                  {parsedDuration}
+                  {durationStr}
                 </span>
               </div>
             </div>
