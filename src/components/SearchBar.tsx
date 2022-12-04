@@ -3,36 +3,27 @@ import { useRouter } from "next/router";
 
 const SearchBar = () => {
   function clearField() {
-    router.query.q = undefined;
-    router.push(router);
+    delete router.query.q;
+    router.push({ pathname, query }, undefined, { shallow: true });
   }
 
   const router = useRouter();
-  const { q } = router.query;
+  const { pathname, query } = router;
+  const { q } = query;
 
-  const [searchQuery, setSearchQuery] = useState(q || "");
+  function setQuery(event: FormEvent) {
+    const value = (event.target as HTMLInputElement).value;
 
-  function setQuery() {
-    if (searchQuery === "") {
-      delete router.query.q;
-    } else {
-      router.query.q = searchQuery;
-    }
+    if (q !== value) {
+      if (value === "") {
+        delete router.query.q;
+      } else {
+        router.query.q = value;
+      }
 
-    router.push(router);
-  }
-
-  function setValue(event: FormEvent) {
-    setSearchQuery((event.target as HTMLInputElement).value);
-  }
-
-  function checkQuery() {
-    if (searchQuery !== q) {
-      setQuery();
+      router.push({ pathname, query }, undefined, { shallow: true });
     }
   }
-
-  useEffect(checkQuery, [searchQuery]);
 
   return (
     <div className="mt-[1.5625rem] mb-[0.9375rem]">
@@ -42,7 +33,7 @@ const SearchBar = () => {
             className="h-full w-full px-0.5 text-[1.02rem]"
             type="text"
             placeholder="Search"
-            onKeyUp={setValue}
+            onKeyUp={setQuery}
           />
           <button
             className="search-bar__clear-input absolute right-[0.313rem] top-1/2 w-[1.563rem] -translate-y-1/2"
