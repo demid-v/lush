@@ -76,7 +76,7 @@ const Track: FC<{
   ]);
 
   return (
-    <li className="h-12 border-t border-[#e6e6e6] leading-none last:border-b">
+    <li className="h-12 w-full border-t border-[#e6e6e6] leading-none last:border-b">
       <div className="relative h-full p-[0.3125rem]">
         <div className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"></div>
 

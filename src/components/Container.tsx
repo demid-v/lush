@@ -1,32 +1,30 @@
 import SearchBar from "./SearchBar";
-import { FC, ReactNode, useRef } from "react";
+import { FC, ReactNode, useEffect } from "react";
 
 const Container: FC<{
   children: ReactNode;
-  bottomHit: boolean;
-  setBottomHit: Function;
   updateData: Function;
-}> = ({ children, bottomHit, setBottomHit, updateData }) => {
+}> = ({ children, updateData }) => {
   function checkPosition() {
-    if (
-      !bottomHit &&
-      mainItemContainer.current &&
-      mainItemContainer.current.scrollHeight -
-        mainItemContainer.current.offsetHeight -
-        200 <=
-        mainItemContainer.current.scrollTop
-    ) {
-      setBottomHit(true);
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
       updateData();
     }
   }
 
-  const mainItemContainer = useRef<HTMLDivElement | null>(null);
+  function addOnScrollListener() {
+    document.addEventListener("scroll", checkPosition);
+
+    return () => {
+      document.removeEventListener("scroll", checkPosition);
+    };
+  }
+
+  useEffect(addOnScrollListener, []);
 
   return (
     <div className="px-[12.5rem]">
       <SearchBar />
-      <div onScroll={checkPosition}>{children}</div>
+      <div>{children}</div>
     </div>
   );
 };

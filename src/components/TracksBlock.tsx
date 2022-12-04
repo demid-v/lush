@@ -1,34 +1,48 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Track from "./Track";
 import Container from "./Container";
 import { useRouter } from "next/router";
-import { trpc } from "../utils/trpc";
+import { TracksData, trpc } from "../utils/trpc";
 import Tracks, { useTracks } from "../contexts/Tracks";
 
 const TracksBlock = () => {
   const limit = 100;
-  const offset = useRef(0);
+  const [offset, setOffset] = useState(0);
 
   const { setGlobalTracks, globalPlayableTracks, activeTrack, setActiveTrack } =
     useTracks();
 
-  const router = useRouter();
-  const { q } = router.query;
+  const [tracks, setTracks] = useState<TracksData>([]);
 
-  const [bottomHit, setBottomHit] = useState(false);
+  const { q } = useRouter().query;
 
   const tracksResponse = trpc.tracks.getTracks.useQuery(
     {
       ...(q && { search: typeof q === "object" ? q.join("") : q }),
       limit,
-      offset: offset.current,
+      offset,
     },
     { refetchOnWindowFocus: false }
   );
 
+  useEffect(() => {
+    setOffset(0);
+  }, [q]);
+
+  function handleTracksUpdate() {
+    if (tracksResponse.data) {
+      if (offset === 0) {
+        setTracks(tracksResponse.data.tracks);
+      } else if (offset > 0) {
+        setTracks((tracks) => [...tracks, ...tracksResponse.data.tracks]);
+      }
+    }
+  }
+
+  useEffect(handleTracksUpdate, [tracksResponse.data]);
+
   function updateTracksOnScroll() {
-    offset.current += limit;
-    tracksResponse.refetch();
+    setOffset((offset) => offset + limit);
   }
 
   function setGlobalTracksHandler() {
@@ -38,27 +52,19 @@ const TracksBlock = () => {
   }
 
   return (
-    <Container
-      bottomHit={bottomHit}
-      setBottomHit={setBottomHit}
-      updateData={updateTracksOnScroll}
-    >
-      {tracksResponse.data ? (
-        <ul>
-          {tracksResponse.data.tracks.map((track) => (
-            <Track
-              key={track.id}
-              track={track}
-              activeTrack={activeTrack}
-              setActiveTrack={setActiveTrack}
-              setGlobalTracks={setGlobalTracksHandler}
-              globalPlayableTracks={globalPlayableTracks}
-            />
-          ))}
-        </ul>
-      ) : (
-        "Fetching tracks..."
-      )}
+    <Container updateData={updateTracksOnScroll}>
+      <ul>
+        {tracks.map((track) => (
+          <Track
+            key={track.id}
+            track={track}
+            activeTrack={activeTrack}
+            setActiveTrack={setActiveTrack}
+            setGlobalTracks={setGlobalTracksHandler}
+            globalPlayableTracks={globalPlayableTracks}
+          />
+        ))}
+      </ul>
     </Container>
   );
 };
