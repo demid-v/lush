@@ -47,4 +47,16 @@ type TrackData = TracksData[0];
 type ArtistsData = RouterOutputs["artists"]["getArtists"]["artists"];
 type ArtistData = ArtistsData[0];
 
-export type { TracksData, TrackData, ArtistsData, ArtistData };
+type ArtistImage =
+  RouterOutputs["tracks"]["getTracks"]["tracks"][0]["track_artist_rel"][0]["artist"]["artist_image_rel"][0]["artist_image"];
+type AlbumImage =
+  RouterOutputs["tracks"]["getTracks"]["tracks"][0]["track_album_rel"][0]["album"]["album_image_rel"][0]["album_image"];
+
+export type {
+  TracksData,
+  TrackData,
+  ArtistsData,
+  ArtistData,
+  ArtistImage,
+  AlbumImage,
+};

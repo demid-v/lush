@@ -13,5 +13,17 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+      },
+      {
+        protocol: "https",
+        hostname: "lastfm.freetls.fastly.net",
+      },
+    ],
+  },
 };
 export default config;

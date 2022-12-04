@@ -1,14 +1,21 @@
-import { FC, useEffect, useState } from "react";
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { constructLink } from "../utils/functions";
 import Link from "next/link";
-import { TrackData } from "../utils/trpc";
+import type { AlbumImage, ArtistImage, TrackData } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
+import Image from "next/image";
 
 const Track: FC<{
   track: TrackData;
   activeTrack: number | null;
-  setActiveTrack?: Function;
-  setGlobalTracks: Function;
+  setActiveTrack?: Dispatch<SetStateAction<number | null>>;
+  setGlobalTracks: () => void;
   globalPlayableTracks: number[];
 }> = ({
   track,
@@ -29,7 +36,7 @@ const Track: FC<{
   const [playing, setPlaying] = useState(false);
 
   const [durationStr, setDurationStr] = useState("");
-  const [artistImageUrl, setArtistImageUrl] = useState("");
+  const [trackImageUrl, setTrackImageUrl] = useState("/logo192.png");
 
   function convertDurationToString() {
     if (duration === null) {
@@ -60,20 +67,28 @@ const Track: FC<{
   useEffect(convertDurationToString, [duration]);
 
   function constructImageUrl() {
-    const artistImage = artists[0]?.artist.artist_image_rel[0]?.artist_image;
-
-    if (artistImage) {
-      const { image_id, domain } = artistImage;
-
-      setArtistImageUrl(
-        domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id
-      );
+    for (const { artist } of artists) {
+      for (const { artist_image } of artist.artist_image_rel) {
+        return handleArtistImageUrl(artist_image);
+      }
     }
+
+    // for (const { album } of albums) {
+    //   for (const { album_image } of album.album_image_rel) {
+    //     return handleArtistImageUrl(album_image);
+    //   }
+    // }
   }
 
-  useEffect(constructImageUrl, [
-    artists[0]?.artist.artist_image_rel[0]?.artist_image,
-  ]);
+  function handleArtistImageUrl(
+    artistImageIn: NonNullable<ArtistImage /**| AlbumImage**/>
+  ) {
+    const { image_id, domain } = artistImageIn;
+
+    setTrackImageUrl(domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id);
+  }
+
+  useEffect(constructImageUrl, [artists, albums]);
 
   return (
     <li className="h-12 w-full border-t border-[#e6e6e6] leading-none last:border-b">
@@ -82,7 +97,16 @@ const Track: FC<{
 
         <div className="flex h-full gap-2 whitespace-nowrap">
           <div className="aspect-square h-full overflow-hidden">
-            <img src={artistImageUrl} alt="" className="h-full object-cover" />
+            <Image
+              src={trackImageUrl}
+              alt={
+                "Image of " + artists[0]?.artist.name ||
+                "the track's artist or album"
+              }
+              width={37}
+              height={37}
+              className="h-full object-cover"
+            />
           </div>
 
           <div className="flex flex-1">

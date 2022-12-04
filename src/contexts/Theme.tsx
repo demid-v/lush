@@ -1,10 +1,18 @@
 import Head from "next/head";
-import { createContext, FC, ReactNode, useContext, useState } from "react";
+import {
+  type Dispatch,
+  type FC,
+  type ReactNode,
+  type SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 
 const ThemeContext = createContext<{
   theme: "light" | "dark";
-  setTheme: Function;
-  setColor: Function;
+  setTheme: Dispatch<SetStateAction<"light" | "dark">>;
+  setColor: (r: number, g: number, b: number) => void;
 } | null>(null);
 
 const Theme: FC<{ children: ReactNode }> = ({ children }) => {

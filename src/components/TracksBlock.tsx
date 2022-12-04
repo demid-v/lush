@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Track from "./Track";
 import Container from "./Container";
 import { useRouter } from "next/router";
-import { TracksData, trpc } from "../utils/trpc";
+import { type TracksData, trpc } from "../utils/trpc";
 import Tracks, { useTracks } from "../contexts/Tracks";
 
 const TracksBlock = () => {
@@ -29,7 +29,7 @@ const TracksBlock = () => {
     setOffset(0);
   }, [q]);
 
-  function handleTracksUpdate() {
+  useEffect(() => {
     if (tracksResponse.data) {
       if (offset === 0) {
         setTracks(tracksResponse.data.tracks);
@@ -37,9 +37,7 @@ const TracksBlock = () => {
         setTracks((tracks) => [...tracks, ...tracksResponse.data.tracks]);
       }
     }
-  }
-
-  useEffect(handleTracksUpdate, [tracksResponse.data]);
+  }, [offset, tracksResponse.data]);
 
   function updateTracksOnScroll() {
     setOffset((offset) => offset + limit);

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import Container from "./Container";
 import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
@@ -10,8 +10,6 @@ function Artists() {
 
   const router = useRouter();
   const { q } = router.query;
-
-  const [bottomHit, setBottomHit] = useState(false);
 
   const artistsResponse = trpc.artists.getArtists.useQuery(
     {
@@ -28,11 +26,7 @@ function Artists() {
   }
 
   return (
-    <Container
-      bottomHit={bottomHit}
-      setBottomHit={setBottomHit}
-      updateData={updateOnScroll}
-    >
+    <Container updateData={updateOnScroll}>
       {artistsResponse.data ? (
         <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
           {artistsResponse.data.artists.map((artist) => (

@@ -1,18 +1,20 @@
 import {
   createContext,
-  FC,
-  ReactNode,
+  type Dispatch,
+  type FC,
+  type ReactNode,
+  type SetStateAction,
   useContext,
   useRef,
   useState,
 } from "react";
-import { TracksData } from "../utils/trpc";
+import type { TracksData } from "../utils/trpc";
 
 const TracksContext = createContext<{
   setGlobalTracks: (tracks: TracksData) => void;
   globalPlayableTracks: number[];
   activeTrack: number | null;
-  setActiveTrack: Function;
+  setActiveTrack: Dispatch<SetStateAction<number | null>>;
 } | null>(null);
 
 const Tracks: FC<{ children: ReactNode }> = ({ children }) => {

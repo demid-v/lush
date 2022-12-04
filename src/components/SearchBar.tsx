@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import type { FormEvent } from "react";
 import { useRouter } from "next/router";
 
 const SearchBar = () => {

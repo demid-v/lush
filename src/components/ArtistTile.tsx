@@ -1,17 +1,17 @@
 import { constructLink } from "../utils/functions";
-import { ArtistData } from "../utils/trpc";
+import type { ArtistData } from "../utils/trpc";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { DOMAIN_MID_PATH } from "../utils/globals";
+import Image from "next/image";
 
 function Artist({ artist }: { artist: ArtistData }) {
   const { id, name, artist_image_rel: images } = artist;
+  const artistImage = images[0]?.artist_image;
 
   const [artistImageUrl, setArtistImageUrl] = useState("");
 
   function constructImageUrl() {
-    const artistImage = images[0]?.artist_image;
-
     if (artistImage) {
       const { domain, image_id } = artistImage;
 
@@ -21,7 +21,7 @@ function Artist({ artist }: { artist: ArtistData }) {
     }
   }
 
-  useEffect(constructImageUrl, [images[0]?.artist_image]);
+  useEffect(constructImageUrl, [artistImage]);
 
   return (
     <li className="tile">
@@ -50,8 +50,11 @@ function Artist({ artist }: { artist: ArtistData }) {
                 />
               </svg>
             ) : (
-              <img
+              <Image
                 src={artistImageUrl}
+                alt={"Image of " + name}
+                width={200}
+                height={200}
                 className="absolute h-full w-full object-cover"
               />
             )}
