@@ -25,6 +25,7 @@ export const trpc = createTRPCNext<AppRouter>({
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
+      abortOnUnmount: true,
     };
   },
   ssr: false,

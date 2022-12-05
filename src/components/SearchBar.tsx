@@ -1,28 +1,51 @@
-import type { FormEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/router";
 
 const SearchBar = () => {
-  function clearField() {
-    delete router.query.q;
-    router.push({ pathname, query }, undefined, { shallow: true });
-  }
-
   const router = useRouter();
   const { pathname, query } = router;
   const { q } = query;
 
-  function setQuery(event: FormEvent) {
-    const value = (event.target as HTMLInputElement).value;
+  const [search, setSearch] = useState("");
 
-    if (q !== value) {
-      if (value === "") {
+  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    if (q === undefined) {
+      setSearch("");
+    } else if (typeof q === "object") {
+      setSearch(q.join(""));
+    } else {
+      setSearch(q);
+    }
+  }, [q]);
+
+  function handleSearch(event: ChangeEvent) {
+    const inputValue = (event.target as HTMLInputElement).value;
+
+    setSearch(inputValue);
+    setSearchTimeout(inputValue);
+  }
+
+  function setSearchTimeout(inputValue: string) {
+    if (searchTimeout.current !== null) {
+      clearTimeout(searchTimeout.current);
+    }
+
+    searchTimeout.current = setTimeout(() => {
+      if (inputValue === "") {
         delete router.query.q;
       } else {
-        router.query.q = value;
+        router.query.q = inputValue;
       }
 
       router.push({ pathname, query }, undefined, { shallow: true });
-    }
+    }, 200);
+  }
+
+  function clearField() {
+    delete router.query.q;
+    router.push({ pathname, query }, undefined, { shallow: true });
   }
 
   return (
@@ -33,7 +56,8 @@ const SearchBar = () => {
             className="h-full w-full px-0.5 text-[1.02rem]"
             type="text"
             placeholder="Search"
-            onKeyUp={setQuery}
+            value={search}
+            onChange={handleSearch}
           />
           <button
             className="search-bar__clear-input absolute right-[0.313rem] top-1/2 w-[1.563rem] -translate-y-1/2"
