@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import Track from "./Track";
 import Container from "./Container";
 import { useRouter } from "next/router";
@@ -25,24 +25,6 @@ const TracksBlock = () => {
     { refetchOnWindowFocus: false }
   );
 
-  useEffect(() => {
-    setOffset(0);
-  }, [q]);
-
-  useEffect(() => {
-    if (tracksResponse.data) {
-      if (offset === 0) {
-        setTracks(tracksResponse.data.tracks);
-      } else if (offset > 0) {
-        setTracks((tracks) => [...tracks, ...tracksResponse.data.tracks]);
-      }
-    }
-  }, [offset, tracksResponse.data]);
-
-  function updateTracksOnScroll() {
-    setOffset((offset) => offset + limit);
-  }
-
   function setGlobalTracksHandler() {
     if (tracksResponse.data !== undefined) {
       setGlobalTracks(tracksResponse.data.tracks);
@@ -50,7 +32,13 @@ const TracksBlock = () => {
   }
 
   return (
-    <Container updateData={updateTracksOnScroll}>
+    <Container
+      limit={limit}
+      offset={offset}
+      setOffset={setOffset}
+      content={tracksResponse.data?.tracks}
+      setContent={setTracks}
+    >
       <ul>
         {tracks.map((track) => (
           <Track
