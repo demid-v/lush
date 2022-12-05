@@ -5,7 +5,7 @@ const Header = () => {
   const { theme } = useTheme();
 
   return (
-    <header className="fixed z-10 flex h-10 w-full items-center gap-x-12 bg-header px-[2.1875rem]">
+    <header className="fixed z-20 flex h-10 w-full items-center gap-x-12 bg-header px-[2.1875rem]">
       <Link
         href="/"
         className={
