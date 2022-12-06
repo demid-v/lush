@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Track from "./Track";
 import Container from "./Container";
 import { useRouter } from "next/router";
@@ -8,8 +8,6 @@ import Tracks, { useTracks } from "../contexts/Tracks";
 const TracksBlock = () => {
   const limit = 100;
   const [offset, setOffset] = useState(0);
-
-  const isContentLoading = useRef(false);
 
   const { setGlobalTracks, globalPlayableTracks, activeTrack, setActiveTrack } =
     useTracks();
@@ -44,8 +42,6 @@ const TracksBlock = () => {
         ...tracksResponse.data.tracks,
       ]);
     }
-
-    isContentLoading.current = false;
   }, [offset, tracksResponse.data]);
 
   function setGlobalTracksHandler() {
@@ -54,12 +50,25 @@ const TracksBlock = () => {
     }
   }
 
+  useEffect(() => {
+    function checkPosition() {
+      if (
+        !tracksResponse.isFetching &&
+        window.innerHeight + window.scrollY >= document.body.offsetHeight
+      ) {
+        setOffset((offset) => offset + limit);
+      }
+    }
+
+    document.addEventListener("scroll", checkPosition);
+
+    return () => {
+      document.removeEventListener("scroll", checkPosition);
+    };
+  }, [tracksResponse.isFetching]);
+
   return (
-    <Container
-      limit={limit}
-      setOffset={setOffset}
-      isContentLoading={isContentLoading}
-    >
+    <Container>
       <ul>
         {tracks.map((track) => (
           <Track

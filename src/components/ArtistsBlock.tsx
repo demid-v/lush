@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "./Container";
 import { useRouter } from "next/router";
 import { type ArtistsData, trpc } from "../utils/trpc";
@@ -7,8 +7,6 @@ import Artist from "./ArtistTile";
 function Artists() {
   const limit = 120;
   const [offset, setOffset] = useState(0);
-
-  const isContentLoading = useRef(false);
 
   const [artists, setArtists] = useState<ArtistsData>([]);
 
@@ -40,16 +38,27 @@ function Artists() {
         ...artistsResponse.data.artists,
       ]);
     }
-
-    isContentLoading.current = false;
   }, [offset, artistsResponse.data]);
 
+  useEffect(() => {
+    function checkPosition() {
+      if (
+        !artistsResponse.isFetching &&
+        window.innerHeight + window.scrollY >= document.body.offsetHeight
+      ) {
+        setOffset((offset) => offset + limit);
+      }
+    }
+
+    document.addEventListener("scroll", checkPosition);
+
+    return () => {
+      document.removeEventListener("scroll", checkPosition);
+    };
+  }, [artistsResponse.isFetching]);
+
   return (
-    <Container
-      limit={limit}
-      setOffset={setOffset}
-      isContentLoading={isContentLoading}
-    >
+    <Container>
       <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
         {artists.map((artist) => (
           <Artist key={artist.id} artist={artist} />
