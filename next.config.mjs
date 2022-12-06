@@ -21,6 +21,10 @@ const config = {
       },
       {
         protocol: "https",
+        hostname: "*.googleusercontent.com",
+      },
+      {
+        protocol: "https",
         hostname: "lastfm.freetls.fastly.net",
       },
     ],
