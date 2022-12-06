@@ -5,30 +5,25 @@ import {
   type Dispatch,
   type SetStateAction,
   useEffect,
-  useRef,
+  type MutableRefObject,
 } from "react";
-import { useRouter } from "next/router";
-import type { ArtistsData, TracksData } from "../utils/trpc";
 
 const Container: FC<{
   children: ReactNode;
   limit: number;
-  offset: number;
   setOffset: Dispatch<SetStateAction<number>>;
-  content: TracksData | ArtistsData | undefined;
-  setContent:
-    | Dispatch<SetStateAction<TracksData>>
-    | Dispatch<SetStateAction<ArtistsData>>;
-}> = ({ children, limit, offset, setOffset, content, setContent }) => {
-  const contentIsLoading = useRef(false);
-
+  isContentLoading: MutableRefObject<boolean>;
+}> = ({ children, limit, setOffset, isContentLoading }) => {
   useEffect(() => {
     function checkPosition() {
       if (
-        !contentIsLoading.current &&
+        isContentLoading &&
+        !isContentLoading.current &&
         window.innerHeight + window.scrollY >= document.body.offsetHeight
       ) {
-        contentIsLoading.current = true;
+        console.log("here");
+
+        isContentLoading.current = true;
         setOffset((offset) => offset + limit);
       }
     }
@@ -38,25 +33,7 @@ const Container: FC<{
     return () => {
       document.removeEventListener("scroll", checkPosition);
     };
-  }, [setOffset, limit]);
-
-  const { q } = useRouter().query;
-
-  useEffect(() => {
-    setOffset(0);
-  }, [q, setOffset]);
-
-  useEffect(() => {
-    if (content) {
-      if (offset === 0) {
-        setContent(content);
-      } else if (offset > 0) {
-        setContent((prevContent) => [...prevContent, ...content]);
-      }
-
-      contentIsLoading.current = false;
-    }
-  }, [offset, content, setContent]);
+  }, [limit, setOffset, isContentLoading]);
 
   return (
     <div className="px-[12.5rem]">

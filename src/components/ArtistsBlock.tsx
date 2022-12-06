@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import { useRouter } from "next/router";
 import { type ArtistsData, trpc } from "../utils/trpc";
@@ -8,9 +8,15 @@ function Artists() {
   const limit = 120;
   const [offset, setOffset] = useState(0);
 
+  const isContentLoading = useRef(false);
+
   const [artists, setArtists] = useState<ArtistsData>([]);
 
   const { q } = useRouter().query;
+
+  useEffect(() => {
+    setOffset(0);
+  }, [q, setOffset]);
 
   const artistsResponse = trpc.artists.getArtists.useQuery(
     {
@@ -21,13 +27,28 @@ function Artists() {
     { refetchOnWindowFocus: false }
   );
 
+  useEffect(() => {
+    if (!artistsResponse.data) {
+      return;
+    }
+
+    if (offset === 0) {
+      setArtists(artistsResponse.data.artists);
+    } else if (offset > 0) {
+      setArtists((prevContent) => [
+        ...prevContent,
+        ...artistsResponse.data.artists,
+      ]);
+    }
+
+    isContentLoading.current = false;
+  }, [offset, artistsResponse.data]);
+
   return (
     <Container
       limit={limit}
-      offset={offset}
       setOffset={setOffset}
-      content={artistsResponse.data?.artists}
-      setContent={setArtists}
+      isContentLoading={isContentLoading}
     >
       <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
         {artists.map((artist) => (
