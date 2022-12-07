@@ -5,10 +5,14 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "dev:remote": "concurrently -n \"lush-db,lush-server\" -c \"cyan,blue\" \"npm run db:docker:run\" \"cross-env DATABASE_URL=mysql://root:lush@127.0.0.1:3307/lush next dev\"",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "dump-db": "cd ./database && dump-lush-db.bat"
+    "start:remote": "concurrently -n \"lush-db,lush-server\" -c \"cyan,green\" \"npm run db:docker:run\" \"cross-env DATABASE_URL=mysql://root:lush@127.0.0.1:3307/lush next start\"",
+    "db:dump": "cd ./database && dump-lush-db.bat",
+    "db:docker:build": "docker build -t demidv/lush-db:latest ./database",
+    "db:docker:run": "docker run -p 3307:3307 -e MYSQL_TCP_PORT=3307 -e MYSQL_ROOT_PASSWORD=lush demidv/lush-db:latest"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",
@@ -30,6 +34,8 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "autoprefixer": "^10.4.7",
+    "concurrently": "^7.6.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.26.0",
     "eslint-config-next": "13.0.2",
     "postcss": "^8.4.14",

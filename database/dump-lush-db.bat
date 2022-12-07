@@ -8,7 +8,7 @@ set /P targetDir="Directory: "
 if not exist "%targetDir%" mkdir "%targetDir%"
 
 echo Dumping all data...
-mysqldump --routines lush > "%targetDir%\dump.sql"
+mysqldump --databases lush --routines > "%targetDir%\dump.sql"
 
 echo Lush db dumped.
 
