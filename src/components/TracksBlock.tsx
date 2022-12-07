@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Track from "./Track";
 import Container from "./Container";
 import { useRouter } from "next/router";
@@ -7,60 +7,66 @@ import Tracks, { useTracks } from "../contexts/Tracks";
 
 const TracksBlock = () => {
   const limit = 100;
-  const offset = useRef(0);
+  const [offset, setOffset] = useState(0);
 
   const { setGlobalTracks, globalPlayableTracks, activeTrack, setActiveTrack } =
     useTracks();
 
   const [tracks, setTracks] = useState<TracksData>([]);
 
-  const [bottomHit, setBottomHit] = useState(false);
-
   const { q } = useRouter().query;
 
   useEffect(() => {
-    offset.current = 0;
+    setOffset(0);
   }, [q]);
 
-  const tracksResponse = trpc.tracks.getTracks.useQuery(
+  const { isLoading, data } = trpc.tracks.getTracks.useQuery(
     {
-      ...(q && { search: typeof q === "object" ? q.join("") : q }),
+      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
       limit,
-      offset: offset.current,
+      offset,
     },
     { refetchOnWindowFocus: false }
   );
 
   useEffect(() => {
-    if (!tracksResponse.data) {
+    if (!data) {
       return;
     }
 
-    if (offset.current === 0) {
-      setTracks(tracksResponse.data.tracks);
-    } else if (offset.current > 0) {
-      setTracks((prevContent) => [
-        ...prevContent,
-        ...tracksResponse.data.tracks,
-      ]);
+    if (offset === 0) {
+      setTracks(data.tracks);
+    } else if (offset > 0) {
+      setTracks((prevContent) => [...prevContent, ...data.tracks]);
+    }
+  }, [data, offset]);
+
+  useEffect(() => {
+    function checkPosition() {
+      if (
+        !isLoading &&
+        document.body.clientHeight > window.innerHeight &&
+        window.innerHeight + window.scrollY >= document.body.offsetHeight
+      ) {
+        setOffset((offset) => offset + limit);
+      }
     }
 
-    setBottomHit(false);
-  }, [tracksResponse.data]);
+    document.addEventListener("scroll", checkPosition);
+
+    return () => {
+      document.removeEventListener("scroll", checkPosition);
+    };
+  }, [isLoading]);
 
   function setGlobalTracksHandler() {
-    if (tracksResponse.data !== undefined) {
-      setGlobalTracks(tracksResponse.data.tracks);
+    if (data !== undefined) {
+      setGlobalTracks(data.tracks);
     }
   }
 
   return (
-    <Container
-      limit={limit}
-      offset={offset}
-      bottomHit={bottomHit}
-      setBottomHit={setBottomHit}
-    >
+    <Container>
       <ul>
         {tracks.map((track) => (
           <Track

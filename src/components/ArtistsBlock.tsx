@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "./Container";
 import { useRouter } from "next/router";
 import { type ArtistsData, trpc } from "../utils/trpc";
@@ -6,51 +6,57 @@ import Artist from "./ArtistTile";
 
 function Artists() {
   const limit = 120;
-  const offset = useRef(0);
+  const [offset, setOffset] = useState(0);
 
   const [artists, setArtists] = useState<ArtistsData>([]);
-
-  const [bottomHit, setBottomHit] = useState(false);
 
   const { q } = useRouter().query;
 
   useEffect(() => {
-    offset.current = 0;
+    setOffset(0);
   }, [q]);
 
-  const artistsResponse = trpc.artists.getArtists.useQuery(
+  const { isLoading, data } = trpc.artists.getArtists.useQuery(
     {
-      ...(q && { search: typeof q === "object" ? q.join("") : q }),
+      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
       limit,
-      offset: offset.current,
+      offset,
     },
     { refetchOnWindowFocus: false }
   );
 
   useEffect(() => {
-    if (!artistsResponse.data) {
+    if (!data) {
       return;
     }
 
-    if (offset.current === 0) {
-      setArtists(artistsResponse.data.artists);
-    } else if (offset.current > 0) {
-      setArtists((prevContent) => [
-        ...prevContent,
-        ...artistsResponse.data.artists,
-      ]);
+    if (offset === 0) {
+      setArtists(data.artists);
+    } else if (offset > 0) {
+      setArtists((prevContent) => [...prevContent, ...data.artists]);
+    }
+  }, [data, offset]);
+
+  useEffect(() => {
+    function checkPosition() {
+      if (
+        !isLoading &&
+        document.body.clientHeight > window.innerHeight &&
+        window.innerHeight + window.scrollY >= document.body.offsetHeight
+      ) {
+        setOffset((offset) => offset + limit);
+      }
     }
 
-    setBottomHit(false);
-  }, [artistsResponse.data]);
+    document.addEventListener("scroll", checkPosition);
+
+    return () => {
+      document.removeEventListener("scroll", checkPosition);
+    };
+  }, [isLoading]);
 
   return (
-    <Container
-      limit={limit}
-      offset={offset}
-      bottomHit={bottomHit}
-      setBottomHit={setBottomHit}
-    >
+    <Container>
       <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
         {artists.map((artist) => (
           <Artist key={artist.id} artist={artist} />
