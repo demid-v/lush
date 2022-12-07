@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Container from "./Container";
 import { useRouter } from "next/router";
 import { type ArtistsData, trpc } from "../utils/trpc";
@@ -6,21 +6,23 @@ import Artist from "./ArtistTile";
 
 function Artists() {
   const limit = 120;
-  const [offset, setOffset] = useState(0);
+  const offset = useRef(0);
 
   const [artists, setArtists] = useState<ArtistsData>([]);
+
+  const [bottomHit, setBottomHit] = useState(false);
 
   const { q } = useRouter().query;
 
   useEffect(() => {
-    setOffset(0);
-  }, [q, setOffset]);
+    offset.current = 0;
+  }, [q]);
 
   const artistsResponse = trpc.artists.getArtists.useQuery(
     {
       ...(q && { search: typeof q === "object" ? q.join("") : q }),
       limit,
-      offset,
+      offset: offset.current,
     },
     { refetchOnWindowFocus: false }
   );
@@ -30,35 +32,25 @@ function Artists() {
       return;
     }
 
-    if (offset === 0) {
+    if (offset.current === 0) {
       setArtists(artistsResponse.data.artists);
-    } else if (offset > 0) {
+    } else if (offset.current > 0) {
       setArtists((prevContent) => [
         ...prevContent,
         ...artistsResponse.data.artists,
       ]);
     }
-  }, [offset, artistsResponse.data]);
 
-  useEffect(() => {
-    function checkPosition() {
-      if (
-        !artistsResponse.isFetching &&
-        window.innerHeight + window.scrollY >= document.body.offsetHeight
-      ) {
-        setOffset((offset) => offset + limit);
-      }
-    }
-
-    document.addEventListener("scroll", checkPosition);
-
-    return () => {
-      document.removeEventListener("scroll", checkPosition);
-    };
-  }, [artistsResponse.isFetching]);
+    setBottomHit(false);
+  }, [artistsResponse.data]);
 
   return (
-    <Container>
+    <Container
+      limit={limit}
+      offset={offset}
+      bottomHit={bottomHit}
+      setBottomHit={setBottomHit}
+    >
       <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
         {artists.map((artist) => (
           <Artist key={artist.id} artist={artist} />

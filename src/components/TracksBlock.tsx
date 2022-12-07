@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Track from "./Track";
 import Container from "./Container";
 import { useRouter } from "next/router";
@@ -7,24 +7,26 @@ import Tracks, { useTracks } from "../contexts/Tracks";
 
 const TracksBlock = () => {
   const limit = 100;
-  const [offset, setOffset] = useState(0);
+  const offset = useRef(0);
 
   const { setGlobalTracks, globalPlayableTracks, activeTrack, setActiveTrack } =
     useTracks();
 
   const [tracks, setTracks] = useState<TracksData>([]);
 
+  const [bottomHit, setBottomHit] = useState(false);
+
   const { q } = useRouter().query;
 
   useEffect(() => {
-    setOffset(0);
-  }, [q, setOffset]);
+    offset.current = 0;
+  }, [q]);
 
   const tracksResponse = trpc.tracks.getTracks.useQuery(
     {
       ...(q && { search: typeof q === "object" ? q.join("") : q }),
       limit,
-      offset,
+      offset: offset.current,
     },
     { refetchOnWindowFocus: false }
   );
@@ -34,15 +36,17 @@ const TracksBlock = () => {
       return;
     }
 
-    if (offset === 0) {
+    if (offset.current === 0) {
       setTracks(tracksResponse.data.tracks);
-    } else if (offset > 0) {
+    } else if (offset.current > 0) {
       setTracks((prevContent) => [
         ...prevContent,
         ...tracksResponse.data.tracks,
       ]);
     }
-  }, [offset, tracksResponse.data]);
+
+    setBottomHit(false);
+  }, [tracksResponse.data]);
 
   function setGlobalTracksHandler() {
     if (tracksResponse.data !== undefined) {
@@ -50,25 +54,13 @@ const TracksBlock = () => {
     }
   }
 
-  useEffect(() => {
-    function checkPosition() {
-      if (
-        !tracksResponse.isFetching &&
-        window.innerHeight + window.scrollY >= document.body.offsetHeight
-      ) {
-        setOffset((offset) => offset + limit);
-      }
-    }
-
-    document.addEventListener("scroll", checkPosition);
-
-    return () => {
-      document.removeEventListener("scroll", checkPosition);
-    };
-  }, [tracksResponse.isFetching]);
-
   return (
-    <Container>
+    <Container
+      limit={limit}
+      offset={offset}
+      bottomHit={bottomHit}
+      setBottomHit={setBottomHit}
+    >
       <ul>
         {tracks.map((track) => (
           <Track
