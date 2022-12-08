@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/router";
 
 const SearchBar = () => {
@@ -8,12 +8,10 @@ const SearchBar = () => {
 
   const [search, setSearch] = useState("");
 
-  const searchTimeout = useRef<NodeJS.Timeout | null>(null);
-
   useEffect(() => {
     if (q === undefined) {
       setSearch("");
-    } else if (typeof q === "object") {
+    } else if (Array.isArray(q)) {
       setSearch(q.join(""));
     } else {
       setSearch(q);
@@ -28,19 +26,13 @@ const SearchBar = () => {
   }
 
   function setSearchTimeout(inputValue: string) {
-    if (searchTimeout.current !== null) {
-      clearTimeout(searchTimeout.current);
+    if (inputValue === "") {
+      delete router.query.q;
+    } else {
+      router.query.q = inputValue;
     }
 
-    searchTimeout.current = setTimeout(() => {
-      if (inputValue === "") {
-        delete router.query.q;
-      } else {
-        router.query.q = inputValue;
-      }
-
-      router.push({ pathname, query }, undefined, { shallow: true });
-    }, 200);
+    router.push({ pathname, query }, undefined, { shallow: true });
   }
 
   function clearField() {
