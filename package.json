@@ -5,14 +5,15 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "dev:remote": "concurrently -n \"lush-db,lush-server\" -c \"cyan,blue\" \"npm run db:docker:run\" \"cross-env DATABASE_URL=mysql://root:lush@127.0.0.1:3307/lush next dev\"",
+    "dev:remote": "concurrently -n \"lush-db,lush-server\" -c \"cyan,blue\" \"npm run db:docker:start\" \"cross-env DATABASE_URL=mysql://root:lush@127.0.0.1:3307/lush next dev\"",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
-    "start:remote": "concurrently -n \"lush-db,lush-server\" -c \"cyan,green\" \"npm run db:docker:run\" \"cross-env DATABASE_URL=mysql://root:lush@127.0.0.1:3307/lush next start\"",
+    "start:remote": "concurrently -n \"lush-db,lush-server\" -c \"cyan,green\" \"npm run db:docker:start\" \"cross-env DATABASE_URL=mysql://root:lush@127.0.0.1:3307/lush next start\"",
     "db:dump": "cd ./database && dump-lush-db.bat",
     "db:docker:build": "docker build -t demidv/lush-db:latest ./database",
-    "db:docker:run": "docker run -p 3307:3307 -e MYSQL_TCP_PORT=3307 -e MYSQL_ROOT_PASSWORD=lush demidv/lush-db:latest"
+    "db:docker:start": "docker start -ai lush-db || npm run db:docker:run",
+    "db:docker:run": "docker run --name lush-db -p 3307:3307 -e MYSQL_TCP_PORT=3307 -e MYSQL_ROOT_PASSWORD=lush demidv/lush-db:latest"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",
