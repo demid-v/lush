@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Container from "./Container";
+import ContainerLayout from "../layouts/ContainerLayout";
 import { useRouter } from "next/router";
 import { type ArtistsData, trpc } from "../utils/trpc";
 import Artist from "./ArtistTile";
@@ -38,16 +38,16 @@ function Artists() {
     }
   }, [data, offset]);
 
-  usePositionObserver(limit, isLoading, offset, setOffset);
+  usePositionObserver(isLoading, limit, offset, setOffset);
 
   return (
-    <Container>
+    <ContainerLayout>
       <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
         {artists.map((artist) => (
           <Artist key={artist.id} artist={artist} />
         ))}
       </ul>
-    </Container>
+    </ContainerLayout>
   );
 }
 

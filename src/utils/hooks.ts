@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { type Dispatch, type SetStateAction, useEffect } from "react";
 
 function usePositionObserver(
-  limit: number,
   isLoading: boolean,
+  limit: number,
   offset: number,
   setOffset: Dispatch<SetStateAction<number>>
 ) {
@@ -22,7 +22,7 @@ function usePositionObserver(
     return () => {
       document.removeEventListener("scroll", checkPosition);
     };
-  }, [isLoading, offset, setOffset]);
+  }, [isLoading, limit, offset, setOffset]);
 }
 
 export { usePositionObserver };

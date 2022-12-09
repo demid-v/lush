@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Track from "./Track";
-import Container from "./Container";
+import ContainerLayout from "../layouts/ContainerLayout";
 import { useRouter } from "next/router";
 import { type TracksData, trpc } from "../utils/trpc";
 import Tracks, { useTracks } from "../contexts/Tracks";
@@ -42,7 +42,7 @@ const TracksBlock = () => {
     }
   }, [data, offset]);
 
-  usePositionObserver(limit, isLoading, offset, setOffset);
+  usePositionObserver(isLoading, limit, offset, setOffset);
 
   function setGlobalTracksHandler() {
     if (data !== undefined) {
@@ -51,7 +51,7 @@ const TracksBlock = () => {
   }
 
   return (
-    <Container>
+    <ContainerLayout>
       <ul>
         {tracks.map((track) => (
           <Track
@@ -64,7 +64,7 @@ const TracksBlock = () => {
           />
         ))}
       </ul>
-    </Container>
+    </ContainerLayout>
   );
 };
 
