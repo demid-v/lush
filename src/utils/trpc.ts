@@ -53,6 +53,9 @@ type ArtistImage =
 type AlbumImage =
   RouterOutputs["tracks"]["getTracks"]["tracks"][0]["track_album_rel"][0]["album"]["album_image_rel"][0]["album_image"];
 
+type ArtistsGetter = typeof trpc.artists.getArtists;
+type TracksGetter = typeof trpc.tracks.getTracks;
+
 export type {
   TracksData,
   TrackData,
@@ -60,4 +63,6 @@ export type {
   ArtistData,
   ArtistImage,
   AlbumImage,
+  ArtistsGetter,
+  TracksGetter,
 };

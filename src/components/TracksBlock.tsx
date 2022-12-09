@@ -4,6 +4,7 @@ import Container from "./Container";
 import { useRouter } from "next/router";
 import { type TracksData, trpc } from "../utils/trpc";
 import Tracks, { useTracks } from "../contexts/Tracks";
+import { usePositionObserver } from "../utils/hooks";
 
 const TracksBlock = () => {
   const limit = 100;
@@ -37,27 +38,11 @@ const TracksBlock = () => {
     if (offset === 0) {
       setTracks(data.tracks);
     } else if (offset > 0) {
-      setTracks((prevContent) => [...prevContent, ...data.tracks]);
+      setTracks((prevTracks) => [...prevTracks, ...data.tracks]);
     }
   }, [data, offset]);
 
-  useEffect(() => {
-    function checkPosition() {
-      if (
-        !isLoading &&
-        document.body.clientHeight > window.innerHeight &&
-        window.innerHeight + window.scrollY >= document.body.offsetHeight
-      ) {
-        setOffset((offset) => offset + limit);
-      }
-    }
-
-    document.addEventListener("scroll", checkPosition);
-
-    return () => {
-      document.removeEventListener("scroll", checkPosition);
-    };
-  }, [isLoading]);
+  usePositionObserver(limit, isLoading, offset, setOffset);
 
   function setGlobalTracksHandler() {
     if (data !== undefined) {
@@ -85,7 +70,7 @@ const TracksBlock = () => {
 
 const TracksBlockWithContext = () => (
   <Tracks>
-    <TracksBlock></TracksBlock>
+    <TracksBlock />
   </Tracks>
 );
 

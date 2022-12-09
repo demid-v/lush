@@ -3,18 +3,19 @@ import Container from "./Container";
 import { useRouter } from "next/router";
 import { type ArtistsData, trpc } from "../utils/trpc";
 import Artist from "./ArtistTile";
+import { usePositionObserver } from "../utils/hooks";
 
 function Artists() {
   const limit = 120;
   const [offset, setOffset] = useState(0);
-
-  const [artists, setArtists] = useState<ArtistsData>([]);
 
   const { q } = useRouter().query;
 
   useEffect(() => {
     setOffset(0);
   }, [q]);
+
+  const [artists, setArtists] = useState<ArtistsData>([]);
 
   const { isLoading, data } = trpc.artists.getArtists.useQuery(
     {
@@ -33,27 +34,11 @@ function Artists() {
     if (offset === 0) {
       setArtists(data.artists);
     } else if (offset > 0) {
-      setArtists((prevContent) => [...prevContent, ...data.artists]);
+      setArtists((prevArtists) => [...prevArtists, ...data.artists]);
     }
   }, [data, offset]);
 
-  useEffect(() => {
-    function checkPosition() {
-      if (
-        !isLoading &&
-        document.body.clientHeight > window.innerHeight &&
-        window.innerHeight + window.scrollY >= document.body.offsetHeight
-      ) {
-        setOffset((offset) => offset + limit);
-      }
-    }
-
-    document.addEventListener("scroll", checkPosition);
-
-    return () => {
-      document.removeEventListener("scroll", checkPosition);
-    };
-  }, [isLoading]);
+  usePositionObserver(limit, isLoading, offset, setOffset);
 
   return (
     <Container>
