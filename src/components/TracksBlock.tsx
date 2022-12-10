@@ -3,15 +3,16 @@ import Track from "./Track";
 import ContainerLayout from "../layouts/ContainerLayout";
 import { useRouter } from "next/router";
 import { type TracksData, trpc } from "../utils/trpc";
-import Tracks, { useTracks } from "../contexts/Tracks";
+import { useTracks } from "../contexts/Tracks";
 import { usePositionObserver } from "../utils/hooks";
 
 const TracksBlock = () => {
   const limit = 100;
   const [offset, setOffset] = useState(0);
 
-  const { setGlobalTracks, globalPlayableTracks, activeTrack, setActiveTrack } =
-    useTracks();
+  const { activeTrack, setActiveTrack } = useTracks();
+
+  useEffect(() => console.log(activeTrack), [activeTrack]);
 
   const [tracks, setTracks] = useState<TracksData>([]);
 
@@ -44,12 +45,6 @@ const TracksBlock = () => {
 
   usePositionObserver(isLoading, limit, offset, setOffset);
 
-  function setGlobalTracksHandler() {
-    if (data !== undefined) {
-      setGlobalTracks(data.tracks);
-    }
-  }
-
   return (
     <ContainerLayout>
       <ul>
@@ -59,8 +54,6 @@ const TracksBlock = () => {
             track={track}
             activeTrack={activeTrack}
             setActiveTrack={setActiveTrack}
-            setGlobalTracks={setGlobalTracksHandler}
-            globalPlayableTracks={globalPlayableTracks}
           />
         ))}
       </ul>
@@ -68,10 +61,4 @@ const TracksBlock = () => {
   );
 };
 
-const TracksBlockWithContext = () => (
-  <Tracks>
-    <TracksBlock />
-  </Tracks>
-);
-
-export default TracksBlockWithContext;
+export default TracksBlock;

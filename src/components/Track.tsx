@@ -7,24 +7,18 @@ import {
 } from "react";
 import { constructLink } from "../utils/functions";
 import Link from "next/link";
-import type { AlbumImage, ArtistImage, TrackData } from "../utils/trpc";
+import type { ArtistImage, TrackData } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
+import type { ActiveTrack } from "../utils/types";
 
 const Track: FC<{
   track: TrackData;
-  activeTrack: number | null;
-  setActiveTrack?: Dispatch<SetStateAction<number | null>>;
-  setGlobalTracks: () => void;
-  globalPlayableTracks: number[];
-}> = ({
-  track,
-  activeTrack,
-  setActiveTrack,
-  setGlobalTracks,
-  globalPlayableTracks,
-}) => {
+  activeTrack: ActiveTrack | null;
+  setActiveTrack: Dispatch<SetStateAction<ActiveTrack | null>>;
+}> = ({ track, activeTrack, setActiveTrack }) => {
   const {
+    id,
     title,
     duration,
     youtube_video_id,
@@ -32,8 +26,6 @@ const Track: FC<{
     track_genre_rel: genres,
     track_album_rel: albums,
   } = track;
-
-  const [playing, setPlaying] = useState(false);
 
   const [durationStr, setDurationStr] = useState("");
   const [trackImageUrl, setTrackImageUrl] = useState("/logo192.png");
@@ -72,17 +64,9 @@ const Track: FC<{
         return handleArtistImageUrl(artist_image);
       }
     }
-
-    // for (const { album } of albums) {
-    //   for (const { album_image } of album.album_image_rel) {
-    //     return handleArtistImageUrl(album_image);
-    //   }
-    // }
   }
 
-  function handleArtistImageUrl(
-    artistImageIn: NonNullable<ArtistImage /**| AlbumImage**/>
-  ) {
+  function handleArtistImageUrl(artistImageIn: NonNullable<ArtistImage>) {
     const { image_id, domain } = artistImageIn;
 
     setTrackImageUrl(domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id);
@@ -90,10 +74,30 @@ const Track: FC<{
 
   useEffect(constructImageUrl, [artists, albums]);
 
+  function handleActiveTrack() {
+    if (youtube_video_id !== null) {
+      setActiveTrack({ id, youtube_video_id });
+    }
+  }
+
+  function handleVisibility(truthyClass: string, falsyClass = "") {
+    return activeTrack && activeTrack.hasOwnProperty(id)
+      ? truthyClass
+      : falsyClass;
+  }
+
   return (
     <li className="h-12 w-full border-t border-[#e6e6e6] leading-none last:border-b">
-      <div className="relative h-full p-[0.3125rem]">
-        <div className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"></div>
+      <div
+        className={
+          "relative h-full p-[0.3125rem] hover:bg-[#eeeeee]" +
+          handleVisibility(" bg-[#eeeeee]")
+        }
+      >
+        <div
+          className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"
+          onClick={handleActiveTrack}
+        ></div>
 
         <div className="flex h-full gap-2 whitespace-nowrap">
           <div className="aspect-square h-full overflow-hidden">
@@ -133,7 +137,7 @@ const Track: FC<{
                 <ul className="flex text-[0.82rem] leading-[1rem]">
                   {genres?.map(({ genre }) => (
                     <li key={genre.id} className="mr-[0.625rem]">
-                      <button className="z-10 rounded-sm border border-[#bdbdbd] px-[0.313rem]">
+                      <button className="z-10 rounded-sm border border-[#bdbdbd] bg-white px-[0.313rem]">
                         {genre.name}
                       </button>
                     </li>
@@ -157,16 +161,12 @@ const Track: FC<{
                 </button>
               </div>
 
-              <div className="ml-auto flex w-min">
-                <div className={playing ? "" : "hidden"}>
-                  <div className="">
-                    <span className="">00:00</span>
-                    <div className="">/</div>
-                  </div>
+              <div className="z-10 ml-auto flex w-min text-[0.65rem] leading-none">
+                <div className={handleVisibility("", "hidden")}>
+                  <span className="">00:00</span>
+                  <span className="">/</span>
                 </div>
-                <span className="z-10 text-[0.65rem] leading-none">
-                  {durationStr}
-                </span>
+                <span className="">{durationStr}</span>
               </div>
             </div>
           </div>

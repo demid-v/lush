@@ -1,6 +1,6 @@
 type Player = {
   h: HTMLIFrameElement;
-  loadVideoById: () => void;
+  loadVideoById: (youtubeVideoId: string) => void;
   playVideo: () => void;
 };
 
@@ -37,4 +37,6 @@ declare global {
 
 type YoutubePlayerEvent = { data: -1 | 0 | 1 | 2 | 3 | 5 };
 
-export type { YoutubePlayerEvent };
+type ActiveTrack = { id: number; youtube_video_id: string };
+
+export type { YoutubePlayerEvent, ActiveTrack };

@@ -7,21 +7,23 @@ import {
   useContext,
   useRef,
   useState,
+  useEffect,
 } from "react";
 import type { TracksData } from "../utils/trpc";
+import type { ActiveTrack } from "../utils/types";
 
 const TracksContext = createContext<{
   setGlobalTracks: (tracks: TracksData) => void;
-  globalPlayableTracks: number[];
-  activeTrack: number | null;
-  setActiveTrack: Dispatch<SetStateAction<number | null>>;
+  globalPlayableTracks: Map<number, ActiveTrack>;
+  activeTrack: ActiveTrack | null;
+  setActiveTrack: Dispatch<SetStateAction<ActiveTrack | null>>;
 } | null>(null);
 
 const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
   const globalTracks = useRef<TracksData>([]);
-  const globalPlayableTracks = useRef<number[]>([]);
+  const globalPlayableTracks = useRef<Map<number, ActiveTrack>>(new Map());
 
-  const [activeTrack, setActiveTrack] = useState<number | null>(null);
+  const [activeTrack, setActiveTrack] = useState<ActiveTrack | null>(null);
 
   function setGlobalTracks(tracks: TracksData) {
     globalTracks.current.length = 0;
@@ -29,11 +31,15 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
     tracks.forEach((track) => {
       globalTracks.current.push(track);
 
-      if (track.youtube_video_id !== null) {
-        globalPlayableTracks.current.push(track.id);
+      const { id, youtube_video_id } = track;
+
+      if (youtube_video_id !== null) {
+        globalPlayableTracks.current.set(id, { id, youtube_video_id });
       }
     });
   }
+
+  useEffect(() => console.log(activeTrack), [activeTrack]);
 
   return (
     <TracksContext.Provider
