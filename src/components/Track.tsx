@@ -1,10 +1,4 @@
-import {
-  type Dispatch,
-  type FC,
-  type SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { type FC, useEffect, useState } from "react";
 import { constructLink } from "../utils/functions";
 import Link from "next/link";
 import type { ArtistImage, TrackData } from "../utils/trpc";
@@ -15,8 +9,8 @@ import type { ActiveTrack } from "../utils/types";
 const Track: FC<{
   track: TrackData;
   activeTrack: ActiveTrack | null;
-  setActiveTrack: Dispatch<SetStateAction<ActiveTrack | null>>;
-}> = ({ track, activeTrack, setActiveTrack }) => {
+  handlePlayableTrackClick: (id: number, youtube_video_id: string) => void;
+}> = ({ track, activeTrack, handlePlayableTrackClick }) => {
   const {
     id,
     title,
@@ -76,14 +70,12 @@ const Track: FC<{
 
   function handleActiveTrack() {
     if (youtube_video_id !== null) {
-      setActiveTrack({ id, youtube_video_id });
+      handlePlayableTrackClick(id, youtube_video_id);
     }
   }
 
   function handleVisibility(truthyClass: string, falsyClass = "") {
-    return activeTrack && activeTrack.hasOwnProperty(id)
-      ? truthyClass
-      : falsyClass;
+    return activeTrack && activeTrack.id === id ? truthyClass : falsyClass;
   }
 
   return (
@@ -118,7 +110,7 @@ const Track: FC<{
               <span className="z-10 w-min text-[0.92rem] leading-[1.1rem]">
                 {title}
               </span>
-              {artists?.map(({ artist }) => (
+              {artists.map(({ artist }) => (
                 <span
                   key={artist.id}
                   className="z-10 w-min text-[0.83rem] leading-[1.05rem] text-[#8d8d8d]"
@@ -132,17 +124,19 @@ const Track: FC<{
               ))}
             </div>
 
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-col items-end justify-between">
               <div className="flex">
-                <ul className="flex text-[0.82rem] leading-[1rem]">
-                  {genres?.map(({ genre }) => (
-                    <li key={genre.id} className="mr-[0.625rem]">
-                      <button className="z-10 rounded-sm border border-[#bdbdbd] bg-white px-[0.313rem]">
-                        {genre.name}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                {genres.length !== 0 && (
+                  <ul className="flex text-[0.82rem] leading-[1rem]">
+                    {genres.map(({ genre }) => (
+                      <li key={genre.id} className="mr-[0.625rem]">
+                        <button className="z-10 rounded-sm border border-[#bdbdbd] bg-white px-[0.313rem]">
+                          {genre.name}
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
                 <button className="z-10 h-4 w-5">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

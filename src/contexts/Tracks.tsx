@@ -7,23 +7,23 @@ import {
   useContext,
   useRef,
   useState,
-  useEffect,
 } from "react";
 import type { TracksData } from "../utils/trpc";
 import type { ActiveTrack } from "../utils/types";
 
 const TracksContext = createContext<{
-  setGlobalTracks: (tracks: TracksData) => void;
-  globalPlayableTracks: Map<number, ActiveTrack>;
   activeTrack: ActiveTrack | null;
   setActiveTrack: Dispatch<SetStateAction<ActiveTrack | null>>;
+  setNextActiveTrack: () => void;
+  setGlobalTracks: (tracks: TracksData) => void;
+  globalPlayableTracks: ActiveTrack[];
 } | null>(null);
 
 const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
-  const globalTracks = useRef<TracksData>([]);
-  const globalPlayableTracks = useRef<Map<number, ActiveTrack>>(new Map());
-
   const [activeTrack, setActiveTrack] = useState<ActiveTrack | null>(null);
+
+  const globalTracks = useRef<TracksData>([]);
+  const globalPlayableTracks = useRef<ActiveTrack[]>([]);
 
   function setGlobalTracks(tracks: TracksData) {
     globalTracks.current.length = 0;
@@ -34,20 +34,37 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
       const { id, youtube_video_id } = track;
 
       if (youtube_video_id !== null) {
-        globalPlayableTracks.current.set(id, { id, youtube_video_id });
+        globalPlayableTracks.current.push({ id, youtube_video_id });
       }
     });
   }
 
-  useEffect(() => console.log(activeTrack), [activeTrack]);
+  function setNextActiveTrack() {
+    const activeTrackIndex = globalPlayableTracks.current.findIndex(
+      (tracks) => tracks.id === activeTrack?.id
+    );
+
+    if (activeTrackIndex === -1) {
+      return;
+    }
+
+    const nextActiveTrack = globalPlayableTracks.current[activeTrackIndex + 1];
+
+    if (!nextActiveTrack) {
+      return;
+    }
+
+    setActiveTrack(nextActiveTrack);
+  }
 
   return (
     <TracksContext.Provider
       value={{
-        setGlobalTracks,
-        globalPlayableTracks: globalPlayableTracks.current,
         activeTrack,
         setActiveTrack,
+        setNextActiveTrack,
+        setGlobalTracks,
+        globalPlayableTracks: globalPlayableTracks.current,
       }}
     >
       {children}

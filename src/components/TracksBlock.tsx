@@ -10,9 +10,7 @@ const TracksBlock = () => {
   const limit = 100;
   const [offset, setOffset] = useState(0);
 
-  const { activeTrack, setActiveTrack } = useTracks();
-
-  useEffect(() => console.log(activeTrack), [activeTrack]);
+  const { activeTrack, setActiveTrack, setGlobalTracks } = useTracks();
 
   const [tracks, setTracks] = useState<TracksData>([]);
 
@@ -45,6 +43,11 @@ const TracksBlock = () => {
 
   usePositionObserver(isLoading, limit, offset, setOffset);
 
+  function handlePlayableTrackClick(id: number, youtube_video_id: string) {
+    setGlobalTracks(tracks);
+    setActiveTrack({ id, youtube_video_id });
+  }
+
   return (
     <ContainerLayout>
       <ul>
@@ -53,7 +56,7 @@ const TracksBlock = () => {
             key={track.id}
             track={track}
             activeTrack={activeTrack}
-            setActiveTrack={setActiveTrack}
+            handlePlayableTrackClick={handlePlayableTrackClick}
           />
         ))}
       </ul>

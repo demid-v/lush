@@ -1,8 +1,27 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTracks } from "../contexts/Tracks";
+import type { YoutubePlayerEvent } from "../utils/types";
 
 const YoutubeVideo = () => {
-  const { activeTrack } = useTracks();
+  const { activeTrack, setNextActiveTrack } = useTracks();
+
+  const [playerState, setPlayerState] = useState<string>("idle");
+
+  const activeTrackYoutubeVideoId = useRef<string | null>(null);
+
+  const onPlayerStateChange = useCallback((event: YoutubePlayerEvent) => {
+    if (event.data == window.YT.PlayerState.ENDED) {
+      setPlayerState("ended");
+    } else if (event.data == window.YT.PlayerState.PLAYING) {
+      setPlayerState("playing");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (playerState === "ended") {
+      setNextActiveTrack();
+    }
+  }, [playerState]);
 
   useEffect(() => {
     window.onYouTubeIframeAPIReady = function () {
@@ -10,6 +29,7 @@ const YoutubeVideo = () => {
         height: "280",
         width: "500",
         origin,
+        events: { onStateChange: onPlayerStateChange },
       });
     };
 
@@ -18,12 +38,26 @@ const YoutubeVideo = () => {
 
     const firstScriptTag = document.getElementsByTagName("script")[0];
     firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
-  }, []);
+  }, [onPlayerStateChange]);
 
   useEffect(() => {
     if (window.player && "loadVideoById" in window.player && activeTrack) {
-      window.player.loadVideoById(activeTrack.youtube_video_id);
-      window.player.playVideo();
+      if (activeTrackYoutubeVideoId.current !== activeTrack.youtube_video_id) {
+        window.player.loadVideoById(activeTrack.youtube_video_id);
+      }
+
+      if (
+        window.player.getPlayerState() === window.YT.PlayerState.UNSTARTED ||
+        window.player.getPlayerState() === window.YT.PlayerState.PAUSED
+      ) {
+        window.player.playVideo();
+      } else if (
+        window.player.getPlayerState() === window.YT.PlayerState.PLAYING
+      ) {
+        window.player.pauseVideo();
+      }
+
+      activeTrackYoutubeVideoId.current = activeTrack.youtube_video_id;
     }
   }, [activeTrack]);
 

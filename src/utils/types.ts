@@ -1,7 +1,9 @@
 type Player = {
   h: HTMLIFrameElement;
   loadVideoById: (youtubeVideoId: string) => void;
+  getPlayerState: () => YoutubePlayerEvent["data"];
   playVideo: () => void;
+  pauseVideo: () => void;
 };
 
 declare global {
@@ -17,7 +19,7 @@ declare global {
             origin?: string;
             events?: {
               onReady?: () => void;
-              onStateChange?: () => void;
+              onStateChange?: (event: YoutubePlayerEvent) => void;
             };
           }
         ): Player;
