@@ -41,24 +41,30 @@ const YoutubeVideo = () => {
   }, [onPlayerStateChange]);
 
   useEffect(() => {
-    if (window.player && "loadVideoById" in window.player && activeTrack) {
-      if (activeTrackYoutubeVideoId.current !== activeTrack.youtube_video_id) {
-        window.player.loadVideoById(activeTrack.youtube_video_id);
-      }
-
-      if (
-        window.player.getPlayerState() === window.YT.PlayerState.UNSTARTED ||
-        window.player.getPlayerState() === window.YT.PlayerState.PAUSED
-      ) {
-        window.player.playVideo();
-      } else if (
-        window.player.getPlayerState() === window.YT.PlayerState.PLAYING
-      ) {
-        window.player.pauseVideo();
-      }
-
-      activeTrackYoutubeVideoId.current = activeTrack.youtube_video_id;
+    if (
+      !window.player ||
+      !("loadVideoById" in window.player) ||
+      activeTrack === null
+    ) {
+      return;
     }
+
+    if (activeTrackYoutubeVideoId.current !== activeTrack.youtube_video_id) {
+      window.player.loadVideoById(activeTrack.youtube_video_id);
+    }
+
+    if (
+      window.player.getPlayerState() === window.YT.PlayerState.UNSTARTED ||
+      window.player.getPlayerState() === window.YT.PlayerState.PAUSED
+    ) {
+      window.player.playVideo();
+    } else if (
+      window.player.getPlayerState() === window.YT.PlayerState.PLAYING
+    ) {
+      window.player.pauseVideo();
+    }
+
+    activeTrackYoutubeVideoId.current = activeTrack.youtube_video_id;
   }, [activeTrack]);
 
   return (
