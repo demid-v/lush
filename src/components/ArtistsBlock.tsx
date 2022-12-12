@@ -5,7 +5,7 @@ import { type ArtistsData, trpc } from "../utils/trpc";
 import Artist from "./ArtistTile";
 import { usePositionObserver } from "../utils/hooks";
 
-function Artists() {
+const Artists = () => {
   const limit = 120;
   const [offset, setOffset] = useState(0);
 
@@ -49,6 +49,6 @@ function Artists() {
       </ul>
     </ContainerLayout>
   );
-}
+};
 
 export default Artists;

@@ -1,11 +1,11 @@
 import { constructLink } from "../utils/functions";
 import type { ArtistData } from "../utils/trpc";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
 
-function Artist({ artist }: { artist: ArtistData }) {
+const Artist: FC<{ artist: ArtistData }> = ({ artist }) => {
   const { id, name, artist_image_rel: images } = artist;
   const artistImage = images[0]?.artist_image;
 
@@ -68,6 +68,6 @@ function Artist({ artist }: { artist: ArtistData }) {
       </div>
     </li>
   );
-}
+};
 
 export default Artist;
