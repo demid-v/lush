@@ -1,15 +1,12 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 
-const Home: NextPage = () => {
-  return (
-    <>
-      <Head>
-        <title>Lush</title>
-      </Head>
-      <p>Home page</p>
-    </>
-  );
-};
+const Home: NextPage = () => (
+  <>
+    <Head>
+      <title>Lush</title>
+    </Head>
+  </>
+);
 
 export default Home;
