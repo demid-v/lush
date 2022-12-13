@@ -51,6 +51,7 @@ const YoutubeVideo = () => {
 
     if (activeTrackYoutubeVideoId.current !== activeTrack.youtube_video_id) {
       window.player.loadVideoById(activeTrack.youtube_video_id);
+      activeTrackYoutubeVideoId.current = activeTrack.youtube_video_id;
     }
 
     if (
@@ -63,8 +64,6 @@ const YoutubeVideo = () => {
     ) {
       window.player.pauseVideo();
     }
-
-    activeTrackYoutubeVideoId.current = activeTrack.youtube_video_id;
   }, [activeTrack]);
 
   return (
