@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Track from "./Track";
 import ContainerLayout from "../layouts/ContainerLayout";
 import { useRouter } from "next/router";
@@ -6,7 +6,7 @@ import { type TracksData, trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
 import { usePositionObserver } from "../utils/hooks";
 
-const TracksBlock = () => {
+const TracksBlock: FC<{ artistId?: number }> = ({ artistId }) => {
   const limit = 100;
   const [offset, setOffset] = useState(0);
 
@@ -22,9 +22,10 @@ const TracksBlock = () => {
 
   const { isLoading, data } = trpc.tracks.getTracks.useQuery(
     {
-      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
       limit,
       offset,
+      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
+      artistId,
     },
     { refetchOnWindowFocus: false }
   );

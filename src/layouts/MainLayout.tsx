@@ -8,9 +8,8 @@ const Main: FC<{ children: ReactNode }> = ({ children }) => (
   <Tracks>
     <Theme>
       <Header />
+      <main className="pt-10">{children}</main>
     </Theme>
-
-    <main className="pt-10">{children}</main>
 
     <YoutubeVideo />
   </Tracks>

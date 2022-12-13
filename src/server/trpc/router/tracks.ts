@@ -9,9 +9,10 @@ const tracksRouter = router({
         limit: z.number(),
         offset: z.number(),
         search: z.string().nullish(),
+        artistId: z.number().nullish(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ ctx, input: { limit, offset, search, artistId } }) => {
       const tracks = await ctx.prisma.track.findMany({
         select: {
           id: true,
@@ -34,6 +35,7 @@ const tracksRouter = router({
                       },
                     },
                     where: { is_cover: 1 },
+                    take: 1,
                   },
                 },
               },
@@ -57,6 +59,7 @@ const tracksRouter = router({
                       },
                     },
                     where: { is_cover: 1 },
+                    take: 1,
                   },
                 },
               },
@@ -67,20 +70,23 @@ const tracksRouter = router({
         },
         where: {
           deleted: 0,
-          ...(input.search && {
+          ...(search && {
             OR: [
-              { title: { contains: input.search } },
+              { title: { contains: search } },
               {
                 track_artist_rel: {
-                  some: { artist: { name: { contains: input.search } } },
+                  some: { artist: { name: { contains: search } } },
                 },
               },
             ],
           }),
+          ...(artistId && {
+            track_artist_rel: { some: { artist: { id: artistId } } },
+          }),
         },
         orderBy: { id: "desc" },
-        take: input.limit,
-        skip: input.offset,
+        take: limit,
+        skip: offset,
       });
 
       return { tracks };

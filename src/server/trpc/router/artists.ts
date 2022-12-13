@@ -6,12 +6,13 @@ const artistsRouter = router({
   getArtists: publicProcedure
     .input(
       z.object({
-        limit: z.number(),
-        offset: z.number(),
+        limit: z.number().nullish(),
+        offset: z.number().nullish(),
         search: z.string().nullish(),
+        artistId: z.number().nullish(),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ ctx, input: { limit, offset, search, artistId } }) => {
       const artists = await ctx.prisma.artist.findMany({
         select: {
           id: true,
@@ -22,6 +23,9 @@ const artistsRouter = router({
                 select: {
                   image_id: true,
                   domain: true,
+                  r: true,
+                  g: true,
+                  b: true,
                 },
               },
             },
@@ -29,9 +33,14 @@ const artistsRouter = router({
             take: 1,
           },
         },
+        where: {
+          deleted: 0,
+          ...(artistId && { id: artistId }),
+          ...(search && { title: { contains: search } }),
+        },
         orderBy: { id: "desc" },
-        take: input.limit,
-        skip: input.offset,
+        ...(limit && { take: limit }),
+        ...(offset && { skip: offset }),
       });
 
       return { artists };

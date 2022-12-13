@@ -20,7 +20,7 @@ const Theme: FC<{ children: ReactNode }> = ({ children }) => {
   const [headerColor, setHeaderColor] = useState<string>("255, 255, 255");
 
   function setColor(r: number, g: number, b: number) {
-    setHeaderColor(`${r}, ${b}, ${g}`);
+    setHeaderColor(`${r}, ${g}, ${b}`);
   }
 
   return (
