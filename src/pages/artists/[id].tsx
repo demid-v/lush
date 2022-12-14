@@ -65,42 +65,49 @@ const Artist: NextPage = () => {
   return (
     <>
       <Head>{artistName}</Head>
-      <div>
+      <div className="w-full">
         <div>
-          <div className="artist-info">
+          <div className="relative mb-10">
+            <Image
+              src={artistImageUrl}
+              alt={"Image of " + artistImage}
+              width={1920}
+              height={400}
+              className="h-[25rem] w-full object-cover object-[0%_25%]"
+            />
             <div
-              className="artist-background"
+              className="absolute top-0 right-0 h-full w-full"
               style={{
                 background: `linear-gradient(rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, 0))`,
               }}
             ></div>
-            <div className="artist-container">
-              <Image
-                src={artistImageUrl}
-                alt={"Image of " + artistImage}
-                width={1920}
-                height={400}
-              />
-              <div className="artist-overlay">
-                <div
-                  className={
-                    "artist-name" +
-                    (theme === "dark" ? " artist-name_light" : "")
-                  }
-                >
-                  {artistName}
-                </div>
-                <button className="artist-play-button">
-                  <div className="artist-content">
-                    <div className="arrow-play-artist"></div>
-                    <div className="text-play-artist">Play artist</div>
-                  </div>
-                </button>
+            <div className="absolute top-0 left-0 w-full max-w-[50%] pt-[3.75rem] pl-[12.5rem]">
+              <div
+                className={
+                  "mb-[1.875rem] text-[2.5rem] font-bold" +
+                  (theme === "dark" ? " artist-name_light" : "")
+                }
+              >
+                {artistName}
               </div>
+              <button className="h-10 w-[10.625rem] border border-[rgba(180,180,180,1)] bg-white">
+                <div className="flex justify-center">
+                  <Image
+                    src="/static/assets/play-button.svg"
+                    alt="Play artist"
+                    width={54}
+                    height={54}
+                    className="mr-2.5 w-[0.938rem]"
+                  />
+                  <div className="font-['Open_Sans'] text-[0.78rem] uppercase tracking-[0.04rem]">
+                    Play artist
+                  </div>
+                </div>
+              </button>
             </div>
           </div>
-          <div className="artist__albums">
-            <ol className="artist__albums-list">
+          <div className="mx-[12.5rem] mb-[1.563rem]">
+            <ul className="flex gap-[3.125rem]">
               {albums?.map(
                 ({
                   id,
@@ -119,7 +126,7 @@ const Artist: NextPage = () => {
                     : "";
 
                   return (
-                    <li key={id} className="tile artist__album">
+                    <li key={id}>
                       <div className="artist__album-container">
                         <a href="/albums" className="tile__link">
                           <picture className={"tile__image-wrapper"}>
@@ -128,6 +135,7 @@ const Artist: NextPage = () => {
                               alt={"Image of " + title}
                               width={400}
                               height={400}
+                              className="min-w-[9.375rem]"
                             />
                           </picture>
                         </a>
@@ -141,7 +149,7 @@ const Artist: NextPage = () => {
                   );
                 }
               )}
-            </ol>
+            </ul>
           </div>
         </div>
         <TracksBlock artistId={artistId} />

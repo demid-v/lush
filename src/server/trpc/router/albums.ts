@@ -53,7 +53,14 @@ const albumsRouter = router({
           }),
           ...(search && { title: { contains: search } }),
         },
-        orderBy: { id: "desc" },
+        orderBy: artistId
+          ? [
+              { album_format_id: "asc" },
+              { release_year: "desc" },
+              { release_month: "desc" },
+              { release_day: "desc" },
+            ]
+          : { id: "desc" },
         ...(limit && { take: limit }),
         ...(offset && { skip: offset }),
       });

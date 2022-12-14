@@ -36,7 +36,7 @@ const artistsRouter = router({
         where: {
           deleted: 0,
           ...(artistId && { id: artistId }),
-          ...(search && { title: { contains: search } }),
+          ...(search && { name: { contains: search } }),
         },
         orderBy: { id: "desc" },
         ...(limit && { take: limit }),
