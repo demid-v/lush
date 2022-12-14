@@ -64,7 +64,9 @@ const Artist: NextPage = () => {
 
   return (
     <>
-      <Head>{artistName}</Head>
+      <Head>
+        <title>{artistName}</title>
+      </Head>
       <div className="w-full">
         <div>
           <div className="relative mb-10">
@@ -123,7 +125,7 @@ const Artist: NextPage = () => {
                     ? "https://lastfm.freetls.fastly.net/" +
                       DOMAIN_MID_PATH[domain_id] +
                       image_id
-                    : "";
+                    : "/logo512.png";
 
                   return (
                     <li key={id}>
@@ -133,9 +135,9 @@ const Artist: NextPage = () => {
                             <Image
                               src={albumImageUrl}
                               alt={"Image of " + title}
-                              width={400}
-                              height={400}
-                              className="min-w-[9.375rem]"
+                              width={230}
+                              height={230}
+                              className="min-w-[14.375rem]"
                             />
                           </picture>
                         </a>
