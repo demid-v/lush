@@ -42,7 +42,7 @@ const Artist: NextPage = () => {
     }
 
     return () => setColor(255, 255, 255);
-  }, [artistsData]);
+  }, [artistsData, r, g, b, setColor]);
 
   const { domain, image_id } = artistImage ?? {};
 

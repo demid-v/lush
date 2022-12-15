@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import Track from "./Track";
 import ContainerLayout from "../layouts/ContainerLayout";
 import { useRouter } from "next/router";
