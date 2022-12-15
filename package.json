@@ -9,6 +9,7 @@
     "postinstall": "prisma generate",
     "lint": "next lint",
     "start": "next start",
+    "start:init": "npm ci && npm run build && npm run start:remote",
     "start:remote": "concurrently -n \"lush-db,lush-server\" -c \"cyan,green\" \"npm run db:docker:start\" \"cross-env DATABASE_URL=mysql://root:lush@127.0.0.1:3307/lush next start\"",
     "db:dump": "cd ./database && dump-lush-db.bat",
     "db:docker:build": "docker build -t demidv/lush-db:latest ./database",
