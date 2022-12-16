@@ -19,8 +19,12 @@ const Theme: FC<{ children: ReactNode }> = ({ children }) => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [headerColor, setHeaderColor] = useState<string>("255, 255, 255");
 
+  const brightness = (r: number, g: number, b: number) =>
+    Math.round((r * 299 + g * 587 + b * 114) / 1000);
+
   function setColor(r: number, g: number, b: number) {
     setHeaderColor(`${r}, ${g}, ${b}`);
+    setTheme(brightness(r, g, b) < 125 ? "dark" : "light");
   }
 
   return (

@@ -65,14 +65,14 @@ const Artist: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{artistName}</title>
+        <title>{artistName || "Artist"}</title>
       </Head>
       <div className="w-full">
         <div>
           <div className="relative mb-10">
             <Image
-              src={artistImageUrl}
-              alt={"Image of " + artistImage}
+              src={artistImageUrl || "/logo512.png"}
+              alt={"Image of " + artistName}
               width={1920}
               height={400}
               className="h-[25rem] w-full object-cover object-[0%_25%]"
@@ -87,7 +87,7 @@ const Artist: NextPage = () => {
               <div
                 className={
                   "mb-[1.875rem] text-[2.5rem] font-bold" +
-                  (theme === "dark" ? " artist-name_light" : "")
+                  (theme === "dark" ? " text-white" : "")
                 }
               >
                 {artistName}
@@ -137,7 +137,7 @@ const Artist: NextPage = () => {
                               alt={"Image of " + title}
                               width={230}
                               height={230}
-                              className="min-w-[14.375rem]"
+                              className="aspect-square min-w-[14.375rem]"
                             />
                           </picture>
                         </a>

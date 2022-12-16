@@ -60,7 +60,11 @@ const Header = () => {
           </div>
         </div>
       </div>
-      <nav className="text-[0.9rem] leading-none">
+      <nav
+        className={
+          "text-[0.9rem] leading-none" + (theme === "dark" ? " text-white" : "")
+        }
+      >
         <ul className="flex gap-[0.313rem]">
           <li>
             <Link
