@@ -109,7 +109,7 @@ const Artist: NextPage = () => {
             </div>
           </div>
           <div className="mx-[12.5rem] mb-[1.563rem]">
-            <ul className="flex gap-[3.125rem]">
+            <ul className="grid grid-cols-[repeat(6,minmax(200px,_1fr))] gap-[3.125rem] overflow-auto">
               {albums?.map(
                 ({
                   id,
@@ -137,7 +137,7 @@ const Artist: NextPage = () => {
                               alt={"Image of " + title}
                               width={230}
                               height={230}
-                              className="aspect-square min-w-[14.375rem]"
+                              className="aspect-square"
                             />
                           </picture>
                         </a>
