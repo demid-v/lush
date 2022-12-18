@@ -91,7 +91,7 @@ const Artist: NextPage = () => {
               <button className="h-10 w-[10.625rem] border border-[rgba(180,180,180,1)] bg-white">
                 <div className="flex justify-center">
                   <Image
-                    src="/static/assets/play-button.svg"
+                    src="/assets/play.svg"
                     alt="Play artist"
                     width={54}
                     height={54}

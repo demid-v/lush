@@ -11,7 +11,7 @@ const Artists = () => {
 
   return (
     <ContainerLayout>
-      <ul className="grid grid-cols-grid gap-x-6 gap-y-10">
+      <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-6 gap-y-10">
         {artists.map((artist) => (
           <ArtistTile key={artist.id} artist={artist} />
         ))}

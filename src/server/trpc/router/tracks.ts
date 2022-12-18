@@ -52,6 +52,7 @@ const tracksRouter = router({
             },
             track_album_rel: {
               select: {
+                track_position: true,
                 album: {
                   select: {
                     album_image_rel: {

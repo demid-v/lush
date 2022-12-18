@@ -16,44 +16,40 @@ const Header = () => {
         Lush
       </Link>
       <div className="invisible h-full flex-1">
-        <div className="flex">
-          <div className="header__buttons">
-            <div className="header__buttons-container">
-              <button className="header__prev-button header__button"></button>
-              <button className="header__play-button header__button"></button>
-              <button className="header__next-button header__button"></button>
+        <div className="">
+          <div className="">
+            <div className="">
+              <button className=""></button>
+              <button className=""></button>
+              <button className=""></button>
             </div>
           </div>
 
-          <div className="header__track-content">
-            <div className="header__track-header-container">
-              <div className="header__track-header">
-                <div className="header__artists"></div>
-                <div className="header__title"></div>
+          <div className="">
+            <div className="">
+              <div className="">
+                <div className=""></div>
+                <div className=""></div>
               </div>
             </div>
-            <progress
-              value="0"
-              max="100"
-              className="header__progress-bar"
-            ></progress>
+            <progress value="0" max="100" className=""></progress>
           </div>
 
-          <div className="header__track-hud">
-            <div className="header__right-tab">
-              <button className="header__repeat"></button>
+          <div className="">
+            <div className="">
+              <button className=""></button>
             </div>
 
-            <div className="header__time">
-              <div className="hidden">
-                <div className="header__curr-time">
+            <div className="">
+              <div className="">
+                <div className="">
                   <span>00:00</span>
                 </div>
 
-                <div className="header__time-slash">/</div>
+                <div className="">/</div>
               </div>
 
-              <div className="header__duration">
+              <div className="">
                 <span></span>
               </div>
             </div>
@@ -67,46 +63,22 @@ const Header = () => {
       >
         <ul className="flex gap-[0.313rem]">
           <li>
-            <Link
-              href="/tracks"
-              className={
-                "px-header__link hover:underline" +
-                (theme === "dark" ? " header__page-link_light" : "")
-              }
-            >
+            <Link href="/tracks" className="px-[0.9375rem] hover:underline">
               Music
             </Link>
           </li>
           <li>
-            <Link
-              href="/artists"
-              className={
-                "px-header__link hover:underline" +
-                (theme === "dark" ? " header__page-link_light" : "")
-              }
-            >
+            <Link href="/artists" className="px-[0.9375rem] hover:underline">
               Artists
             </Link>
           </li>
           <li>
-            <Link
-              href="/albums"
-              className={
-                "px-header__link hover:underline" +
-                (theme === "dark" ? " header__page-link_light" : "")
-              }
-            >
+            <Link href="/albums" className="px-[0.9375rem] hover:underline">
               Albums
             </Link>
           </li>
           <li>
-            <Link
-              href="/playlists"
-              className={
-                "px-header__link hover:underline" +
-                (theme === "dark" ? " header__page-link_light" : "")
-              }
-            >
+            <Link href="/playlists" className="px-[0.9375rem] hover:underline">
               Playlists
             </Link>
           </li>
