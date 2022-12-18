@@ -42,16 +42,16 @@ export type RouterInputs = inferRouterInputs<AppRouter>;
  **/
 export type RouterOutputs = inferRouterOutputs<AppRouter>;
 
-type TracksData = RouterOutputs["tracks"]["getTracks"]["tracks"];
+type TracksData = RouterOutputs["tracks"]["getTracks"];
 type TrackData = TracksData[0];
 
-type ArtistsData = RouterOutputs["artists"]["getArtists"]["artists"];
+type ArtistsData = RouterOutputs["artists"]["getArtists"];
 type ArtistData = ArtistsData[0];
 
 type ArtistImage =
-  RouterOutputs["tracks"]["getTracks"]["tracks"][0]["track_artist_rel"][0]["artist"]["artist_image_rel"][0]["artist_image"];
+  RouterOutputs["tracks"]["getTracks"][0]["track_artist_rel"][0]["artist"]["artist_image_rel"][0]["artist_image"];
 type AlbumImage =
-  RouterOutputs["tracks"]["getTracks"]["tracks"][0]["track_album_rel"][0]["album"]["album_image_rel"][0]["album_image"];
+  RouterOutputs["tracks"]["getTracks"][0]["track_album_rel"][0]["album"]["album_image_rel"][0]["album_image"];
 
 type ArtistsGetter = typeof trpc.artists.getArtists;
 type TracksGetter = typeof trpc.tracks.getTracks;

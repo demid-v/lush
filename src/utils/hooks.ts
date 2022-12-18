@@ -1,11 +1,44 @@
-import { type Dispatch, type SetStateAction, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import type { ArtistsGetter, TracksGetter } from "./trpc";
 
-function usePositionObserver(
-  isLoading: boolean,
+function useContent(
+  getContent: TracksGetter | ArtistsGetter,
   limit: number,
-  offset: number,
-  setOffset: Dispatch<SetStateAction<number>>
+  params?: { artistId?: number }
 ) {
+  const [offset, setOffset] = useState(0);
+
+  const { q } = useRouter().query;
+
+  useEffect(() => {
+    setOffset(0);
+  }, [q]);
+
+  const { isLoading, data } = getContent.useQuery(
+    {
+      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
+      limit,
+      offset,
+      ...params,
+    },
+    { refetchOnWindowFocus: false }
+  );
+
+  const [content, setContent] = useState<NonNullable<typeof data>>([]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+
+    if (offset === 0) {
+      setContent(data);
+    } else if (offset > 0) {
+      setContent((prevContent) => [...prevContent, ...data]);
+    }
+  }, [data, offset]);
+
   useEffect(() => {
     function checkPosition() {
       if (
@@ -23,6 +56,8 @@ function usePositionObserver(
       document.removeEventListener("scroll", checkPosition);
     };
   }, [isLoading, limit, offset, setOffset]);
+
+  return content;
 }
 
-export { usePositionObserver };
+export { useContent };

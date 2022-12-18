@@ -9,8 +9,7 @@ import { useEffect } from "react";
 import Head from "next/head";
 
 const Artist: NextPage = () => {
-  const router = useRouter();
-  const { id, q } = router.query;
+  const { id, q } = useRouter().query;
 
   const { theme, setColor } = useTheme();
 
@@ -30,7 +29,7 @@ const Artist: NextPage = () => {
     );
 
   const { name: artistName, artist_image_rel: artistImages } =
-    artistsData?.artists[0] ?? {};
+    artistsData?.[0] ?? {};
 
   const artistImage = artistImages?.[0]?.artist_image;
 

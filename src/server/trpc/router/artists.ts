@@ -43,7 +43,7 @@ const artistsRouter = router({
         ...(offset && { skip: offset }),
       });
 
-      return { artists };
+      return artists;
     }),
 });
 

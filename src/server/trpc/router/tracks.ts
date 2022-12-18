@@ -89,7 +89,7 @@ const tracksRouter = router({
         skip: offset,
       });
 
-      return { tracks };
+      return tracks;
     }),
 });
 
