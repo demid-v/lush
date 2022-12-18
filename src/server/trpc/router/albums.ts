@@ -9,64 +9,68 @@ const albumsRouter = router({
         limit: z.number().nullish(),
         offset: z.number().nullish(),
         search: z.string().nullish(),
+        albumId: z.number().nullish(),
         artistId: z.number().nullish(),
       })
     )
-    .query(async ({ ctx, input: { limit, offset, search, artistId } }) => {
-      const albums = await ctx.prisma.album.findMany({
-        select: {
-          id: true,
-          title: true,
-          album_image_rel: {
-            select: {
-              album_image: { select: { image_id: true, domain_id: true } },
+    .query(
+      async ({ ctx, input: { limit, offset, search, albumId, artistId } }) => {
+        const albums = await ctx.prisma.album.findMany({
+          select: {
+            id: true,
+            title: true,
+            album_image_rel: {
+              select: {
+                album_image: { select: { image_id: true, domain_id: true } },
+              },
+              where: { is_cover: 1 },
+              take: 1,
             },
-            where: { is_cover: 1 },
-            take: 1,
-          },
-          track_album_rel: {
-            select: {
-              track: {
-                select: {
-                  title: true,
-                  track_artist_rel: { select: { artist: true } },
-                  track_genre_rel: {
-                    select: { genre: { select: { name: true } } },
-                    where: { genre: { deleted: false } },
+            track_album_rel: {
+              select: {
+                track: {
+                  select: {
+                    title: true,
+                    track_artist_rel: { select: { artist: true } },
+                    track_genre_rel: {
+                      select: { genre: { select: { name: true } } },
+                      where: { genre: { deleted: false } },
+                    },
                   },
                 },
               },
+              where: { track: { deleted: 0 } },
             },
-            where: { track: { deleted: 0 } },
           },
-        },
-        where: {
-          deleted: 0,
-          ...(artistId && {
-            track_album_rel: {
-              some: {
-                track: {
-                  track_artist_rel: { some: { artist: { id: artistId } } },
+          where: {
+            deleted: 0,
+            ...(albumId && { id: albumId }),
+            ...(artistId && {
+              track_album_rel: {
+                some: {
+                  track: {
+                    track_artist_rel: { some: { artist: { id: artistId } } },
+                  },
                 },
               },
-            },
-          }),
-          ...(search && { title: { contains: search } }),
-        },
-        orderBy: artistId
-          ? [
-              { album_format_id: "asc" },
-              { release_year: "desc" },
-              { release_month: "desc" },
-              { release_day: "desc" },
-            ]
-          : { id: "desc" },
-        ...(limit && { take: limit }),
-        ...(offset && { skip: offset }),
-      });
+            }),
+            ...(search && { title: { contains: search } }),
+          },
+          orderBy: artistId
+            ? [
+                { album_format_id: "asc" },
+                { release_year: "desc" },
+                { release_month: "desc" },
+                { release_day: "desc" },
+              ]
+            : { id: "desc" },
+          ...(limit && { take: limit }),
+          ...(offset && { skip: offset }),
+        });
 
-      return { albums };
-    }),
+        return albums;
+      }
+    ),
 });
 
 export { albumsRouter };

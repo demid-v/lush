@@ -7,6 +7,7 @@ import Image from "next/image";
 import type { NextPage } from "next";
 import { useEffect } from "react";
 import Head from "next/head";
+import Link from "next/link";
 
 const Artist: NextPage = () => {
   const { id, q } = useRouter().query;
@@ -19,14 +20,13 @@ const Artist: NextPage = () => {
     return typeof artistId === "string" ? Number(artistId) : artistId;
   })();
 
-  const { isLoading: areArtistsLoading, data: artistsData } =
-    trpc.artists.getArtists.useQuery(
-      {
-        ...(q && { search: Array.isArray(q) ? q.join("") : q }),
-        artistId,
-      },
-      { refetchOnWindowFocus: false }
-    );
+  const { data: artistsData } = trpc.artists.getArtists.useQuery(
+    {
+      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
+      artistId,
+    },
+    { refetchOnWindowFocus: false }
+  );
 
   const { name: artistName, artist_image_rel: artistImages } =
     artistsData?.[0] ?? {};
@@ -49,17 +49,14 @@ const Artist: NextPage = () => {
     ? domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id
     : "";
 
-  const { isLoading: areAlbumsLoading, data: albumsData } =
-    trpc.albums.getAlbums.useQuery(
-      {
-        ...(q && { search: Array.isArray(q) ? q.join("") : q }),
-        artistId,
-        limit: 6,
-      },
-      { refetchOnWindowFocus: false }
-    );
-
-  const albums = albumsData?.albums;
+  const { data: albums } = trpc.albums.getAlbums.useQuery(
+    {
+      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
+      artistId,
+      limit: 6,
+    },
+    { refetchOnWindowFocus: false }
+  );
 
   return (
     <>
@@ -114,7 +111,7 @@ const Artist: NextPage = () => {
                   id,
                   title,
                   album_image_rel: albumImages,
-                  track_album_rel: tracks,
+                  // track_album_rel: tracks,
                 }) => {
                   const albumImage = albumImages?.[0]?.album_image;
 
@@ -129,7 +126,7 @@ const Artist: NextPage = () => {
                   return (
                     <li key={id}>
                       <div className="artist__album-container">
-                        <a href="/albums" className="tile__link">
+                        <Link href="/albums" className="tile__link">
                           <picture className={"tile__image-wrapper"}>
                             <Image
                               src={albumImageUrl}
@@ -139,7 +136,7 @@ const Artist: NextPage = () => {
                               className="aspect-square"
                             />
                           </picture>
-                        </a>
+                        </Link>
                         <div className="artist__title">{title}</div>
                         <div className="artist__artists">
                           <div className="artist__artist-name"></div>

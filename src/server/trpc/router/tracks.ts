@@ -10,87 +10,93 @@ const tracksRouter = router({
         offset: z.number(),
         search: z.string().nullish(),
         artistId: z.number().nullish(),
+        albumId: z.number().nullish(),
       })
     )
-    .query(async ({ ctx, input: { limit, offset, search, artistId } }) => {
-      const tracks = await ctx.prisma.track.findMany({
-        select: {
-          id: true,
-          title: true,
-          duration: true,
-          youtube_video_id: true,
-          track_artist_rel: {
-            select: {
-              artist: {
-                select: {
-                  id: true,
-                  name: true,
-                  artist_image_rel: {
-                    select: {
-                      artist_image: {
-                        select: {
-                          image_id: true,
-                          domain: true,
+    .query(
+      async ({ ctx, input: { limit, offset, search, artistId, albumId } }) => {
+        const tracks = await ctx.prisma.track.findMany({
+          select: {
+            id: true,
+            title: true,
+            duration: true,
+            youtube_video_id: true,
+            track_artist_rel: {
+              select: {
+                artist: {
+                  select: {
+                    id: true,
+                    name: true,
+                    artist_image_rel: {
+                      select: {
+                        artist_image: {
+                          select: {
+                            image_id: true,
+                            domain: true,
+                          },
                         },
                       },
+                      where: { is_cover: 1 },
+                      take: 1,
                     },
-                    where: { is_cover: 1 },
-                    take: 1,
                   },
                 },
               },
+              orderBy: { artist_position: "asc" },
             },
-            orderBy: { artist_position: "asc" },
-          },
-          track_genre_rel: {
-            select: { genre: { select: { id: true, name: true } } },
-            where: { genre: { deleted: false } },
-            orderBy: { genre_position: "asc" },
-            take: 5,
-          },
-          track_album_rel: {
-            select: {
-              album: {
-                select: {
-                  album_image_rel: {
-                    select: {
-                      album_image: {
-                        select: { domain_id: true, image_id: true },
+            track_genre_rel: {
+              select: { genre: { select: { id: true, name: true } } },
+              where: { genre: { deleted: false } },
+              orderBy: { genre_position: "asc" },
+              take: 5,
+            },
+            track_album_rel: {
+              select: {
+                album: {
+                  select: {
+                    album_image_rel: {
+                      select: {
+                        album_image: {
+                          select: { domain_id: true, image_id: true },
+                        },
                       },
+                      where: { is_cover: 1 },
+                      take: 1,
                     },
-                    where: { is_cover: 1 },
-                    take: 1,
                   },
                 },
               },
+              orderBy: { album: { id: "asc" } },
+              take: 1,
             },
-            orderBy: { album: { id: "asc" } },
-            take: 1,
           },
-        },
-        where: {
-          deleted: 0,
-          ...(search && {
-            OR: [
-              { title: { contains: search } },
-              {
-                track_artist_rel: {
-                  some: { artist: { name: { contains: search } } },
+          where: {
+            deleted: 0,
+            ...(search && {
+              OR: [
+                { title: { contains: search } },
+                {
+                  track_artist_rel: {
+                    some: { artist: { name: { contains: search } } },
+                  },
                 },
-              },
-            ],
-          }),
-          ...(artistId && {
-            track_artist_rel: { some: { artist: { id: artistId } } },
-          }),
-        },
-        orderBy: { id: "desc" },
-        take: limit,
-        skip: offset,
-      });
+              ],
+            }),
+            ...(artistId && {
+              track_artist_rel: { some: { artist_id: artistId } },
+            }),
+            ...(albumId && {
+              track_album_rel: { some: { album_id: albumId } },
+            }),
+          },
+          orderBy: { id: "desc" },
+          take: limit,
+          skip: offset,
+        });
 
-      return tracks;
-    }),
+        return tracks;
+      }
+    ),
 });
 
 export { tracksRouter };

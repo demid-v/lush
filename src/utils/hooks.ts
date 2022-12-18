@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import type { ArtistsGetter, TracksGetter } from "./trpc";
+import type { ContentGetter } from "./trpc";
 
 function useContent(
-  getContent: TracksGetter | ArtistsGetter,
+  getContent: ContentGetter,
   limit: number,
   params?: { artistId?: number }
 ) {
