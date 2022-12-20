@@ -1,12 +1,12 @@
 import SearchBar from "../components/SearchBar";
-import { type FC, type ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 const ContainerLayout: FC<{
   children: ReactNode;
 }> = ({ children }) => (
   <div className="px-[12.5rem]">
     <SearchBar />
-    <div>{children}</div>
+    {children}
   </div>
 );
 

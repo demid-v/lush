@@ -2,6 +2,7 @@ import ContainerLayout from "../layouts/ContainerLayout";
 import { type ArtistsData, trpc } from "../utils/trpc";
 import ArtistTile from "./ArtistTile";
 import { useContent } from "../utils/hooks";
+import GridLayout from "../layouts/GridLayout";
 
 const Artists = () => {
   const artists = useContent(
@@ -11,11 +12,11 @@ const Artists = () => {
 
   return (
     <ContainerLayout>
-      <ul className="grid grid-cols-[repeat(auto-fill,minmax(200px,1fr))] gap-x-6 gap-y-10">
+      <GridLayout>
         {artists.map((artist) => (
           <ArtistTile key={artist.id} artist={artist} />
         ))}
-      </ul>
+      </GridLayout>
     </ContainerLayout>
   );
 };
