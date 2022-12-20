@@ -40,8 +40,6 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   function setNextActiveTrack() {
-    console.log("setNextActiveTrack");
-
     const activeTrackIndex = globalPlayableTracks.current.findIndex(
       (tracks) => tracks.id === activeTrack?.id
     );
@@ -55,7 +53,6 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
     if (!nextActiveTrack) {
       return;
     }
-    console.log(nextActiveTrack);
 
     setActiveTrack(nextActiveTrack);
   }

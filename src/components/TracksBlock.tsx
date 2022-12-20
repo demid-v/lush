@@ -1,4 +1,4 @@
-import { type FC } from "react";
+import type { FC } from "react";
 import Track from "./Track";
 import ContainerLayout from "../layouts/ContainerLayout";
 import { type TracksData, trpc } from "../utils/trpc";
