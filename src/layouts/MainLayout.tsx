@@ -1,6 +1,6 @@
 import type { FC, ReactNode } from "react";
 import Header from "../components/Header";
-import YoutubeVideo from "../components/YoutubeVideo";
+import YoutubePlayer from "../components/YoutubePlayer";
 import Theme from "../contexts/Theme";
 import Tracks from "../contexts/Tracks";
 
@@ -11,7 +11,7 @@ const Main: FC<{ children: ReactNode }> = ({ children }) => (
       <main className="pt-10">{children}</main>
     </Theme>
 
-    <YoutubeVideo />
+    <YoutubePlayer />
   </Tracks>
 );
 

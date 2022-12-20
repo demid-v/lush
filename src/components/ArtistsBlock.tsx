@@ -7,7 +7,7 @@ const Artists = () => {
   const artists = useContent(
     trpc.artists.getArtists,
     120
-  ) as any as ArtistsData;
+  ) as never as ArtistsData;
 
   return (
     <ContainerLayout>

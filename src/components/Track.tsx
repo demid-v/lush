@@ -8,7 +8,7 @@ import type { ActiveTrack } from "../utils/types";
 
 const Track: FC<{
   track: TrackData;
-  activeTrack: ActiveTrack | null;
+  activeTrack: ActiveTrack;
   handlePlayableTrackClick: (id: number, youtube_video_id: string) => void;
 }> = ({ track, activeTrack, handlePlayableTrackClick }) => {
   const {

@@ -7,7 +7,7 @@ const PlaylistsBlock = () => {
   const playlists = useContent(
     trpc.playlists.getPlaylists,
     120
-  ) as any as PlaylistsData;
+  ) as never as PlaylistsData;
 
   return (
     <ContainerLayout>

@@ -12,18 +12,18 @@ import type { TracksData } from "../utils/trpc";
 import type { ActiveTrack } from "../utils/types";
 
 const TracksContext = createContext<{
-  activeTrack: ActiveTrack | null;
-  setActiveTrack: Dispatch<SetStateAction<ActiveTrack | null>>;
+  activeTrack: ActiveTrack;
+  setActiveTrack: Dispatch<SetStateAction<ActiveTrack>>;
   setNextActiveTrack: () => void;
   setGlobalTracks: (tracks: TracksData) => void;
-  globalPlayableTracks: ActiveTrack[];
+  globalPlayableTracks: NonNullable<ActiveTrack>[];
 } | null>(null);
 
 const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
   const [activeTrack, setActiveTrack] = useState<ActiveTrack | null>(null);
 
   const globalTracks = useRef<TracksData>([]);
-  const globalPlayableTracks = useRef<ActiveTrack[]>([]);
+  const globalPlayableTracks = useRef<NonNullable<ActiveTrack>[]>([]);
 
   function setGlobalTracks(tracks: TracksData) {
     globalTracks.current.length = 0;
@@ -40,6 +40,8 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
   }
 
   function setNextActiveTrack() {
+    console.log("setNextActiveTrack");
+
     const activeTrackIndex = globalPlayableTracks.current.findIndex(
       (tracks) => tracks.id === activeTrack?.id
     );
@@ -53,6 +55,7 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
     if (!nextActiveTrack) {
       return;
     }
+    console.log(nextActiveTrack);
 
     setActiveTrack(nextActiveTrack);
   }
