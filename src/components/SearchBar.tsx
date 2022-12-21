@@ -42,11 +42,11 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="mt-[1.5625rem] mb-[0.9375rem]">
+    <div className="sticky top-[4.0625rem] z-20 mt-[1.5625rem] mb-[0.9375rem]">
       <div className="flex h-[1.875rem] w-full gap-[0.625rem]">
         <div className="relative flex-1 border border-[#b4b4b4]">
           <input
-            className="h-full w-full px-0.5 text-[1.02rem]"
+            className="h-full w-full bg-white px-0.5 text-[1.02rem]"
             type="text"
             placeholder="Search"
             value={search}
@@ -65,7 +65,7 @@ const SearchBar = () => {
             />
           </button>
         </div>
-        <button className="h-full w-[2.813rem] border border-[#b4b4b4]">
+        <button className="h-full w-[2.813rem] border border-[#b4b4b4] bg-white">
           <Image
             src="/assets/loupe.svg"
             alt="Loupe"
@@ -74,7 +74,7 @@ const SearchBar = () => {
             className="mx-auto w-[0.625rem]"
           />
         </button>
-        <button className="h-full w-[2.813rem] border border-[#b4b4b4]">
+        <button className="h-full w-[2.813rem] border border-[#b4b4b4] bg-white">
           <Image
             src="/assets/plus.svg"
             alt="Plus sign"
@@ -83,7 +83,7 @@ const SearchBar = () => {
             className="mx-auto w-[0.625rem]"
           />
         </button>
-        <button className="h-full w-[2.813rem] border border-[#b4b4b4]">
+        <button className="h-full w-[2.813rem] border border-[#b4b4b4] bg-white">
           <Image
             src="/assets/shuffle.svg"
             alt="Shuffle"

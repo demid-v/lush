@@ -65,7 +65,7 @@ const YoutubePlayer = () => {
       onEnd={setNextActiveTrack}
       onError={setNextActiveTrack}
       className={
-        "fixed right-2 bottom-3.5 z-10" +
+        "fixed right-2 bottom-3.5 z-20" +
         (activeTrack === null ? " hidden" : "")
       }
     />

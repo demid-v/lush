@@ -8,7 +8,7 @@ const MainLayout: FC<{ children: ReactNode }> = ({ children }) => (
   <Tracks>
     <Theme>
       <Header />
-      <main className="pt-10">{children}</main>
+      <main className="z-10 pt-10">{children}</main>
     </Theme>
     <YoutubePlayer />
   </Tracks>
