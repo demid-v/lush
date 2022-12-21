@@ -11,9 +11,12 @@ const Tile: FC<{
     imageUrl: string;
   };
 }> = ({ data: { id, dir, name, imageUrl } }) => (
-  <li className="">
-    <div className="">
-      <Link href={`/${dir}/${id}+${constructLink(name || "")}`} className="">
+  <li>
+    <div>
+      <Link
+        href={`/${dir}/${id}+${constructLink(name || "")}`}
+        className="mb-4 block"
+      >
         <div className="relative pb-[100%]">
           <Image
             src={imageUrl}
@@ -29,11 +32,7 @@ const Tile: FC<{
           />
         </div>
       </Link>
-      <div className="">
-        <button className=""></button>
-        <button className=""></button>
-      </div>
-      <div className="">{name}</div>
+      <div className="font-medium">{name}</div>
     </div>
   </li>
 );
