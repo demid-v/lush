@@ -42,7 +42,7 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="sticky top-[4.0625rem] z-20 mt-[1.5625rem] mb-[0.9375rem]">
+    <div className="sticky top-12 z-20 mt-[1.5625rem] mb-[0.9375rem]">
       <div className="flex h-[1.875rem] w-full gap-[0.625rem]">
         <div className="relative flex-1 border border-[#b4b4b4]">
           <input
