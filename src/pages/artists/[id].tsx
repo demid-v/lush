@@ -108,14 +108,14 @@ const Artist: NextPage = () => {
           </div>
           <div className="mx-auto box-content max-w-[95rem] px-20">
             <ul className="grid grid-cols-[repeat(6,calc((120rem-(12.5rem*2)-(2rem*5))/6))] gap-8 overflow-auto pb-5">
-              {albums?.map(({ id, title, album_image_rel: albumImages }) => {
-                const albumImage = albumImages?.[0]?.album_image;
-                const { domain_id, image_id } = albumImage ?? {};
+              {albums?.map(({ id, name, album_image_rel: albumImages }) => {
+                const albumImage = albumImages[0]?.album_image;
 
-                const albumImageUrl = domain_id
-                  ? "https://lastfm.freetls.fastly.net/" +
-                    DOMAIN_MID_PATH[domain_id] +
-                    image_id
+                const albumImageUrl = albumImage
+                  ? albumImage.domain.name +
+                    "/" +
+                    DOMAIN_MID_PATH[albumImage.domain.id] +
+                    albumImage.image_id
                   : "/assets/vynil.svg";
 
                 return (
@@ -125,19 +125,19 @@ const Artist: NextPage = () => {
                         <picture className="relative block pb-[100%]">
                           <Image
                             src={albumImageUrl}
-                            alt={"Image of " + title}
+                            alt={"Image of " + name}
                             width={230}
                             height={230}
                             className={
-                              "absolute aspect-square" +
-                              (albumImageUrl.split("/")[1] === "assets"
+                              "absolute aspect-square object-cover" +
+                              (!albumImage
                                 ? " top-0 right-0 bottom-0 left-0 m-auto w-[45%]"
                                 : "")
                             }
                           />
                         </picture>
                       </Link>
-                      <div className="font-medium">{title}</div>
+                      <div className="font-medium">{name}</div>
                     </div>
                   </li>
                 );

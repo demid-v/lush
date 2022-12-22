@@ -18,19 +18,25 @@ const albumsRouter = router({
         const albums = await ctx.prisma.album.findMany({
           select: {
             id: true,
-            title: true,
+            name: true,
             album_image_rel: {
               select: {
-                album_image: { select: { image_id: true, domain_id: true } },
+                album_image: {
+                  select: {
+                    image_id: true,
+                    domain: true,
+                    ...(albumId && { r: true, g: true, b: true }),
+                  },
+                },
               },
-              where: { is_cover: 1 },
+              where: { is_cover: true },
               take: 1,
             },
             track_album_rel: {
               select: {
                 track: {
                   select: {
-                    title: true,
+                    name: true,
                     track_artist_rel: { select: { artist: true } },
                     track_genre_rel: {
                       select: { genre: { select: { name: true } } },
@@ -39,11 +45,11 @@ const albumsRouter = router({
                   },
                 },
               },
-              where: { track: { deleted: 0 } },
+              where: { track: { deleted: false } },
             },
           },
           where: {
-            deleted: 0,
+            deleted: false,
             ...(albumId && { id: albumId }),
             ...(artistId && {
               track_album_rel: {
@@ -54,7 +60,7 @@ const albumsRouter = router({
                 },
               },
             }),
-            ...(search && { title: { contains: search } }),
+            ...(search && { name: { contains: search } }),
           },
           orderBy: artistId
             ? [

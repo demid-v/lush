@@ -9,15 +9,15 @@ datasource db {
 
 model album {
   id               Int               @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
-  title            String?           @db.VarChar(5000)
+  name             String?           @db.VarChar(5000)
   description      String?           @db.Text
-  release_day      Int?              @db.SmallInt
-  release_month    Int?              @db.SmallInt
-  release_year     Int?              @db.SmallInt
+  release_day      Int?              @db.UnsignedSmallInt
+  release_month    Int?              @db.UnsignedSmallInt
+  release_year     Int?              @db.UnsignedSmallInt
   last_fm_mbid     String?           @db.Char(32)
   has_last_fm_mbid Boolean?
   album_format_id  Int               @default(1) @db.UnsignedInt
-  deleted          Int               @default(0) @db.UnsignedTinyInt
+  deleted          Boolean           @default(false)
   album_format     album_format      @relation(fields: [album_format_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "album_format_id")
   album_image_rel  album_image_rel[]
   track_album_rel  track_album_rel[]
@@ -38,7 +38,8 @@ model album_image {
   r               Int               @default(0) @db.UnsignedInt
   g               Int               @default(0) @db.UnsignedInt
   b               Int               @default(0) @db.UnsignedInt
-  deleted         Int?              @default(0) @db.TinyInt
+  deleted         Boolean           @default(false)
+  domain          domain            @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "album_image_domain_id")
   album_image_rel album_image_rel[]
 
   @@index([domain_id], map: "domain_id_INDEX")
@@ -47,7 +48,7 @@ model album_image {
 model album_image_rel {
   image_id    Int         @db.UnsignedInt
   album_id    Int         @db.UnsignedInt
-  is_cover    Int         @default(1) @db.UnsignedTinyInt
+  is_cover    Boolean     @default(true)
   album       album       @relation(fields: [album_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "album_image_rel_album_id")
   album_image album_image @relation(fields: [image_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "album_image_rel_image_id")
 
@@ -61,8 +62,7 @@ model artist {
   description       String?            @db.Text
   first_listen_date DateTime           @default(now()) @db.DateTime(0)
   last_fm_mbid      String?            @db.Char(32)
-  has_last_fm_mbid  Boolean?
-  deleted           Int                @default(0) @db.UnsignedTinyInt
+  deleted           Boolean            @default(false)
   artist_image_rel  artist_image_rel[]
   track_artist_rel  track_artist_rel[]
 }
@@ -70,11 +70,11 @@ model artist {
 model artist_image {
   id               Int                @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
   domain_id        Int                @db.UnsignedInt
-  image_id         String             @unique(map: "image_id_UNIQUE") @db.VarChar(500)
+  image_id         String             @db.Char(33)
   r                Int                @default(0) @db.UnsignedInt
   g                Int                @default(0) @db.UnsignedInt
   b                Int                @default(0) @db.UnsignedInt
-  deleted          Int                @default(0) @db.UnsignedTinyInt
+  deleted          Boolean            @default(false)
   domain           domain             @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artist_image_domain_id")
   artist_image_rel artist_image_rel[]
 
@@ -84,7 +84,7 @@ model artist_image {
 model artist_image_rel {
   image_id     Int          @db.UnsignedInt
   artist_id    Int          @db.UnsignedInt
-  is_cover     Int          @default(1) @db.UnsignedTinyInt
+  is_cover     Boolean      @default(true)
   artist       artist       @relation(fields: [artist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "artist_image_rel_artist_id")
   artist_image artist_image @relation(fields: [image_id], references: [id], onDelete: NoAction, onUpdate: Restrict, map: "artist_image_rel_image_id")
 
@@ -100,9 +100,11 @@ model artist_role {
 }
 
 model domain {
-  id           Int            @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
-  name         String         @unique(map: "name_UNIQUE") @db.VarChar(261)
-  artist_image artist_image[]
+  id             Int              @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  name           String           @unique(map: "name_UNIQUE") @db.VarChar(261)
+  album_image    album_image[]
+  artist_image   artist_image[]
+  playlist_image playlist_image[]
 }
 
 model genre {
@@ -135,7 +137,10 @@ model playlist_image {
   g                  Int                  @default(0)
   b                  Int                  @default(0)
   deleted            Boolean              @default(false)
+  domain             domain               @relation(fields: [domain_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "playlist_image_domain_id")
   playlist_image_rel playlist_image_rel[]
+
+  @@index([domain_id], map: "domain_id_idx")
 }
 
 model playlist_image_rel {
@@ -151,18 +156,17 @@ model playlist_image_rel {
 
 model track {
   id                   Int                  @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
-  title                String?              @db.VarChar(5000)
+  name                 String?              @db.VarChar(5000)
   duration             Float?
   lyrics               String?              @db.Text
   description          String?              @db.Text
   last_fm_mbid         String?              @db.Char(32)
-  has_last_fm_mbid     Boolean?
   youtube_video_id     String?              @db.Char(11)
   has_youtube_video_id Boolean?
   upload_date          DateTime?            @default(now()) @db.DateTime(0)
   version_id           Int                  @default(1) @db.UnsignedInt
-  explicit             Int                  @default(0) @db.UnsignedTinyInt
-  deleted              Int                  @default(0) @db.UnsignedTinyInt
+  explicit             Boolean              @default(false)
+  deleted              Boolean              @default(false)
   version              version              @relation(fields: [version_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "track_version_id")
   track_album_rel      track_album_rel[]
   track_artist_rel     track_artist_rel[]
@@ -212,8 +216,8 @@ model track_genre_rel {
 model track_language_rel {
   track_id    Int      @db.UnsignedInt
   language_id Int      @db.UnsignedInt
-  track       track    @relation(fields: [track_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "track_language_rel_audio_id")
   language    language @relation(fields: [language_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "track_language_rel_language_id")
+  track       track    @relation(fields: [track_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "track_language_rel_track_id")
 
   @@id([track_id, language_id])
   @@index([language_id], map: "language_id_INDEX")
@@ -222,9 +226,9 @@ model track_language_rel {
 model track_playlist_rel {
   track_id       Int      @db.UnsignedInt
   playlist_id    Int      @db.UnsignedInt
-  audio_position Int      @db.UnsignedInt
-  track          track    @relation(fields: [track_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "track_playlist_rel_audio_id")
+  track_position Int      @db.UnsignedInt
   playlist       playlist @relation(fields: [playlist_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "track_playlist_rel_playlist_id")
+  track          track    @relation(fields: [track_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "track_playlist_rel_track_id")
 
   @@id([track_id, playlist_id])
   @@index([playlist_id], map: "playlist_id_INDEX")

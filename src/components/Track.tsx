@@ -1,7 +1,7 @@
 import { type FC, useEffect, useState } from "react";
 import { constructLink } from "../utils/functions";
 import Link from "next/link";
-import type { ArtistImage, TrackData } from "../utils/trpc";
+import type { AttachedImage, TrackData } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
 import type { ActiveTrack } from "../utils/types";
@@ -13,7 +13,7 @@ const Track: FC<{
 }> = ({ track, activeTrack, handlePlayableTrackClick }) => {
   const {
     id,
-    title,
+    name,
     duration,
     youtube_video_id,
     track_artist_rel: artists,
@@ -60,7 +60,7 @@ const Track: FC<{
     }
   }
 
-  function handleArtistImageUrl(artistImageIn: NonNullable<ArtistImage>) {
+  function handleArtistImageUrl(artistImageIn: AttachedImage) {
     const { image_id, domain } = artistImageIn;
 
     setTrackImageUrl(domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id);
@@ -108,7 +108,7 @@ const Track: FC<{
           <div className="flex flex-1">
             <div className="flex flex-1 flex-col justify-between">
               <span className="z-10 w-min text-[0.92rem] leading-[1.1rem]">
-                {title}
+                {name}
               </span>
               {artists.map(({ artist }) => (
                 <span

@@ -18,7 +18,7 @@ const tracksRouter = router({
         const tracks = await ctx.prisma.track.findMany({
           select: {
             id: true,
-            title: true,
+            name: true,
             duration: true,
             youtube_video_id: true,
             track_artist_rel: {
@@ -36,7 +36,7 @@ const tracksRouter = router({
                           },
                         },
                       },
-                      where: { is_cover: 1 },
+                      where: { is_cover: true },
                       take: 1,
                     },
                   },
@@ -58,10 +58,10 @@ const tracksRouter = router({
                     album_image_rel: {
                       select: {
                         album_image: {
-                          select: { domain_id: true, image_id: true },
+                          select: { domain: true, image_id: true },
                         },
                       },
-                      where: { is_cover: 1 },
+                      where: { is_cover: true },
                       take: 1,
                     },
                   },
@@ -72,10 +72,10 @@ const tracksRouter = router({
             },
           },
           where: {
-            deleted: 0,
+            deleted: false,
             ...(search && {
               OR: [
-                { title: { contains: search } },
+                { name: { contains: search } },
                 {
                   track_artist_rel: {
                     some: { artist: { name: { contains: search } } },

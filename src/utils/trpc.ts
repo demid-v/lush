@@ -54,10 +54,8 @@ type AlbumData = AlbumsData[0];
 type PlaylistsData = RouterOutputs["playlists"]["getPlaylists"];
 type PlaylistData = PlaylistsData[0];
 
-type ArtistImage =
-  RouterOutputs["tracks"]["getTracks"][0]["track_artist_rel"][0]["artist"]["artist_image_rel"][0]["artist_image"];
-type AlbumImage =
-  RouterOutputs["tracks"]["getTracks"][0]["track_album_rel"][0]["album"]["album_image_rel"][0]["album_image"];
+type AttachedImage =
+  RouterOutputs["artists"]["getArtists"][0]["artist_image_rel"][0]["artist_image"];
 
 type ArtistsGetter = typeof trpc.artists.getArtists;
 type TracksGetter = typeof trpc.tracks.getTracks;
@@ -79,7 +77,6 @@ export type {
   PlaylistData,
   AlbumsData,
   AlbumData,
-  ArtistImage,
-  AlbumImage,
+  AttachedImage,
   ContentGetter,
 };

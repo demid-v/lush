@@ -1,8 +1,8 @@
 import ContainerLayout from "../layouts/ContainerLayout";
 import { type ArtistsData, trpc } from "../utils/trpc";
-import ArtistTile from "./ArtistTile";
 import { useContent } from "../utils/hooks";
 import GridLayout from "../layouts/GridLayout";
+import Tile from "./Tile";
 
 const Artists = () => {
   const artists = useContent(
@@ -13,8 +13,17 @@ const Artists = () => {
   return (
     <ContainerLayout>
       <GridLayout>
-        {artists.map((artist) => (
-          <ArtistTile key={artist.id} artist={artist} />
+        {artists.map(({ id, name, artist_image_rel: images }) => (
+          <Tile
+            key={id}
+            data={{
+              id,
+              dir: "artists",
+              name,
+              image: images[0]?.artist_image,
+              fallbackImage: "/assets/note.svg",
+            }}
+          />
         ))}
       </GridLayout>
     </ContainerLayout>
