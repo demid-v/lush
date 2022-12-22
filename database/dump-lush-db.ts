@@ -60,8 +60,6 @@ async function createDir() {
     }
   }
 
-  console.log("dumpDir:", dumpDir);
-
   if (!fs.existsSync(dumpDir)) {
     fs.mkdirSync(dumpDir);
     console.log(`\`${dumpDir}\` directory created.`);
@@ -159,7 +157,7 @@ async function dumpStructure() {
 
     const dumpSpawn = spawn("mysqldump", ["--databases", "lush", "--no-data"]);
 
-    const fd = fs.openSync(dumpFilePath, "a");
+    const fd = fs.openSync(dumpFilePath, "w");
 
     dumpSpawn.stdout.on("data", (data) => {
       fs.writeFileSync(fd, data);
