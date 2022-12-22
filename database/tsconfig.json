@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "target": "ES2015",
+    "module": "CommonJS",
+    "skipLibCheck": true
+  },
+  "include": ["dump-lush-db.ts"]
+}
