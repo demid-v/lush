@@ -10,7 +10,7 @@ const TracksBlock: FC<{ artistId?: number }> = ({ artistId }) => {
 
   const tracks = useContent(trpc.tracks.getTracks, 100, {
     artistId,
-  }) as never as TracksData;
+  }) as TracksData;
 
   function handlePlayableTrackClick(id: number, youtube_video_id: string) {
     setGlobalTracks(tracks);

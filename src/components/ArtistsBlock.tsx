@@ -5,10 +5,7 @@ import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 
 const Artists = () => {
-  const artists = useContent(
-    trpc.artists.getArtists,
-    120
-  ) as never as ArtistsData;
+  const artists = useContent(trpc.artists.getArtists, 120) as ArtistsData;
 
   return (
     <ContainerLayout>

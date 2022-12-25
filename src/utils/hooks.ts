@@ -58,7 +58,7 @@ function useContent(
     };
   }, [isLoading, limit, offset, setOffset]);
 
-  return content;
+  return content as unknown;
 }
 
 export { useContent };
