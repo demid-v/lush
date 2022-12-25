@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { spreadParam } from "./functions";
 import type { ContentGetter } from "./trpc";
 
 function useContent(
@@ -17,7 +18,7 @@ function useContent(
 
   const { isLoading, data } = getContent.useQuery(
     {
-      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
+      ...(q && { search: spreadParam(q) }),
       limit,
       offset,
       ...params,

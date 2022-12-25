@@ -1,44 +1,37 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { spreadParam } from "../utils/functions";
 
 const SearchBar = () => {
   const router = useRouter();
   const { pathname, query } = router;
-  const { q } = query;
+  const { id, q } = query;
 
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    if (q === undefined) {
-      setSearch("");
-    } else if (Array.isArray(q)) {
-      setSearch(q.join(""));
-    } else {
-      setSearch(q);
-    }
+    setSearch(spreadParam(q) || "");
   }, [q]);
 
   function handleSearch(event: ChangeEvent) {
     const inputValue = (event.target as HTMLInputElement).value;
 
     setSearch(inputValue);
-    setSearchTimeout(inputValue);
-  }
 
-  function setSearchTimeout(inputValue: string) {
     if (inputValue === "") {
       delete router.query.q;
     } else {
       router.query.q = inputValue;
     }
 
-    router.push({ pathname, query }, undefined, { shallow: true });
+    const url = (id || "") + (inputValue === "" ? "" : "?q=" + inputValue);
+    router.push({ pathname, query }, url, { shallow: true });
   }
 
   function clearField() {
     delete router.query.q;
-    router.push({ pathname, query }, undefined, { shallow: true });
+    router.push({ pathname, query }, spreadParam(id), { shallow: true });
   }
 
   return (

@@ -8,6 +8,7 @@ import type { NextPage } from "next";
 import { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import { spreadParam } from "../../utils/functions";
 
 const Artist: NextPage = () => {
   const { id, q } = useRouter().query;
@@ -47,7 +48,7 @@ const Artist: NextPage = () => {
 
   const { data: albums } = trpc.albums.getAlbums.useQuery(
     {
-      ...(q && { search: Array.isArray(q) ? q.join("") : q }),
+      ...(q && { search: spreadParam(q) }),
       artistId,
       limit: 6,
     },
