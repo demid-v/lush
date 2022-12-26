@@ -1,7 +1,7 @@
-import { type FC, useEffect, useState } from "react";
+import type { FC } from "react";
 import { constructLink } from "../utils/functions";
 import Link from "next/link";
-import type { AttachedImage, TrackData } from "../utils/trpc";
+import type { TrackData } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
 import type { ActiveTrack } from "../utils/types";
@@ -21,10 +21,7 @@ const Track: FC<{
     track_album_rel: albums,
   } = track;
 
-  const [durationStr, setDurationStr] = useState("");
-  const [trackImageUrl, setTrackImageUrl] = useState("/logo192.png");
-
-  function convertDurationToString() {
+  const durationStr = (() => {
     if (duration === null) {
       return;
     }
@@ -47,26 +44,33 @@ const Track: FC<{
 
     durationStrConstructor += seconds;
 
-    setDurationStr(durationStrConstructor);
-  }
+    return durationStrConstructor;
+  })();
 
-  useEffect(convertDurationToString, [duration]);
+  const defaultImage = "/logo192.png";
 
-  function constructImageUrl() {
-    for (const { artist } of artists) {
-      for (const { artist_image } of artist.artist_image_rel) {
-        return handleArtistImageUrl(artist_image);
+  const imageUrl = (() => {
+    const image = (() => {
+      for (const { album } of albums) {
+        for (const { album_image } of album.album_image_rel) {
+          return album_image;
+        }
       }
-    }
-  }
 
-  function handleArtistImageUrl(artistImageIn: AttachedImage) {
-    const { image_id, domain } = artistImageIn;
+      for (const { artist } of artists) {
+        for (const { artist_image } of artist.artist_image_rel) {
+          return artist_image;
+        }
+      }
+    })();
 
-    setTrackImageUrl(domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id);
-  }
-
-  useEffect(constructImageUrl, [artists, albums]);
+    return image
+      ? image.domain.name +
+          "/" +
+          DOMAIN_MID_PATH[image.domain.id] +
+          image.image_id
+      : defaultImage;
+  })();
 
   function handleActiveTrack() {
     if (youtube_video_id !== null) {
@@ -74,16 +78,15 @@ const Track: FC<{
     }
   }
 
-  function handleVisibility(truthyClass: string, falsyClass = "") {
-    return activeTrack && activeTrack.id === id ? truthyClass : falsyClass;
-  }
+  const getVisibilityClass = (truthyClass: string, falsyClass = "") =>
+    activeTrack?.id === id ? truthyClass : falsyClass;
 
   return (
     <li className="h-12 w-full border-t border-[#e6e6e6] leading-none last:border-b">
       <div
         className={
           "relative h-full p-[0.3125rem] hover:bg-[#eeeeee]" +
-          handleVisibility(" bg-[#eeeeee]")
+          getVisibilityClass(" bg-[#eeeeee]")
         }
       >
         <div
@@ -92,16 +95,21 @@ const Track: FC<{
         ></div>
 
         <div className="flex h-full gap-2 whitespace-nowrap">
-          <div className="aspect-square h-full overflow-hidden">
+          <div className="relative aspect-square h-full overflow-hidden">
             <Image
-              src={trackImageUrl}
+              src={imageUrl}
               alt={
                 "Image of " + artists[0]?.artist.name ||
                 "the track's artist or album"
               }
               width={37}
               height={37}
-              className="h-full object-cover"
+              className={
+                "object-cover" +
+                (imageUrl === defaultImage
+                  ? " absolute top-0 right-0 bottom-0 left-0 m-auto w-[80%]"
+                  : "")
+              }
             />
           </div>
 
@@ -149,7 +157,7 @@ const Track: FC<{
               </div>
 
               <div className="z-10 ml-auto flex w-min text-[0.65rem] leading-none">
-                <div className={handleVisibility("", "hidden")}>
+                <div className={getVisibilityClass("", "hidden")}>
                   <span className="">00:00</span>
                   <span className="">/</span>
                 </div>
