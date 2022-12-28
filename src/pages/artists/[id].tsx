@@ -39,12 +39,14 @@ const Artist: NextPage = () => {
     }
 
     return () => setColor(255, 255, 255);
-  }, [artistsData, r, g, b, setColor]);
+  }, [r, g, b, setColor]);
 
-  const { domain, image_id } = artistImage ?? {};
-  const artistImageUrl = domain
-    ? domain.name + "/" + DOMAIN_MID_PATH[domain.id] + image_id
-    : "";
+  const artistImageUrl = artistImage
+    ? artistImage.domain.name +
+      "/" +
+      DOMAIN_MID_PATH[artistImage.domain.id] +
+      artistImage.image_id
+    : null;
 
   const { data: albums } = trpc.albums.getAlbums.useQuery(
     {

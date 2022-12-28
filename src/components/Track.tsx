@@ -50,19 +50,9 @@ const Track: FC<{
   const defaultImage = "/logo192.png";
 
   const imageUrl = (() => {
-    const image = (() => {
-      for (const { album } of albums) {
-        for (const { album_image } of album.album_image_rel) {
-          return album_image;
-        }
-      }
-
-      for (const { artist } of artists) {
-        for (const { artist_image } of artist.artist_image_rel) {
-          return artist_image;
-        }
-      }
-    })();
+    const image =
+      albums?.[0]?.album.album_image_rel?.[0]?.album_image ||
+      artists?.[0]?.artist.artist_image_rel?.[0]?.artist_image;
 
     return image
       ? image.domain.name +
