@@ -19,7 +19,6 @@ next-env.d.ts
 
 # production
 /build
-/database/dump-lush-db.js
 
 # misc
 .DS_Store
@@ -40,6 +39,3 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-
-# database
-/database/dump
