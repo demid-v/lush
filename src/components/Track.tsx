@@ -98,7 +98,7 @@ const Track: FC<{
                 "object-cover" +
                 (imageUrl === defaultImage
                   ? " absolute top-0 right-0 bottom-0 left-0 m-auto w-[80%]"
-                  : "")
+                  : " h-full w-full")
               }
             />
           </div>
