@@ -49,7 +49,6 @@ const albumsRouter = router({
             },
           },
           where: {
-            deleted: false,
             ...(albumId && { id: albumId }),
             ...(artistId && {
               track_album_rel: {
@@ -59,6 +58,7 @@ const albumsRouter = router({
                   },
                 },
               },
+              deleted: false,
             }),
             ...(search && { name: { contains: search } }),
           },

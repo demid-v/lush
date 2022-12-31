@@ -72,7 +72,6 @@ const tracksRouter = router({
             },
           },
           where: {
-            deleted: false,
             ...(search && {
               OR: [
                 { name: { contains: search } },
@@ -89,6 +88,7 @@ const tracksRouter = router({
             ...(albumId && {
               track_album_rel: { some: { album_id: albumId } },
             }),
+            deleted: false,
           },
           orderBy: { id: "desc" },
           take: limit,

@@ -32,9 +32,9 @@ const artistsRouter = router({
           },
         },
         where: {
-          deleted: false,
           ...(artistId && { id: artistId }),
           ...(search && { name: { contains: search } }),
+          deleted: false,
         },
         orderBy: { id: "desc" },
         ...(limit && { take: limit }),

@@ -47,10 +47,9 @@ const playlistsRouter = router({
           },
         },
         where: {
-          deleted: false,
           ...(playlistId && { id: playlistId }),
-
           ...(search && { name: { contains: search } }),
+          deleted: false,
         },
         orderBy: { id: "desc" },
         ...(limit && { take: limit }),
