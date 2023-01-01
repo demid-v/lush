@@ -4,28 +4,24 @@ Music website.
 
 ![Lush logo](/public/logo512.png)
 
-### Install dependencies, build and launch for production
+### Install dependencies, build and start preview<br/>
+Recommended for a quick preview of the project.
+```sh
+npm run preview:init
+```
 
-Wait for the Docker container to build. Takes ~15 mins.
+### Start the preview on subsequent runs
+```sh
+npm run preview
+```
 
+### Install dependencies, build and start. Installs and runs docker image of the full database</br>
+Takes a lot of time.
 ```sh
 npm run start:init
 ```
 
-### Launch for production on subsequent runs
-
+### Start on subsequent runs
 ```sh
 npm run start:remote
-```
-
-### Build the project
-
-```sh
-npm run build
-```
-
-### Start in development mode
-
-```sh
-npm run dev:remote
 ```
