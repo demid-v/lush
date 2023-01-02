@@ -1,52 +1,23 @@
 import { useRouter } from "next/router";
-import TracksBlock from "../../components/TracksBlock";
-import { useTheme } from "../../contexts/Theme";
-import { DOMAIN_MID_PATH } from "../../utils/globals";
 import { trpc } from "../../utils/trpc";
-import Image from "next/image";
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import { spreadParam } from "../../utils/functions";
+import Tile from "../../components/Tile";
+import ArtistHeader from "../../components/ArtistHeader";
+import TracksBlock from "../../components/TracksBlock";
 
 const Artist: NextPage = () => {
   const { id, q } = useRouter().query;
-  const { theme, setColor } = useTheme();
+
+  const [pageTitle, setPageTitle] = useState("Artist");
 
   const artistId = (() => {
     let artistId = Array.isArray(id) ? id.join("") : id;
     artistId = artistId?.split(/\+(.*)/s)[0];
     return typeof artistId === "string" ? Number(artistId) : artistId;
   })();
-
-  const { data: artistsData } = trpc.artists.getArtists.useQuery(
-    {
-      artistId,
-    },
-    { refetchOnWindowFocus: false }
-  );
-
-  const { name: artistName, artist_image_rel: artistImages } =
-    artistsData?.[0] ?? {};
-
-  const artistImage = artistImages?.[0]?.artist_image;
-  const { r, g, b } = artistImage ?? {};
-
-  useEffect(() => {
-    if (r !== undefined && g !== undefined && b !== undefined) {
-      setColor(r, g, b);
-    }
-
-    return () => setColor(255, 255, 255);
-  }, [r, g, b, setColor]);
-
-  const artistImageUrl = artistImage
-    ? artistImage.domain.name +
-      "/" +
-      DOMAIN_MID_PATH[artistImage.domain.id] +
-      artistImage.image_id
-    : null;
 
   const { data: albums } = trpc.albums.getAlbums.useQuery(
     {
@@ -60,95 +31,27 @@ const Artist: NextPage = () => {
   return (
     <>
       <Head>
-        <title>{artistName || "Artist"}</title>
+        <title>{pageTitle}</title>
       </Head>
-      <div className="w-full">
-        <div>
-          <div className="relative mb-10 h-[25rem]">
-            {artistImageUrl && (
-              <Image
-                src={artistImageUrl}
-                alt={"Image of " + artistName}
-                width={1920}
-                height={400}
-                className="h-full w-full object-cover object-[0%_25%]"
+      <div>
+        <ArtistHeader artistId={artistId} setPageTitle={setPageTitle} />
+        <div className="mx-auto box-content max-w-[95rem] px-20">
+          <ul className="grid grid-cols-[repeat(6,calc((120rem-(12.5rem*2)-(2rem*5))/6))] gap-8 overflow-auto pb-5">
+            {albums?.map(({ id, name, album_image_rel: images }) => (
+              <Tile
+                key={id}
+                data={{
+                  id,
+                  domain: "albums",
+                  name,
+                  image: images[0]?.album_image,
+                  fallbackImage: "/assets/vynil.svg",
+                }}
               />
-            )}
-            <div
-              className="absolute top-0 right-0 h-full w-full"
-              style={{
-                background: `linear-gradient(rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, 0))`,
-              }}
-            ></div>
-            <div className="absolute top-[3.75rem] w-full">
-              <div className="mx-auto box-content max-w-[95rem] px-20">
-                <div className="w-1/2">
-                  <div
-                    className={
-                      "mb-[1.875rem] text-[2.5rem] font-bold" +
-                      (theme === "dark" ? " text-white" : "")
-                    }
-                  >
-                    {artistName}
-                  </div>
-                </div>
-                <button className="h-10 w-[10.625rem] border border-[rgba(180,180,180,1)] bg-white">
-                  <div className="flex justify-center">
-                    <Image
-                      src="/assets/play.svg"
-                      alt="Play artist"
-                      width={54}
-                      height={54}
-                      className="mr-2.5 w-[0.938rem]"
-                    />
-                    <div className="font-['Open_Sans'] text-[0.78rem] uppercase tracking-[0.04rem]">
-                      Play artist
-                    </div>
-                  </div>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="mx-auto box-content max-w-[95rem] px-20">
-            <ul className="grid grid-cols-[repeat(6,calc((120rem-(12.5rem*2)-(2rem*5))/6))] gap-8 overflow-auto pb-5">
-              {albums?.map(({ id, name, album_image_rel: albumImages }) => {
-                const albumImage = albumImages[0]?.album_image;
-
-                const albumImageUrl = albumImage
-                  ? albumImage.domain.name +
-                    "/" +
-                    DOMAIN_MID_PATH[albumImage.domain.id] +
-                    albumImage.image_id
-                  : "/assets/vynil.svg";
-
-                return (
-                  <li key={id}>
-                    <div>
-                      <Link href="/albums" className="mb-3 block">
-                        <picture className="relative block pb-[100%]">
-                          <Image
-                            src={albumImageUrl}
-                            alt={"Image of " + name}
-                            width={230}
-                            height={230}
-                            className={
-                              "absolute aspect-square object-cover" +
-                              (!albumImage
-                                ? " top-0 right-0 bottom-0 left-0 m-auto w-[45%]"
-                                : "")
-                            }
-                          />
-                        </picture>
-                      </Link>
-                      <div className="font-medium">{name}</div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
+            ))}
+          </ul>
         </div>
-        <TracksBlock artistId={artistId} />
+        <TracksBlock params={{ artistId }} />
       </div>
     </>
   );

@@ -9,7 +9,7 @@ datasource db {
 
 model album {
   id               Int               @id @unique(map: "id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
-  name             String?           @db.VarChar(5000)
+  name             String            @db.VarChar(5000)
   description      String?           @db.Text
   release_day      Int?              @db.UnsignedSmallInt
   release_month    Int?              @db.UnsignedSmallInt

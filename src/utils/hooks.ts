@@ -6,7 +6,10 @@ import type { ContentGetter } from "./trpc";
 function useContent(
   getContent: ContentGetter,
   limit: number,
-  params?: { artistId?: number }
+  params?:
+    | { artistId: number | undefined }
+    | { albumId: number | undefined }
+    | { playlistId: number | undefined }
 ) {
   const [offset, setOffset] = useState(0);
 

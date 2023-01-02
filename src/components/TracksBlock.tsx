@@ -5,12 +5,15 @@ import { type TracksData, trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
 import { useContent } from "../utils/hooks";
 
-const TracksBlock: FC<{ artistId?: number }> = ({ artistId }) => {
+const TracksBlock: FC<{
+  params?:
+    | { artistId: number | undefined }
+    | { albumId: number | undefined }
+    | { playlistId: number | undefined };
+}> = ({ params }) => {
   const { activeTrack, setActiveTrack, setGlobalTracks } = useTracks();
 
-  const tracks = useContent(trpc.tracks.getTracks, 100, {
-    artistId,
-  }) as TracksData;
+  const tracks = useContent(trpc.tracks.getTracks, 100, params) as TracksData;
 
   function handlePlayableTrackClick(id: number, youtube_video_id: string) {
     setGlobalTracks(tracks);

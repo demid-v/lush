@@ -11,10 +11,14 @@ const tracksRouter = router({
         search: z.string().nullish(),
         artistId: z.number().nullish(),
         albumId: z.number().nullish(),
+        playlistId: z.number().nullish(),
       })
     )
     .query(
-      async ({ ctx, input: { limit, offset, search, artistId, albumId } }) => {
+      async ({
+        ctx,
+        input: { limit, offset, search, artistId, albumId, playlistId },
+      }) => {
         const tracks = await ctx.prisma.track.findMany({
           select: {
             id: true,
@@ -87,6 +91,9 @@ const tracksRouter = router({
             }),
             ...(albumId && {
               track_album_rel: { some: { album_id: albumId } },
+            }),
+            ...(playlistId && {
+              track_playlist_rel: { some: { playlist_id: playlistId } },
             }),
             deleted: false,
           },
