@@ -18,7 +18,7 @@ const PlaylistsBlock = () => {
             key={id}
             data={{
               id,
-              dir: "artists",
+              domain: "playlists",
               name,
               image: images[0]?.playlist_image,
               fallbackImage: "/assets/playlist.png",

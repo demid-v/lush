@@ -4,7 +4,7 @@ import { useContent } from "../utils/hooks";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 
-const Artists = () => {
+const ArtistsBlock = () => {
   const artists = useContent(trpc.artists.getArtists, 120) as ArtistsData;
 
   return (
@@ -15,7 +15,7 @@ const Artists = () => {
             key={id}
             data={{
               id,
-              dir: "artists",
+              domain: "artists",
               name,
               image: images[0]?.artist_image,
               fallbackImage: "/assets/note.svg",
@@ -27,4 +27,4 @@ const Artists = () => {
   );
 };
 
-export default Artists;
+export default ArtistsBlock;

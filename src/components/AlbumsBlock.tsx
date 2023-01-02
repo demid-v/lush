@@ -15,7 +15,7 @@ const Albums = () => {
             key={id}
             data={{
               id,
-              dir: "artists",
+              domain: "albums",
               name,
               image: images[0]?.album_image,
               fallbackImage: "/assets/vynil.svg",
