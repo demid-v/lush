@@ -80,6 +80,14 @@ const preview = async (_req: NextApiRequest, res: NextApiResponse) => {
 
   const trackIds = trackIdsSelected.map(({ id }) => id);
 
+  const trackArtistIds = await prisma.track_artist_rel.findMany({
+    select: { track_id: true, artist_id: true },
+    where: {
+      track_id: { in: trackIds },
+      artist_id: { in: artistIds.map(({ id }) => id) },
+    },
+  });
+
   const artistImageIds = await prisma.artist_image.findMany({
     select: { id: true },
     where: {
@@ -93,6 +101,14 @@ const preview = async (_req: NextApiRequest, res: NextApiResponse) => {
     },
   });
 
+  const trackAlbumIds = await prisma.track_album_rel.findMany({
+    select: { track_id: true, album_id: true, track_position: true },
+    where: {
+      track_id: { in: trackIds },
+      album_id: { in: [...albumIds] },
+    },
+  });
+
   const genreIds = await prisma.genre.findMany({
     select: { id: true },
     where: {
@@ -102,14 +118,13 @@ const preview = async (_req: NextApiRequest, res: NextApiResponse) => {
   });
 
   const trackGenreIds = await prisma.track_genre_rel.findMany({
-    select: { genre_id: true },
+    select: { track_id: true, genre_id: true },
     where: {
       track_id: { in: trackIds },
       genre_id: {
         in: genreIds.map(({ id }) => id),
       },
     },
-    distinct: ["genre_id"],
   });
 
   const albumImageIds = await prisma.album_image.findMany({
@@ -149,8 +164,9 @@ const preview = async (_req: NextApiRequest, res: NextApiResponse) => {
       }
 
       if (table.name === "track_artist_rel") {
-        table.where = artistIds.map(({ id }) => ({
-          artist_id: id,
+        table.where = trackArtistIds.map(({ track_id, artist_id }) => ({
+          track_id,
+          artist_id,
         }));
       }
 
@@ -169,7 +185,8 @@ const preview = async (_req: NextApiRequest, res: NextApiResponse) => {
       }
 
       if (table.name === "track_genre_rel") {
-        table.where = trackGenreIds.map(({ genre_id }) => ({
+        table.where = trackGenreIds.map(({ track_id, genre_id }) => ({
+          track_id,
           genre_id,
         }));
       }
@@ -179,9 +196,13 @@ const preview = async (_req: NextApiRequest, res: NextApiResponse) => {
       }
 
       if (table.name === "track_album_rel") {
-        table.where = [...albumIds].map((id) => ({
-          album_id: id,
-        }));
+        table.where = trackAlbumIds.map(
+          ({ track_id, album_id, track_position }) => ({
+            track_id,
+            album_id,
+            track_position,
+          })
+        );
       }
 
       if (table.name === "album_image") {
