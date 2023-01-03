@@ -71,6 +71,11 @@ const tracksRouter = router({
                   },
                 },
               },
+              ...(albumId && {
+                where: {
+                  album_id: albumId,
+                },
+              }),
               orderBy: { album: { id: "asc" } },
               take: 1,
             },
