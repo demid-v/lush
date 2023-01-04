@@ -44,7 +44,7 @@ const Artist: NextPage = () => {
         <title>{pageTitle}</title>
       </Head>
       <div>
-        <PageHeader name={name} image={image} setPageTitle={setPageTitle} />;
+        <PageHeader name={name} image={image} setPageTitle={setPageTitle} />
         <div className="mx-auto box-content max-w-[95rem] px-20">
           <ul className="grid grid-cols-[repeat(6,calc((120rem-(12.5rem*2)-(2rem*5))/6))] gap-8 overflow-auto pb-5">
             {albums?.map(({ id, name, album_image_rel: images }) => (

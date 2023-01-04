@@ -33,7 +33,7 @@ const Album: NextPage = () => {
         <title>{pageTitle}</title>
       </Head>
       <div>
-        <PageHeader name={name} image={image} setPageTitle={setPageTitle} />;
+        <PageHeader name={name} image={image} setPageTitle={setPageTitle} />
         <TracksBlock params={{ albumId }} />
       </div>
     </>
