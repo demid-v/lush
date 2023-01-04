@@ -20,7 +20,7 @@ const tracksRouter = router({
         input: { limit, offset, search, artistId, albumId, playlistId },
       }) => {
         if (albumId) {
-          return (
+          const tracks = (
             await ctx.prisma.album.findMany({
               select: {
                 track_album_rel: {
@@ -62,6 +62,29 @@ const tracksRouter = router({
                           orderBy: { genre_position: "asc" },
                           take: 5,
                         },
+                        track_album_rel: {
+                          select: {
+                            track_position: true,
+                            album: {
+                              select: {
+                                album_image_rel: {
+                                  select: {
+                                    album_image: {
+                                      select: { domain: true, image_id: true },
+                                    },
+                                  },
+                                  where: { is_cover: true },
+                                  take: 1,
+                                },
+                              },
+                            },
+                          },
+                          where: {
+                            album_id: albumId,
+                          },
+                          orderBy: { album: { id: "asc" } },
+                          take: 1,
+                        },
                       },
                     },
                   },
@@ -78,7 +101,9 @@ const tracksRouter = router({
               },
               take: 1,
             })
-          )[0]!.track_album_rel.map(({ track }) => track);
+          )[0]?.track_album_rel.map(({ track }) => track);
+
+          return tracks === undefined ? [] : tracks;
         } else {
           return await ctx.prisma.track.findMany({
             select: {
