@@ -2,21 +2,21 @@
 
 Music website.
 
-![Lush logo](/public/logo512.png)
+![Page of artist Soccer Mommy](/screenshots/artist.png)
 
 ### Install dependencies, build and start preview<br/>
-Recommended for a quick preview of the project.
+Recommended for a quick look at the project.
 ```sh
 npm run preview:init
 ```
 
-### Start the preview on subsequent runs
+### Start preview on subsequent runs
 ```sh
 npm run preview
 ```
 
-### Install dependencies, build and start. Installs and runs docker image of the full database</br>
-Takes a lot of time.
+### Install dependencies, build and start
+Installs and runs docker image of the full database. Takes a lot of time.
 ```sh
 npm run start:init
 ```
