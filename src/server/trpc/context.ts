@@ -1,4 +1,4 @@
-import { type inferAsyncReturnType } from "@trpc/server";
+import type { inferAsyncReturnType } from "@trpc/server";
 
 import { prisma } from "../db/client";
 

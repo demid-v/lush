@@ -11,7 +11,7 @@ const TracksBlock: FC<{
     | { albumId: number | undefined }
     | { playlistId: number | undefined };
 }> = ({ params }) => {
-  const { activeTrack, setActiveTrack, setGlobalTracks } = useTracks();
+  const { setActiveTrack, setGlobalTracks } = useTracks();
 
   const tracks = useContent(trpc.tracks.getTracks, 100, params) as TracksData;
 
@@ -27,7 +27,6 @@ const TracksBlock: FC<{
           <Track
             key={track.id}
             track={track}
-            activeTrack={activeTrack}
             handlePlayableTrackClick={handlePlayableTrackClick}
           />
         ))}

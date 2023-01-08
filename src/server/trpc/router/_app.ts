@@ -11,5 +11,4 @@ export const appRouter = router({
   playlists: playlistsRouter,
 });
 
-// export type definition of API
 export type AppRouter = typeof appRouter;

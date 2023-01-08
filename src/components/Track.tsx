@@ -4,13 +4,12 @@ import Link from "next/link";
 import type { TrackData } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
-import type { ActiveTrack } from "../utils/types";
+import { useTracks } from "../contexts/Tracks";
 
 const Track: FC<{
   track: TrackData;
-  activeTrack: ActiveTrack;
   handlePlayableTrackClick: (id: number, youtube_video_id: string) => void;
-}> = ({ track, activeTrack, handlePlayableTrackClick }) => {
+}> = ({ track, handlePlayableTrackClick }) => {
   const {
     id,
     name,
@@ -20,6 +19,8 @@ const Track: FC<{
     track_genre_rel: genres,
     track_album_rel: albums,
   } = track;
+
+  const { activeTrack } = useTracks();
 
   const durationStr = (() => {
     if (duration === null) {
