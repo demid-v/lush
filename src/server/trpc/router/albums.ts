@@ -1,5 +1,4 @@
 import { z } from "zod";
-
 import { router, publicProcedure } from "../trpc";
 
 const albumsRouter = router({
@@ -14,7 +13,10 @@ const albumsRouter = router({
       })
     )
     .query(
-      async ({ ctx, input: { limit, offset, search, albumId, artistId } }) => {
+      async ({
+        ctx,
+        input: { limit = 120, offset, search, albumId, artistId },
+      }) => {
         const albums = await ctx.prisma.album.findMany({
           select: {
             id: true,
