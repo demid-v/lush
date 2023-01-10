@@ -55,7 +55,7 @@ const Artist: NextPage = () => {
                   domain: "albums",
                   name,
                   image: images[0]?.album_image,
-                  fallbackImage: "/assets/vynil.svg",
+                  defaultImage: "/assets/vynil.svg",
                 }}
               />
             ))}

@@ -18,7 +18,7 @@ const ArtistsBlock = () => {
               domain: "artists",
               name,
               image: images[0]?.artist_image,
-              fallbackImage: "/assets/note.svg",
+              defaultImage: "/assets/note.svg",
             }}
           />
         ))}

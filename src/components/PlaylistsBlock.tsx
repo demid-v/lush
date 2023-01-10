@@ -21,7 +21,7 @@ const PlaylistsBlock = () => {
               domain: "playlists",
               name,
               image: images[0]?.playlist_image,
-              fallbackImage: "/assets/playlist.png",
+              defaultImage: "/assets/playlist.png",
             }}
           />
         ))}

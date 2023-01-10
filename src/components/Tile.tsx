@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { type FC, useState } from "react";
+import type { FC } from "react";
 import { constructLink } from "../utils/functions";
-import Image from "next/image";
 import type { AttachedImage } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
+import FaultTolerantImage from "./FaultTolerantImage";
 
 const Tile: FC<{
   data: {
@@ -11,11 +11,9 @@ const Tile: FC<{
     domain: "artists" | "albums" | "playlists";
     name: string | null;
     image: AttachedImage | undefined;
-    fallbackImage: string;
+    defaultImage: string;
   };
-}> = ({ data: { id, domain, name, image, fallbackImage } }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-
+}> = ({ data: { id, domain, name, image, defaultImage } }) => {
   const imageUrl =
     image &&
     image.domain.name + "/" + DOMAIN_MID_PATH[image.domain.id] + image.image_id;
@@ -28,28 +26,18 @@ const Tile: FC<{
           className="mb-3 block"
         >
           <div className="relative pb-[100%]">
-            {imageUrl && (
-              <Image
-                src={imageUrl}
-                alt={"Image of " + name}
-                width={200}
-                height={200}
-                className={
-                  "absolute h-full w-full object-cover" +
-                  (!imageLoaded ? " invisible" : "")
-                }
-                onLoad={() => setImageLoaded(true)}
-              />
-            )}
-            <Image
-              src={fallbackImage}
-              alt="Music note"
-              width={200}
-              height={200}
-              className={
-                "absolute top-0 right-0 bottom-0 left-0 m-auto w-[45%]" +
-                (imageLoaded ? " invisible" : "")
-              }
+            <FaultTolerantImage
+              image={{
+                url: imageUrl,
+                alt: "Image of " + name,
+                width: 256,
+                height: 256,
+              }}
+              defaultImage={{
+                url: defaultImage,
+                alt: "Music note",
+                w: "w-[45%]",
+              }}
             />
           </div>
         </Link>

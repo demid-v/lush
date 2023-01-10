@@ -1,4 +1,10 @@
-import { type Dispatch, type FC, type SetStateAction, useEffect } from "react";
+import {
+  type Dispatch,
+  type FC,
+  type SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { useTheme } from "../contexts/Theme";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { AttachedImage } from "../utils/trpc";
@@ -11,13 +17,15 @@ const PageHeader: FC<{
 }> = ({ name, image, setPageTitle }) => {
   const { theme, setColor } = useTheme();
 
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   useEffect(() => {
     if (name !== undefined) {
       setPageTitle(name);
     }
   }, [name, setPageTitle]);
 
-  const { r, g, b } = image ?? {};
+  const { r = 255, g = 255, b = 255 } = image ?? {};
 
   const imageUrl =
     image &&
@@ -40,14 +48,18 @@ const PageHeader: FC<{
           width={1920}
           height={400}
           className="h-full w-full object-cover object-[0%_25%]"
+          onLoad={() => setImageLoaded(true)}
         />
       )}
       <div
         className="absolute top-0 right-0 h-full w-full"
         style={{
-          background: `linear-gradient(rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, 0))`,
+          background: `linear-gradient(rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, ${
+            imageLoaded ? "0" : "1"
+          })`,
         }}
       ></div>
+
       <div className="absolute top-[3.75rem] w-full">
         <div className="mx-auto box-content max-w-[95rem] px-20">
           <div className="w-1/2">

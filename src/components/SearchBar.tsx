@@ -35,11 +35,11 @@ const SearchBar = () => {
   }
 
   return (
-    <div className="relative mr-6 flex h-5 w-48 overflow-hidden rounded-full border border-[#b4b4b4]">
+    <div className="relative mr-6 flex h-5 w-36 overflow-hidden rounded-full border border-[#b4b4b4]">
       <input
-        className="h-full w-full rounded-full pl-2 pr-10 text-sm"
+        className="h-full w-full rounded-full pl-2 pr-7 text-sm"
         type="text"
-        placeholder="search"
+        placeholder="search..."
         value={search}
         onChange={handleSearch}
       />

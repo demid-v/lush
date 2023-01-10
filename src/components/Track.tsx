@@ -5,6 +5,7 @@ import type { TrackData } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
 import { useTracks } from "../contexts/Tracks";
+import FaultTolerantImage from "./FaultTolerantImage";
 
 const Track: FC<{
   track: TrackData;
@@ -55,12 +56,13 @@ const Track: FC<{
       albums?.[0]?.album.album_image_rel?.[0]?.album_image ||
       artists?.[0]?.artist.artist_image_rel?.[0]?.artist_image;
 
-    return image
-      ? image.domain.name +
-          "/" +
-          DOMAIN_MID_PATH[image.domain.id] +
-          image.image_id
-      : defaultImage;
+    return (
+      image &&
+      image.domain.name +
+        "/" +
+        DOMAIN_MID_PATH[image.domain.id] +
+        image.image_id
+    );
   })();
 
   function handleActiveTrack() {
@@ -87,20 +89,20 @@ const Track: FC<{
 
         <div className="flex h-full gap-2 whitespace-nowrap">
           <div className="relative aspect-square h-full overflow-hidden">
-            <Image
-              src={imageUrl}
-              alt={
-                "Image of " + artists[0]?.artist.name ||
-                "the track's artist or album"
-              }
-              width={37}
-              height={37}
-              className={
-                "object-cover" +
-                (imageUrl === defaultImage
-                  ? " absolute top-0 right-0 bottom-0 left-0 m-auto w-[80%]"
-                  : " h-full w-full")
-              }
+            <FaultTolerantImage
+              image={{
+                url: imageUrl,
+                alt:
+                  "Image of " +
+                  (artists[0]?.artist.name || "the track's artist or album"),
+                width: 48,
+                height: 48,
+              }}
+              defaultImage={{
+                url: defaultImage,
+                alt: "Spiral galaxy",
+                w: "w-[80%]",
+              }}
             />
           </div>
 
