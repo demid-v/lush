@@ -76,12 +76,12 @@ const PageHeader: FC<{
             <div className="flex justify-center">
               <Image
                 src="/assets/play.svg"
-                alt="Play artist"
+                alt="Play tracks"
                 width={54}
                 height={54}
                 className="mr-2.5 w-[0.938rem]"
               />
-              <div className="font-['Open_Sans'] text-[0.78rem] uppercase tracking-[0.04rem]">
+              <div className="font-['Open_Sans'] text-[0.78rem] font-bold uppercase tracking-[0.04rem]">
                 Play tracks
               </div>
             </div>

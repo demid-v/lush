@@ -54,12 +54,14 @@ function useContent(
       }
     }
 
-    document.addEventListener("scroll", checkPosition);
+    if (data && data.length >= limit) {
+      document.addEventListener("scroll", checkPosition);
+    }
 
     return () => {
       document.removeEventListener("scroll", checkPosition);
     };
-  }, [isLoading, limit, offset, setOffset]);
+  }, [isLoading, data, limit, offset, setOffset]);
 
   return content as unknown;
 }
