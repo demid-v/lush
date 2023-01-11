@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { FC } from "react";
-import { constructLink } from "../utils/functions";
+import { encode } from "../utils/functions";
 import type { AttachedImage } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import FaultTolerantImage from "./FaultTolerantImage";
@@ -22,7 +22,7 @@ const Tile: FC<{
     <li>
       <div>
         <Link
-          href={`/${domain}/${id}+${constructLink(name || "")}`}
+          href={`/${domain}/${id}+${encode(name || "")}`}
           className="mb-3 block"
         >
           <div className="relative pb-[100%]">

@@ -1,5 +1,5 @@
 import type { FC } from "react";
-import { constructLink } from "../utils/functions";
+import { encode } from "../utils/functions";
 import Link from "next/link";
 import type { TrackData } from "../utils/trpc";
 import { DOMAIN_MID_PATH } from "../utils/globals";
@@ -116,9 +116,7 @@ const Track: FC<{
                   key={artist.id}
                   className="z-10 w-min text-[0.83rem] leading-[1.05rem] text-[#8d8d8d]"
                 >
-                  <Link
-                    href={`/artists/${artist.id}+${constructLink(artist.name)}`}
-                  >
+                  <Link href={`/artists/${artist.id}+${encode(artist.name)}`}>
                     {artist.name}
                   </Link>
                 </span>

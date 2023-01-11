@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { spreadParam } from "./functions";
+import { decode, encodeForDb, joinParam } from "./functions";
 import type { ContentGetter } from "./trpc";
 
 function useContent(
@@ -21,7 +21,7 @@ function useContent(
 
   const { isLoading, data } = getContent.useQuery(
     {
-      ...(q && { search: spreadParam(q) }),
+      ...(q && { search: encodeForDb(decode(joinParam(q) || "")) }),
       limit,
       offset,
       ...params,
@@ -44,6 +44,10 @@ function useContent(
   }, [data, offset]);
 
   useEffect(() => {
+    if (!data || data.length < limit) {
+      return;
+    }
+
     function checkPosition() {
       if (
         !isLoading &&
@@ -54,9 +58,7 @@ function useContent(
       }
     }
 
-    if (data && data.length >= limit) {
-      document.addEventListener("scroll", checkPosition);
-    }
+    document.addEventListener("scroll", checkPosition);
 
     return () => {
       document.removeEventListener("scroll", checkPosition);
