@@ -1,17 +1,21 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { spreadParam } from "../utils/functions";
+import { decode, encode, joinParam } from "../utils/functions";
+import { useTheme } from "../contexts/Theme";
 
 const SearchBar = () => {
   const router = useRouter();
   const { pathname, query } = router;
   const { id, q } = query;
 
+  const { theme } = useTheme();
+
+  const [isVisible, setIsVisible] = useState(false);
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    setSearch(spreadParam(q) || "");
+    setSearch(decode(joinParam(q) || ""));
   }, [q]);
 
   function handleSearch(event: ChangeEvent) {
@@ -19,41 +23,67 @@ const SearchBar = () => {
 
     setSearch(inputValue);
 
-    if (inputValue === "") {
+    const inputValueEncoded = encode(inputValue);
+    console.log(inputValueEncoded);
+
+    if (inputValueEncoded === "") {
       delete router.query.q;
     } else {
-      router.query.q = inputValue;
+      router.query.q = inputValueEncoded;
     }
 
-    const url = (id || "") + (inputValue === "" ? "" : "?q=" + inputValue);
+    const url =
+      (id ?? "") + (inputValueEncoded === "" ? "" : "?q=" + inputValueEncoded);
     router.push({ pathname, query }, url, { shallow: true });
   }
 
   function clearField() {
     delete router.query.q;
-    router.push({ pathname, query }, spreadParam(id), { shallow: true });
+    router.push({ pathname, query }, joinParam(id), { shallow: true });
   }
 
   return (
-    <div className="relative mr-6 flex h-5 w-36 overflow-hidden rounded-full border border-[#b4b4b4]">
-      <input
-        className="h-full w-full rounded-full pl-2 pr-7 text-sm"
-        type="text"
-        placeholder="search..."
-        value={search}
-        onChange={handleSearch}
-      />
-      <button
-        className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2"
-        onClick={clearField}
+    <div className="mr-3 flex gap-4">
+      <div
+        className={
+          "relative flex h-5 w-36 overflow-hidden rounded-full border border-[#CECECE]" +
+          (isVisible ? "" : " invisible")
+        }
       >
-        <Image
-          src="/assets/cross.svg"
-          alt="Cross"
-          width={10}
-          height={10}
-          className="mx-auto w-2"
+        <input
+          className="h-full w-full rounded-full pl-2 pr-7 text-sm"
+          type="text"
+          placeholder="search..."
+          value={search}
+          onChange={handleSearch}
         />
+        <button
+          className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2"
+          onClick={clearField}
+        >
+          <Image
+            src="/assets/cross.svg"
+            alt="Cross"
+            width={10}
+            height={10}
+            className="mx-auto w-2"
+          />
+        </button>
+      </div>
+      <button onClick={() => setIsVisible((prevState) => !prevState)}>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512.005 512.005"
+          className="mx-auto w-3"
+        >
+          <path
+            d="M505.749,475.587l-145.6-145.6c28.203-34.837,45.184-79.104,45.184-127.317c0-111.744-90.923-202.667-202.667-202.667
+S0,90.925,0,202.669s90.923,202.667,202.667,202.667c48.213,0,92.48-16.981,127.317-45.184l145.6,145.6
+c4.16,4.16,9.621,6.251,15.083,6.251s10.923-2.091,15.083-6.251C514.091,497.411,514.091,483.928,505.749,475.587z
+M202.667,362.669c-88.235,0-160-71.765-160-160s71.765-160,160-160s160,71.765,160,160S290.901,362.669,202.667,362.669z"
+            fill={theme === "dark" ? "white" : "black"}
+          />
+        </svg>
       </button>
     </div>
   );
