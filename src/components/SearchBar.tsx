@@ -1,22 +1,31 @@
 import { useEffect, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { decode, encode, joinParam } from "../utils/functions";
+import { encode, joinParam } from "../utils/functions";
 import { useTheme } from "../contexts/Theme";
+import { useDecodedQuery } from "../utils/hooks";
 
 const SearchBar = () => {
   const router = useRouter();
   const { pathname, query } = router;
-  const { id, q } = query;
+  const { id } = query;
 
   const { theme } = useTheme();
 
   const [isVisible, setIsVisible] = useState(false);
   const [search, setSearch] = useState("");
 
+  const decodedQuery = useDecodedQuery();
+
   useEffect(() => {
-    setSearch(decode(joinParam(q) || ""));
-  }, [q]);
+    if (decodedQuery !== null) {
+      setSearch(decodedQuery);
+    }
+
+    if (decodedQuery) {
+      setIsVisible(true);
+    }
+  }, [decodedQuery]);
 
   function handleSearch(event: ChangeEvent) {
     const inputValue = (event.target as HTMLInputElement).value;
@@ -24,7 +33,6 @@ const SearchBar = () => {
     setSearch(inputValue);
 
     const inputValueEncoded = encode(inputValue);
-    console.log(inputValueEncoded);
 
     if (inputValueEncoded === "") {
       delete router.query.q;

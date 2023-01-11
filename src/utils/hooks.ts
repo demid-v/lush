@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { decode, encodeForDb, joinParam } from "./functions";
 import type { ContentGetter } from "./trpc";
 
@@ -19,9 +19,11 @@ function useContent(
     setOffset(0);
   }, [q]);
 
+  const decodedQuery = useDecodedQuery();
+
   const { isLoading, data } = getContent.useQuery(
     {
-      ...(q && { search: encodeForDb(decode(joinParam(q) || "")) }),
+      ...(decodedQuery && { search: encodeForDb(decodedQuery) }),
       limit,
       offset,
       ...params,
@@ -68,4 +70,23 @@ function useContent(
   return content as unknown;
 }
 
-export { useContent };
+function useDecodedQuery() {
+  const { q } = useRouter().query;
+  const [decodedQuery, setDecodedQuery] = useState<string | null>(null);
+
+  const firstUpdate = useRef(true);
+
+  useEffect(() => {
+    setDecodedQuery(
+      firstUpdate.current ? joinParam(q) || "" : decode(joinParam(q) || "")
+    );
+
+    if (q !== undefined && firstUpdate.current) {
+      firstUpdate.current = false;
+    }
+  }, [q]);
+
+  return decodedQuery;
+}
+
+export { useContent, useDecodedQuery  };
