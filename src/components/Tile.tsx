@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { FC } from "react";
 import { encode } from "../utils/functions";
-import type { AttachedImage } from "../utils/trpc";
+import type { AttachedImage } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import FaultTolerantImage from "./FaultTolerantImage";
 

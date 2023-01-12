@@ -7,7 +7,7 @@ import {
 } from "react";
 import { useTheme } from "../contexts/Theme";
 import { DOMAIN_MID_PATH } from "../utils/globals";
-import type { AttachedImage } from "../utils/trpc";
+import type { AttachedImage } from "../utils/types";
 import Image from "next/image";
 
 const PageHeader: FC<{

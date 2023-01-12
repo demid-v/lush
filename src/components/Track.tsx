@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import { encode } from "../utils/functions";
 import Link from "next/link";
-import type { TrackData } from "../utils/trpc";
+import type { TrackData } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
 import { useTracks } from "../contexts/Tracks";

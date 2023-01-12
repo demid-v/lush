@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { decode, encodeForDb, joinParam } from "./functions";
-import type { ContentGetter } from "./trpc";
+import type { ContentProcedure } from "./types";
 
 function useContent(
-  getContent: ContentGetter,
+  getContent: ContentProcedure,
   limit: number,
   params?:
     | { artistId: number | undefined }
@@ -89,4 +89,4 @@ function useDecodedQuery() {
   return decodedQuery;
 }
 
-export { useContent, useDecodedQuery  };
+export { useContent, useDecodedQuery };

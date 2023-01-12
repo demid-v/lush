@@ -8,8 +8,7 @@ import {
   useRef,
   useState,
 } from "react";
-import type { TracksData } from "../utils/trpc";
-import type { ActiveTrack } from "../utils/types";
+import type { ActiveTrack, TracksData } from "../utils/types";
 
 const TracksContext = createContext<{
   activeTrack: ActiveTrack;

@@ -1,5 +1,6 @@
 import ContainerLayout from "../layouts/ContainerLayout";
-import { type PlaylistsData, trpc } from "../utils/trpc";
+import type { PlaylistsData } from "../utils/types";
+import { trpc } from "../utils/trpc";
 import { useContent } from "../utils/hooks";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
