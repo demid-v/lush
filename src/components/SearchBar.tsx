@@ -24,6 +24,8 @@ const SearchBar = () => {
 
     if (decodedQuery) {
       setIsVisible(true);
+    } else {
+      setIsVisible(false);
     }
   }, [decodedQuery]);
 
@@ -54,7 +56,7 @@ const SearchBar = () => {
     <div className="mr-3 flex gap-4">
       <div
         className={
-          "relative flex h-5 w-36 overflow-hidden rounded-full border border-[#CECECE]" +
+          "relative flex h-5 w-36 overflow-hidden rounded-full border border-[#cecece]" +
           (isVisible ? "" : " invisible")
         }
       >

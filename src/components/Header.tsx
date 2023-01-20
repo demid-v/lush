@@ -6,11 +6,11 @@ const Header = () => {
   const { theme } = useTheme();
 
   return (
-    <header className="fixed z-20 flex h-10 w-full items-center justify-between bg-header px-[2.1875rem]">
+    <header className="fixed z-20 flex h-10 w-full items-center justify-between bg-header px-9">
       <Link
         href="/"
         className={
-          "text-[1.4rem] italic leading-7 tracking-[0.7em]" +
+          "text-[1.4rem] italic tracking-[0.7em]" +
           (theme === "dark" ? " text-white" : "")
         }
       >
@@ -19,32 +19,26 @@ const Header = () => {
       <div className="flex items-center">
         <SearchBar />
         <nav
-          className={
-            "text-[0.9rem] leading-none" +
-            (theme === "dark" ? " text-white" : "")
-          }
+          className={"text-[0.9rem]" + (theme === "dark" ? " text-white" : "")}
         >
-          <ul className="flex gap-[0.313rem]">
+          <ul className="flex gap-1.5">
             <li>
-              <Link href="/tracks" className="px-[0.9375rem] hover:underline">
+              <Link href="/tracks" className="px-3.5 hover:underline">
                 Music
               </Link>
             </li>
             <li>
-              <Link href="/artists" className="px-[0.9375rem] hover:underline">
+              <Link href="/artists" className="px-3.5 hover:underline">
                 Artists
               </Link>
             </li>
             <li>
-              <Link href="/albums" className="px-[0.9375rem] hover:underline">
+              <Link href="/albums" className="px-3.5 hover:underline">
                 Albums
               </Link>
             </li>
             <li>
-              <Link
-                href="/playlists"
-                className="px-[0.9375rem] hover:underline"
-              >
+              <Link href="/playlists" className="px-3.5 hover:underline">
                 Playlists
               </Link>
             </li>

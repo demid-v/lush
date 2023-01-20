@@ -75,7 +75,7 @@ function useTracks() {
   const context = useContext(TracksContext);
 
   if (!context) {
-    throw new Error("useTracks must be used inside a `TracksContext`");
+    throw new Error("useTracks must be used inside a TracksContext");
   }
 
   return context;

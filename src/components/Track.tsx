@@ -78,7 +78,7 @@ const Track: FC<{
     <li className="h-12 w-full border-t border-[#e6e6e6] leading-none last:border-b">
       <div
         className={
-          "relative h-full p-[0.3125rem] hover:bg-[#eeeeee]" +
+          "relative h-full p-[5px] hover:bg-[#eeeeee]" +
           getVisibilityClass(" bg-[#eeeeee]")
         }
       >
@@ -108,13 +108,11 @@ const Track: FC<{
 
           <div className="flex flex-1">
             <div className="flex flex-1 flex-col justify-between">
-              <span className="z-10 w-min text-[0.92rem] leading-[1.1rem]">
-                {name}
-              </span>
+              <span className="z-10 w-min">{name}</span>
               {artists.map(({ artist }) => (
                 <span
                   key={artist.id}
-                  className="z-10 w-min text-[0.83rem] leading-[1.05rem] text-[#8d8d8d]"
+                  className="z-10 w-min text-sm text-[#8d8d8d]"
                 >
                   <Link href={`/artists/${artist.id}+${encode(artist.name)}`}>
                     {artist.name}
@@ -126,10 +124,10 @@ const Track: FC<{
             <div className="flex flex-col items-end justify-between">
               <div className="flex">
                 {genres.length !== 0 && (
-                  <ul className="flex text-[0.82rem] leading-[1rem]">
+                  <ul className="flex text-sm leading-4">
                     {genres.map(({ genre }) => (
-                      <li key={genre.id} className="mr-[0.625rem]">
-                        <button className="z-10 rounded-sm border border-[#bdbdbd] bg-white px-[0.313rem]">
+                      <li key={genre.id} className="mr-2.5">
+                        <button className="z-10 rounded-sm border border-[#bdbdbd] bg-white px-[5px]">
                           {genre.name}
                         </button>
                       </li>
@@ -147,12 +145,12 @@ const Track: FC<{
                 </button>
               </div>
 
-              <div className="z-10 ml-auto flex w-min text-[0.65rem] leading-none">
+              <div className="z-10 ml-auto flex w-min text-xs leading-none">
                 <div className={getVisibilityClass("", "hidden")}>
-                  <span className="">00:00</span>
-                  <span className="">/</span>
+                  <span>00:00</span>
+                  <span>/</span>
                 </div>
-                <span className="">{durationStr}</span>
+                <span>{durationStr}</span>
               </div>
             </div>
           </div>

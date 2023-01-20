@@ -60,28 +60,28 @@ const PageHeader: FC<{
         }}
       ></div>
 
-      <div className="absolute top-[3.75rem] w-full">
+      <div className="absolute top-14 w-full">
         <div className="mx-auto box-content max-w-[95rem] px-20">
           <div className="w-1/2">
             <div
               className={
-                "mb-[1.875rem] text-[2.5rem] font-bold" +
+                "mb-7 text-[2.5rem] font-bold" +
                 (theme === "dark" ? " text-white" : "")
               }
             >
               {name}
             </div>
           </div>
-          <button className="h-10 w-[10.625rem] border border-[rgba(180,180,180,1)] bg-white">
+          <button className="h-10 w-44 border border-[rgba(180,180,180,1)] bg-white">
             <div className="flex justify-center">
               <Image
                 src="/assets/play.svg"
                 alt="Play tracks"
                 width={54}
                 height={54}
-                className="mr-2.5 w-[0.938rem]"
+                className="mr-2.5 w-3.5"
               />
-              <div className="font-['Open_Sans'] text-[0.78rem] font-bold uppercase tracking-[0.04rem]">
+              <div className="font-['Open_Sans'] text-xs font-bold uppercase tracking-wider">
                 Play tracks
               </div>
             </div>
