@@ -19,7 +19,7 @@
     "db": "docker start -ai lush-db || npm run db:run",
     "db:run": "docker run --name lush-db -p 3307:3307 -e MYSQL_TCP_PORT=3307 -e MYSQL_ROOT_PASSWORD=lush demidv/lush-db:latest",
     "db:preview": "docker start -ai lush-db-preview || npm run db:run:preview",
-    "db:run:preview": "docker run --name lush-db-preview -p 3307:3307 -e MYSQL_TCP_PORT=3307 -e MYSQL_ROOT_PASSWORD=lush demidv/lush-db:preview.latest"
+    "db:run:preview": "docker run --name lush-db-preview -p 3307:3307 -e MYSQL_TCP_PORT=3307 -e MYSQL_ROOT_PASSWORD=lush demidv/lush-db:preview-latest"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",
