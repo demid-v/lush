@@ -24,7 +24,7 @@ const Header = () => {
           <ul className="flex gap-1.5">
             <li>
               <Link href="/tracks" className="px-3.5 hover:underline">
-                Music
+                Tracks
               </Link>
             </li>
             <li>

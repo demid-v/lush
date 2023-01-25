@@ -56,7 +56,7 @@ const PageHeader: FC<{
         style={{
           background: `linear-gradient(rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, ${
             imageLoaded ? "0" : "1"
-          })`,
+          }))`,
         }}
       ></div>
 
