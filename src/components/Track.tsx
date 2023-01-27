@@ -75,11 +75,11 @@ const Track: FC<{
     activeTrack?.id === id ? truthyClass : falsyClass;
 
   return (
-    <li className="h-12 w-full border-t border-[#e6e6e6] leading-none last:border-b">
+    <li className="h-12 w-full border-t border-gray-200 leading-none last:border-b">
       <div
         className={
-          "relative h-full p-[5px] hover:bg-[#eeeeee]" +
-          getVisibilityClass(" bg-[#eeeeee]")
+          "relative h-full p-[5px] hover:bg-gray-100" +
+          getVisibilityClass(" bg-gray-100")
         }
       >
         <div
@@ -111,7 +111,7 @@ const Track: FC<{
               {artists.map(({ artist }) => (
                 <span
                   key={artist.id}
-                  className="z-10 w-min text-sm text-[#8d8d8d]"
+                  className="z-10 w-min text-sm text-gray-500"
                 >
                   <Link href={`/artists/${artist.id}+${encode(artist.name)}`}>
                     {artist.name}
@@ -126,7 +126,7 @@ const Track: FC<{
                   <ul className="flex text-sm leading-4">
                     {genres.map(({ genre }) => (
                       <li key={genre.id} className="mr-2.5">
-                        <button className="z-10 rounded-sm border border-[#bdbdbd] bg-white px-[5px]">
+                        <button className="z-10 rounded-sm border border-gray-300 bg-white px-[5px]">
                           {genre.name}
                         </button>
                       </li>
