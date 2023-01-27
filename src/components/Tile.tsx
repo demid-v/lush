@@ -35,7 +35,6 @@ const Tile: FC<{
               }}
               defaultImage={{
                 url: defaultImage,
-                alt: "Music note",
                 w: "w-[45%]",
               }}
             />

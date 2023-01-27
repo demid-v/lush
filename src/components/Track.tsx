@@ -100,7 +100,6 @@ const Track: FC<{
               }}
               defaultImage={{
                 url: defaultImage,
-                alt: "Spiral galaxy",
                 w: "w-[80%]",
               }}
             />
@@ -137,7 +136,7 @@ const Track: FC<{
                 <button className="z-10 h-4 w-5">
                   <Image
                     src="/assets/pencil.svg"
-                    alt="Pencil"
+                    alt=""
                     width={10}
                     height={10}
                     className="m-auto w-2.5"

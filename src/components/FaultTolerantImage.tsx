@@ -10,7 +10,7 @@ const FaultTolerantImage: FC<{
   };
   defaultImage: {
     url: string;
-    alt: string;
+    alt?: string;
     w: string;
     width?: number;
     height?: number;
@@ -39,7 +39,7 @@ const FaultTolerantImage: FC<{
       {imageState !== "loaded" && (
         <Image
           src={defaultImage.url}
-          alt={defaultImage.alt}
+          alt={defaultImage.alt ?? ""}
           width={defaultImage.width ?? image.width}
           height={defaultImage.width ?? image.width}
           className={

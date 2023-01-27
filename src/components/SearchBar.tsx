@@ -73,7 +73,7 @@ const SearchBar = () => {
         >
           <Image
             src="/assets/cross.svg"
-            alt="Cross"
+            alt=""
             width={10}
             height={10}
             className="mx-auto w-2"
