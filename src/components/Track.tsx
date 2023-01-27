@@ -108,16 +108,23 @@ const Track: FC<{
           <div className="flex flex-1">
             <div className="flex flex-1 flex-col justify-between">
               <span className="z-10 w-min">{name}</span>
-              {artists.map(({ artist }) => (
-                <span
-                  key={artist.id}
-                  className="z-10 w-min text-sm text-gray-500"
-                >
-                  <Link href={`/artists/${artist.id}+${encode(artist.name)}`}>
-                    {artist.name}
-                  </Link>
-                </span>
-              ))}
+              <div className="z-10 w-min text-sm text-gray-500">
+                {artists
+                  .map<React.ReactNode>(({ artist }) => (
+                    <span key={artist.id}>
+                      <Link
+                        href={`/artists/${artist.id}+${encode(artist.name)}`}
+                      >
+                        {artist.name}
+                      </Link>
+                    </span>
+                  ))
+                  .reduce((prev, curr, index) => [
+                    prev,
+                    index !== artists.length - 1 ? ", " : " & ",
+                    curr,
+                  ])}
+              </div>
             </div>
 
             <div className="flex flex-col items-end justify-between">
