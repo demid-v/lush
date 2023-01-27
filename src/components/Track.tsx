@@ -145,12 +145,26 @@ const Track: FC<{
                 </button>
               </div>
 
-              <div className="z-10 ml-auto flex w-min text-xs leading-none">
-                <div className={getVisibilityClass("", "hidden")}>
-                  <span>00:00</span>
-                  <span>/</span>
-                </div>
-                <span>{durationStr}</span>
+              <div className="z-10 flex gap-2">
+                {durationStr && (
+                  <div className="flex text-xs leading-none">
+                    <div className={getVisibilityClass("", "hidden")}>
+                      <span>00:00</span>
+                      <span>/</span>
+                    </div>
+                    <span>{durationStr}</span>
+                  </div>
+                )}
+                {youtube_video_id && (
+                  <Image
+                    src="/assets/note-2.png"
+                    alt=""
+                    width={16}
+                    height={16}
+                    title="This track has a Youtube video"
+                    className="h-3 w-3"
+                  />
+                )}
               </div>
             </div>
           </div>
