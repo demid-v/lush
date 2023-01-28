@@ -14,6 +14,7 @@ const Tile: FC<{
     defaultImage: string;
   };
 }> = ({ data: { id, domain, name, image, defaultImage } }) => {
+  const tileName = encode(name || "");
   const imageUrl =
     image &&
     image.domain.name + "/" + DOMAIN_MID_PATH[image.domain.id] + image.image_id;
@@ -22,7 +23,8 @@ const Tile: FC<{
     <li>
       <div>
         <Link
-          href={`/${domain}/${id}+${encode(name || "")}`}
+          href={`/${domain}/${id}+${tileName}`}
+          aria-label={tileName}
           className="mb-3 block"
         >
           <div className="relative pb-[100%]">

@@ -68,6 +68,7 @@ const SearchBar = () => {
           onChange={handleSearch}
         />
         <button
+          aria-label="Clear input in the search bar"
           className="absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2"
           onClick={clearField}
         >
@@ -80,7 +81,10 @@ const SearchBar = () => {
           />
         </button>
       </div>
-      <button onClick={() => setIsVisible((prevState) => !prevState)}>
+      <button
+        aria-label="Open the search bar"
+        onClick={() => setIsVisible((prevState) => !prevState)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 512.005 512.005"

@@ -132,23 +132,17 @@ const Track: FC<{
                 {genres.length !== 0 && (
                   <ul className="flex text-sm leading-4">
                     {genres.map(({ genre }) => (
-                      <li key={genre.id} className="mr-2.5">
-                        <button className="z-10 rounded-sm border border-gray-300 bg-white px-[5px]">
+                      <li key={genre.id} className="mr-2.5 last:mr-0">
+                        <button
+                          aria-label={"Search by genre " + genre.name}
+                          className="z-10 rounded-sm border border-gray-300 bg-white px-[5px]"
+                        >
                           {genre.name}
                         </button>
                       </li>
                     ))}
                   </ul>
                 )}
-                <button className="z-10 h-4 w-5">
-                  <Image
-                    src="/assets/pencil.svg"
-                    alt=""
-                    width={10}
-                    height={10}
-                    className="m-auto w-2.5"
-                  />
-                </button>
               </div>
 
               <div className="z-10 flex gap-2">
@@ -168,7 +162,7 @@ const Track: FC<{
                     width={16}
                     height={16}
                     title="This track has a Youtube video"
-                    className="h-3 w-3"
+                    className="aspect-ratio w-2.5"
                   />
                 )}
               </div>
