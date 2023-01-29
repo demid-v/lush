@@ -1,16 +1,23 @@
 import { useRouter } from "next/router";
-import { trpc } from "../../utils/trpc";
-import type { NextPage } from "next";
+import type {
+  GetStaticPaths,
+  GetStaticPropsContext,
+  InferGetStaticPropsType,
+  NextPage,
+} from "next";
 import { useState } from "react";
 import Head from "next/head";
 import { encode, extractIdFromQuery, joinParam } from "../../utils/functions";
 import Tile from "../../components/Tile";
 import TracksBlock from "../../components/TracksBlock";
 import PageHeader from "../../components/PageHeader";
+import { trpc } from "../../utils/trpc";
+import { prisma } from "../../server/db/client";
+import { ssg } from "../../server/trpc/ssg";
 
-const Artist: NextPage = () => {
-  const { id, q } = useRouter().query;
-
+const Artist: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
+  artistId,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [pageTitle, setPageTitle] = useState("Artist");
 
   const { q } = useRouter().query;
@@ -65,4 +72,39 @@ const Artist: NextPage = () => {
   );
 };
 
+const getStaticPaths: GetStaticPaths = async () => {
+  const artists = await prisma.artist.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
+  });
+
+  return {
+    paths: artists.map(({ id, name }) => ({
+      params: {
+        id: id + (name.match(/<|>|:|"|\?|\*/) ? "" : "+" + encode(name)),
+      },
+    })),
+    fallback: true,
+  };
+};
+
+const getStaticProps = async ({
+  params,
+}: GetStaticPropsContext<{ id: string }>) => {
+  const artistId = extractIdFromQuery(params?.id);
+
+  await ssg.artists.getArtists.prefetch({ artistId });
+  await ssg.albums.getAlbums.prefetch({ artistId, limit: 6 });
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+      artistId,
+    },
+  };
+};
+
 export default Artist;
+export { getStaticPaths, getStaticProps };

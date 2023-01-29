@@ -12,7 +12,7 @@ import Image from "next/image";
 
 const PageHeader: FC<{
   name: string | undefined;
-  image: AttachedImage | undefined;
+  image: AttachedImage | null | undefined;
   setPageTitle: Dispatch<SetStateAction<string>>;
 }> = ({ name, image, setPageTitle }) => {
   const { theme, setColor } = useTheme();
