@@ -72,7 +72,7 @@ const PageHeader: FC<{
               {name}
             </div>
           </div>
-          <button className="h-10 w-44 border border-[rgba(180,180,180,1)] bg-white">
+          <button className="h-10 w-44 border border-gray-400 bg-white">
             <div className="flex justify-center">
               <Image
                 src="/assets/play.svg"

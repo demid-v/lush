@@ -1,10 +1,11 @@
+const charsToEncode = ["?", "#", "/", "\\", "+", "%"];
+const escapeStrings = charsToEncode.map((char) => encodeURIComponent(char));
+
 const encode = (str: string) =>
   str
     .split("")
     .map((char) =>
-      ["?", "#", "/", "\\", "+", "%"].includes(char)
-        ? encodeURIComponent(char)
-        : char
+      charsToEncode.includes(char) ? encodeURIComponent(char) : char
     )
     .join("")
     .replaceAll(" ", "+");
@@ -12,8 +13,8 @@ const encode = (str: string) =>
 const decode = (str: string) => {
   str = str.replaceAll("+", " ");
 
-  for (const charToDecode of ["%3F", "%23", "%2F", "%5C", "%2B", "%25"]) {
-    str = str.replaceAll(charToDecode, decodeURIComponent(charToDecode));
+  for (const escapeString of escapeStrings) {
+    str = str.replaceAll(escapeString, decodeURIComponent(escapeString));
   }
 
   return str;
@@ -30,4 +31,7 @@ const encodeForDb = (str: string) => {
 const joinParam = (param: string | string[] | undefined) =>
   Array.isArray(param) ? param.join("") : param;
 
-export { encode, decode, encodeForDb, joinParam };
+const extractIdFromQuery = (id: string | string[] | undefined) =>
+  Number(joinParam(id)?.split(/\+(.*)/)[0]);
+
+export { encode, decode, encodeForDb, joinParam, extractIdFromQuery };

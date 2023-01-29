@@ -3,7 +3,7 @@ import { trpc } from "../../utils/trpc";
 import type { NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
-import { joinParam } from "../../utils/functions";
+import { encode, extractIdFromQuery, joinParam } from "../../utils/functions";
 import Tile from "../../components/Tile";
 import TracksBlock from "../../components/TracksBlock";
 import PageHeader from "../../components/PageHeader";
@@ -13,11 +13,7 @@ const Artist: NextPage = () => {
 
   const [pageTitle, setPageTitle] = useState("Artist");
 
-  const artistId = (() => {
-    let artistId = Array.isArray(id) ? id.join("") : id;
-    artistId = artistId?.split(/\+(.*)/s)[0];
-    return typeof artistId === "string" ? Number(artistId) : artistId;
-  })();
+  const { q } = useRouter().query;
 
   const { data } = trpc.artists.getArtists.useQuery(
     {
