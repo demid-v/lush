@@ -34,9 +34,7 @@ function useContent(
   const [content, setContent] = useState<NonNullable<typeof data>>([]);
 
   useEffect(() => {
-    if (!data) {
-      return;
-    }
+    if (!data) return;
 
     if (offset === 0) {
       setContent(data);
@@ -46,9 +44,7 @@ function useContent(
   }, [data, offset]);
 
   useEffect(() => {
-    if (!data || data.length < limit) {
-      return;
-    }
+    if (!data || data.length < limit) return;
 
     function checkPosition() {
       if (

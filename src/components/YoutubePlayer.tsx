@@ -21,16 +21,12 @@ const YoutubePlayer = () => {
   };
 
   useEffect(() => {
-    if (!activeTrack) {
-      return;
-    }
+    if (!activeTrack) return;
 
     internalPlayer.current
       ?.getPlayerState()
       .then((playerState) => {
-        if (!internalPlayer.current) {
-          return;
-        }
+        if (!internalPlayer.current) return;
 
         if (
           JSON.stringify(activeTrack) ===
@@ -42,9 +38,7 @@ const YoutubePlayer = () => {
             internalPlayer.current.playVideo();
           }
         } else {
-          if (!internalPlayer.current) {
-            return;
-          }
+          if (!internalPlayer.current) return;
 
           internalPlayer.current
             .loadVideoById(activeTrack.youtube_video_id)

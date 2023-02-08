@@ -24,9 +24,7 @@ const Track: FC<{
   const { activeTrack } = useTracks();
 
   const durationStr = (() => {
-    if (duration === null) {
-      return;
-    }
+    if (duration === null) return;
 
     const durationFloored: number = Math.floor(duration);
     const minutes: number = Math.floor(durationFloored / 60);
