@@ -9,6 +9,7 @@ import { useTheme } from "../contexts/Theme";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { AttachedImage } from "../utils/types";
 import Image from "next/image";
+import { useTracks } from "../contexts/Tracks";
 
 const PageHeader: FC<{
   name: string | undefined;
@@ -16,6 +17,7 @@ const PageHeader: FC<{
   setPageTitle: Dispatch<SetStateAction<string>>;
 }> = ({ name, image, setPageTitle }) => {
   const { theme, setColor } = useTheme();
+  const { setActiveTrackFromShown } = useTracks();
 
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -81,7 +83,10 @@ const PageHeader: FC<{
                 height={54}
                 className="mr-2.5 w-3.5"
               />
-              <div className="font-['Open_Sans'] text-xs font-bold uppercase tracking-wider">
+              <div
+                className="font-['Open_Sans'] text-xs font-bold uppercase tracking-wider"
+                onClick={setActiveTrackFromShown}
+              >
                 Play tracks
               </div>
             </div>

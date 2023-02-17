@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import type { FC, ReactNode } from "react";
 import { encode } from "../utils/functions";
 import Link from "next/link";
 import type { TrackData } from "../utils/types";
@@ -47,7 +47,7 @@ const Track: FC<{
     return durationStrConstructor;
   })();
 
-  const defaultImage = "/logo192.png";
+  const defaultImage = "/assets/logos/logo32.png";
 
   const imageUrl = (() => {
     const image =
@@ -108,7 +108,7 @@ const Track: FC<{
               <span className="z-10 w-min">{name}</span>
               <div className="z-10 w-min text-sm text-gray-500">
                 {artists
-                  .map<React.ReactNode>(({ artist }) => (
+                  .map<ReactNode>(({ artist }) => (
                     <span key={artist.id}>
                       <Link
                         href={`/artists/${artist.id}+${encode(artist.name)}`}

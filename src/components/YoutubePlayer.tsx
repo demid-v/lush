@@ -9,7 +9,7 @@ const YoutubePlayer = () => {
   const player = useRef<YouTube>(null);
   const internalPlayer = useRef<YouTubePlayer | null | undefined>(null);
 
-  const prevActiveTrack = useRef<ActiveTrack>(null);
+  const prevActiveTrack = useRef<ActiveTrack | null>(null);
 
   const opts: YouTubeProps["opts"] = {
     height: "280",

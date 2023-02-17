@@ -12,7 +12,7 @@ const TracksBlock: FC<{
     | { albumId: number | undefined }
     | { playlistId: number | undefined };
 }> = ({ params }) => {
-  const { setActiveTrack, setGlobalTracks } = useTracks();
+  const { setActiveTrack, setGlobalTracks, setShownTracks } = useTracks();
 
   const tracks = useContent(trpc.tracks.getTracks, 100, params) as TracksData;
 
@@ -20,6 +20,8 @@ const TracksBlock: FC<{
     setGlobalTracks(tracks);
     setActiveTrack({ id, youtube_video_id });
   }
+
+  setShownTracks(tracks);
 
   return (
     <ContainerLayout>

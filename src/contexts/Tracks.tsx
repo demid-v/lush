@@ -11,11 +11,13 @@ import {
 import type { ActiveTrack, TracksData } from "../utils/types";
 
 const TracksContext = createContext<{
-  activeTrack: ActiveTrack;
-  setActiveTrack: Dispatch<SetStateAction<ActiveTrack>>;
+  activeTrack: ActiveTrack | null;
+  setActiveTrack: Dispatch<SetStateAction<ActiveTrack | null>>;
   setNextActiveTrack: () => void;
   setGlobalTracks: (tracks: TracksData) => void;
   globalPlayableTracks: NonNullable<ActiveTrack>[];
+  setShownTracks: (tracks: TracksData) => void;
+  setActiveTrackFromShown: () => void;
 } | null>(null);
 
 const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
@@ -24,8 +26,11 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
   const globalTracks = useRef<TracksData>([]);
   const globalPlayableTracks = useRef<NonNullable<ActiveTrack>[]>([]);
 
+  const shownTracks = useRef<TracksData>([]);
+
   function setGlobalTracks(tracks: TracksData) {
     globalTracks.current.length = 0;
+    globalPlayableTracks.current.length = 0;
 
     tracks.forEach((track) => {
       globalTracks.current.push(track);
@@ -52,6 +57,24 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
     setActiveTrack(nextActiveTrack);
   }
 
+  function setShownTracks(tracks: TracksData) {
+    shownTracks.current.length = 0;
+
+    tracks.forEach((track) => {
+      shownTracks.current.push(track);
+    });
+  }
+
+  function setActiveTrackFromShown() {
+    setGlobalTracks(shownTracks.current);
+
+    const nextActiveTrack = globalPlayableTracks.current[0];
+
+    if (!nextActiveTrack) return;
+
+    setActiveTrack(nextActiveTrack);
+  }
+
   return (
     <TracksContext.Provider
       value={{
@@ -60,6 +83,8 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
         setNextActiveTrack,
         setGlobalTracks,
         globalPlayableTracks: globalPlayableTracks.current,
+        setShownTracks,
+        setActiveTrackFromShown,
       }}
     >
       {children}
