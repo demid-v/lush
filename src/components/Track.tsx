@@ -47,8 +47,6 @@ const Track: FC<{
     return durationStrConstructor;
   })();
 
-  const defaultImage = "/assets/logos/logo32.png";
-
   const imageUrl = (() => {
     const image =
       albums?.[0]?.album.album_image_rel?.[0]?.album_image ||
@@ -97,8 +95,8 @@ const Track: FC<{
                 height: 48,
               }}
               defaultImage={{
-                url: defaultImage,
-                w: "w-[80%]",
+                url: "/assets/logos/logo32.png",
+                w: "w-4/5",
               }}
             />
           </div>

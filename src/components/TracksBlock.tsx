@@ -5,6 +5,7 @@ import type { TracksData } from "../utils/types";
 import { trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
 import { useContent } from "../utils/hooks";
+import TrackSkeleton from "./TrackSkeleton";
 
 const TracksBlock: FC<{
   params?:
@@ -14,7 +15,9 @@ const TracksBlock: FC<{
 }> = ({ params }) => {
   const { setActiveTrack, setGlobalTracks, setShownTracks } = useTracks();
 
-  const tracks = useContent(trpc.tracks.getTracks, 100, params) as TracksData;
+  const [isLoading, content] = useContent(trpc.tracks.getTracks, 100, params);
+
+  const tracks = content as TracksData;
 
   function handlePlayableTrackClick(id: number, youtube_video_id: string) {
     setGlobalTracks(tracks);
@@ -26,13 +29,17 @@ const TracksBlock: FC<{
   return (
     <ContainerLayout>
       <ul>
-        {tracks.map((track) => (
-          <Track
-            key={track.id}
-            track={track}
-            handlePlayableTrackClick={handlePlayableTrackClick}
-          />
-        ))}
+        {isLoading
+          ? Array(100)
+              .fill(0)
+              .map((_e, i) => <TrackSkeleton key={i} />)
+          : tracks.map((track) => (
+              <Track
+                key={track.id}
+                track={track}
+                handlePlayableTrackClick={handlePlayableTrackClick}
+              />
+            ))}
       </ul>
     </ContainerLayout>
   );
