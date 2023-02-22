@@ -5,8 +5,6 @@ import type { TracksData } from "../utils/types";
 import { trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
 import { useContent } from "../utils/hooks";
-import TrackSkeleton from "./TrackSkeleton";
-import Image from "next/image";
 
 const TracksBlock: FC<{
   params?:
@@ -27,25 +25,8 @@ const TracksBlock: FC<{
 
   setShownTracks(tracks);
 
-  const loadingContent = (() => {
-    if (tracks.length === 0) {
-      return Array(100)
-        .fill(0)
-        .map((_e, i) => <TrackSkeleton key={i} />);
-    }
-
-    if (isLoading) {
-      return (
-        <div className="my-8 flex items-center justify-center gap-3">
-          <Image src="/assets/logos/logo32.png" alt="" width={32} height={32} />
-          <span className="text-lg font-medium">Loading...</span>
-        </div>
-      );
-    }
-  })();
-
   return (
-    <ContainerLayout>
+    <ContainerLayout contentLength={tracks.length} isLoading={isLoading}>
       <ul>
         {tracks.map((track) => (
           <Track
@@ -55,7 +36,6 @@ const TracksBlock: FC<{
           />
         ))}
       </ul>
-      {loadingContent}
     </ContainerLayout>
   );
 };

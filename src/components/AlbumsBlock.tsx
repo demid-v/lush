@@ -6,12 +6,19 @@ import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 
 const Albums = () => {
-  const { content } = useContent(trpc.albums.getAlbums, 120);
+  const { isLoading, content } = useContent(trpc.albums.getAlbums, 120);
 
   const albums = content as AlbumsData;
 
+  const defaultImage = "/assets/vynil.svg";
+
   return (
-    <ContainerLayout>
+    <ContainerLayout
+      contentLength={albums.length}
+      isLoading={isLoading}
+      isTiled={true}
+      image={defaultImage}
+    >
       <GridLayout>
         {albums.map(({ id, name, album_image_rel: images }) => (
           <Tile
@@ -21,7 +28,7 @@ const Albums = () => {
               domain: "albums",
               name,
               image: images[0]?.album_image,
-              defaultImage: "/assets/vynil.svg",
+              defaultImage,
             }}
           />
         ))}

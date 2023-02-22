@@ -39,7 +39,7 @@ const FaultTolerantImage: FC<{
       {imageState !== "loaded" && (
         <Image
           src={defaultImage.url}
-          alt={defaultImage.alt ?? ""}
+          alt={defaultImage.alt ?? "Galaxy - Lush logo"}
           width={defaultImage.width ?? image.width}
           height={defaultImage.width ?? image.width}
           className={

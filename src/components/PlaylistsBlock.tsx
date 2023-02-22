@@ -6,12 +6,19 @@ import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 
 const PlaylistsBlock = () => {
-  const { content } = useContent(trpc.playlists.getPlaylists, 120);
+  const { isLoading, content } = useContent(trpc.playlists.getPlaylists, 120);
 
   const playlists = content as PlaylistsData;
 
+  const defaultImage = "/assets/playlist.png";
+
   return (
-    <ContainerLayout>
+    <ContainerLayout
+      contentLength={playlists.length}
+      isLoading={isLoading}
+      isTiled={true}
+      image={defaultImage}
+    >
       <GridLayout>
         {playlists.map(({ id, name, playlist_image_rel: images }) => (
           <Tile
@@ -21,7 +28,7 @@ const PlaylistsBlock = () => {
               domain: "playlists",
               name,
               image: images[0]?.playlist_image,
-              defaultImage: "/assets/playlist.png",
+              defaultImage,
             }}
           />
         ))}
