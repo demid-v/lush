@@ -6,7 +6,7 @@ import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 
 const Albums = () => {
-  const [, content] = useContent(trpc.albums.getAlbums, 120);
+  const { content } = useContent(trpc.albums.getAlbums, 120);
 
   const albums = content as AlbumsData;
 

@@ -63,7 +63,9 @@ function useContent(
     };
   }, [isLoading, data, limit, offset, setOffset]);
 
-  return [isLoading, content] as [boolean, unknown];
+  const unknownContent = content as unknown;
+
+  return { isLoading, content: unknownContent };
 }
 
 function useDecodedQuery() {

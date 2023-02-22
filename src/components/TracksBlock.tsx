@@ -6,6 +6,7 @@ import { trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
 import { useContent } from "../utils/hooks";
 import TrackSkeleton from "./TrackSkeleton";
+import Image from "next/image";
 
 const TracksBlock: FC<{
   params?:
@@ -15,7 +16,7 @@ const TracksBlock: FC<{
 }> = ({ params }) => {
   const { setActiveTrack, setGlobalTracks, setShownTracks } = useTracks();
 
-  const [isLoading, content] = useContent(trpc.tracks.getTracks, 100, params);
+  const { isLoading, content } = useContent(trpc.tracks.getTracks, 100, params);
 
   const tracks = content as TracksData;
 
@@ -26,21 +27,35 @@ const TracksBlock: FC<{
 
   setShownTracks(tracks);
 
+  const loadingContent = (() => {
+    if (tracks.length === 0) {
+      return Array(100)
+        .fill(0)
+        .map((_e, i) => <TrackSkeleton key={i} />);
+    }
+
+    if (isLoading) {
+      return (
+        <div className="my-8 flex items-center justify-center gap-3">
+          <Image src="/assets/logos/logo32.png" alt="" width={32} height={32} />
+          <span className="text-lg font-medium">Loading...</span>
+        </div>
+      );
+    }
+  })();
+
   return (
     <ContainerLayout>
       <ul>
-        {isLoading
-          ? Array(100)
-              .fill(0)
-              .map((_e, i) => <TrackSkeleton key={i} />)
-          : tracks.map((track) => (
-              <Track
-                key={track.id}
-                track={track}
-                handlePlayableTrackClick={handlePlayableTrackClick}
-              />
-            ))}
+        {tracks.map((track) => (
+          <Track
+            key={track.id}
+            track={track}
+            handlePlayableTrackClick={handlePlayableTrackClick}
+          />
+        ))}
       </ul>
+      {loadingContent}
     </ContainerLayout>
   );
 };

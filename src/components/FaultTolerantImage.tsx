@@ -11,9 +11,9 @@ const FaultTolerantImage: FC<{
   defaultImage: {
     url: string;
     alt?: string;
-    w: string;
     width?: number;
     height?: number;
+    w: string;
   };
 }> = ({ image, defaultImage }) => {
   const [imageState, setImageState] = useState<"loading" | "loaded" | "error">(
