@@ -17,5 +17,5 @@ npm run init:preview
 Installs and runs docker image of the full database. Takes a lot of time.
 
 ```sh
-npm run start:init
+npm run init
 ```
