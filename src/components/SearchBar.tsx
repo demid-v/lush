@@ -1,4 +1,4 @@
-import { useEffect, useState, type ChangeEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { encode, joinParam } from "../utils/functions";
@@ -17,19 +17,24 @@ const SearchBar = () => {
 
   const decodedQuery = useDecodedQuery();
 
+  const isTyping = useRef(false);
+
   useEffect(() => {
-    if (decodedQuery !== null) {
-      setSearch(decodedQuery);
+    if (isTyping.current) return;
+
+    if (!decodedQuery) {
+      setIsVisible(false);
+      setSearch("");
+      return;
     }
 
-    if (decodedQuery) {
-      setIsVisible(true);
-    } else {
-      setIsVisible(false);
-    }
+    setSearch(decodedQuery);
+    setIsVisible(true);
   }, [decodedQuery]);
 
   function handleSearch(event: ChangeEvent) {
+    isTyping.current = true;
+
     const inputValue = (event.target as HTMLInputElement).value;
 
     setSearch(inputValue);
@@ -44,7 +49,20 @@ const SearchBar = () => {
 
     const url =
       (id ?? "") + (inputValueEncoded === "" ? "" : "?q=" + inputValueEncoded);
-    router.push({ pathname, query }, url, { shallow: true });
+    updateRouter(url);
+  }
+
+  const timer = useRef<NodeJS.Timeout | null>(null);
+
+  function updateRouter(url: string) {
+    if (timer.current) {
+      clearTimeout(timer.current);
+    }
+
+    timer.current = setTimeout(() => {
+      router.push({ pathname, query }, url, { shallow: true });
+      isTyping.current = false;
+    }, 500);
   }
 
   function clearField() {
