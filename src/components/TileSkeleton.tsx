@@ -14,7 +14,7 @@ const TileSkeleton: FC<{ image: string }> = ({ image }) => {
             className="absolute top-0 right-0 bottom-0 left-0 m-auto w-[45%]"
           />
         </div>
-        <div className="mb-3 h-3 w-32 rounded-md bg-gray-300"></div>
+        <div className="mb-3 h-3 w-32 animate-pulse rounded-md bg-gray-300"></div>
       </div>
     </li>
   );
