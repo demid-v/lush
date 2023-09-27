@@ -72,6 +72,10 @@ function useDecodedQuery() {
   const { q } = useRouter().query;
   const [decodedQuery, setDecodedQuery] = useState<string | null>(null);
 
+  // useEffect(() => {
+  //   setDecodedQuery(decode(joinParam(q) || ""));
+  // }, [q]);
+
   const isInitialQuery = useRef(true);
 
   useEffect(() => {

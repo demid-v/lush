@@ -22,7 +22,7 @@ const Artist: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 
   const { q } = useRouter().query;
 
-  const { data } = trpc.artists.getArtists.useQuery(
+  const { data } = trpc.artists.getArtist.useQuery(
     {
       artistId,
     },
@@ -40,6 +40,8 @@ const Artist: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     },
     { refetchOnWindowFocus: false }
   );
+
+  if (artistId === undefined) return null;
 
   return (
     <>
@@ -95,7 +97,7 @@ const getStaticProps = async ({
 }: GetStaticPropsContext<{ id: string }>) => {
   const artistId = extractIdFromQuery(params?.id);
 
-  await ssg.artists.getArtists.prefetch({ artistId });
+  await ssg.artists.getArtist.prefetch({ artistId });
   await ssg.albums.getAlbums.prefetch({ artistId, limit: 6 });
 
   return {
