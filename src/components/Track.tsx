@@ -15,9 +15,9 @@ const Track: FC<{
     name,
     duration,
     youtube_video_id,
-    track_artist_rel: artists,
-    track_genre_rel: genres,
-    track_album_rel: albums,
+    track_artist_rels: artists,
+    track_genre_rels: genres,
+    track_album_rels: albums,
   } = track;
 
   const { activeTrack } = useTracks();
@@ -48,8 +48,8 @@ const Track: FC<{
 
   const imageUrl = (() => {
     const image =
-      albums?.[0]?.album.album_image_rel?.[0]?.album_image ||
-      artists?.[0]?.artist.artist_image_rel?.[0]?.artist_image;
+      albums?.[0]?.album.album_image_rels?.[0]?.album_image ||
+      artists?.[0]?.artist.artist_image_rels?.[0]?.artist_image;
 
     return (
       image &&

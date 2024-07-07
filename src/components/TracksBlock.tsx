@@ -1,10 +1,10 @@
-import type { FC } from "react";
+import { useMemo, type FC } from "react";
 import Track from "./Track";
 import ContainerLayout from "../layouts/ContainerLayout";
-import type { TracksData } from "../utils/types";
 import { trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
-import { useContent } from "../utils/hooks";
+import { useRouter } from "next/router";
+import { joinParam } from "../utils";
 
 const TracksBlock: FC<{
   params?:
@@ -14,9 +14,20 @@ const TracksBlock: FC<{
 }> = ({ params }) => {
   const { setActiveTrack, setGlobalTracks, setShownTracks } = useTracks();
 
-  const { isLoading, content } = useContent(trpc.tracks.getTracks, 100, params);
+  const { q } = useRouter().query;
+  const search = joinParam(q);
 
-  const tracks = content as TracksData;
+  const { isLoading, data: tracksData } =
+    trpc.tracks.getTracks.useInfiniteQuery(
+      { ...params, search },
+
+      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
+
+  const tracks = useMemo(
+    () => tracksData?.pages.flatMap((page) => page.tracks) ?? [],
+    [tracksData?.pages]
+  );
 
   function handlePlayableTrackClick(id: number, youtube_video_id: string) {
     setGlobalTracks(tracks);
