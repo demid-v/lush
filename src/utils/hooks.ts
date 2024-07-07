@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
-import { decode, encodeForDb, joinParam } from "./functions";
+import { useEffect, useState } from "react";
+import { joinParam } from ".";
 import type { ContentProcedure } from "./types";
 
 function useContent(
@@ -14,16 +14,15 @@ function useContent(
   const [offset, setOffset] = useState(0);
 
   const { q } = useRouter().query;
+  const query = joinParam(q);
 
   useEffect(() => {
     setOffset(0);
-  }, [q]);
-
-  const decodedQuery = useDecodedQuery();
+  }, [query]);
 
   const { isLoading, data } = getContent.useQuery(
     {
-      ...(decodedQuery && { search: encodeForDb(decodedQuery) }),
+      ...(query && { search: query }),
       limit,
       offset,
       ...params,
@@ -68,27 +67,4 @@ function useContent(
   return { isLoading, content: unknownContent };
 }
 
-function useDecodedQuery() {
-  const { q } = useRouter().query;
-  const [decodedQuery, setDecodedQuery] = useState<string | null>(null);
-
-  // useEffect(() => {
-  //   setDecodedQuery(decode(joinParam(q) || ""));
-  // }, [q]);
-
-  const isInitialQuery = useRef(true);
-
-  useEffect(() => {
-    setDecodedQuery(
-      isInitialQuery.current ? joinParam(q) || "" : decode(joinParam(q) || "")
-    );
-
-    if (q !== undefined && isInitialQuery.current) {
-      isInitialQuery.current = false;
-    }
-  }, [q]);
-
-  return decodedQuery;
-}
-
-export { useContent, useDecodedQuery };
+export { useContent };

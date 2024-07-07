@@ -1,74 +1,33 @@
-import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { encode, joinParam } from "../utils/functions";
 import { useTheme } from "../contexts/Theme";
-import { useDecodedQuery } from "../utils/hooks";
+import { joinParam } from "../utils";
 
 const SearchBar = () => {
   const router = useRouter();
-  const { pathname, query } = router;
-  const { id } = query;
+  const { query } = router;
+  const { id, q } = query;
+
+  const parsedId = id === undefined ? "" : (joinParam(id) as string);
+  const search = q === undefined ? "" : (joinParam(q) as string);
 
   const { theme } = useTheme();
 
   const [isVisible, setIsVisible] = useState(false);
-  const [search, setSearch] = useState("");
 
-  const decodedQuery = useDecodedQuery();
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const searchValue = event.target.value;
+    router.push(
+      { pathname: parsedId, ...(searchValue && { query: { q: searchValue } }) },
+      undefined,
+      { shallow: true }
+    );
+  };
 
-  const isTyping = useRef(false);
-
-  useEffect(() => {
-    if (isTyping.current) return;
-
-    if (!decodedQuery) {
-      setIsVisible(false);
-      setSearch("");
-      return;
-    }
-
-    setSearch(decodedQuery);
-    setIsVisible(true);
-  }, [decodedQuery]);
-
-  function handleSearch(event: ChangeEvent) {
-    isTyping.current = true;
-
-    const inputValue = (event.target as HTMLInputElement).value;
-
-    setSearch(inputValue);
-
-    const inputValueEncoded = encode(inputValue);
-
-    if (inputValueEncoded === "") {
-      delete router.query.q;
-    } else {
-      router.query.q = inputValueEncoded;
-    }
-
-    const url =
-      (id ?? "") + (inputValueEncoded === "" ? "" : "?q=" + inputValueEncoded);
-    updateRouter(url);
-  }
-
-  const timer = useRef<NodeJS.Timeout | null>(null);
-
-  function updateRouter(url: string) {
-    if (timer.current) {
-      clearTimeout(timer.current);
-    }
-
-    timer.current = setTimeout(() => {
-      router.push({ pathname, query }, url, { shallow: true });
-      isTyping.current = false;
-    }, 500);
-  }
-
-  function clearField() {
-    delete router.query.q;
-    router.push({ pathname, query }, joinParam(id), { shallow: true });
-  }
+  const clearField = () => {
+    router.push({ pathname: parsedId });
+  };
 
   return (
     <div className="mr-3 flex gap-4">

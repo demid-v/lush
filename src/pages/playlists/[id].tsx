@@ -5,7 +5,7 @@ import Head from "next/head";
 import TracksBlock from "../../components/TracksBlock";
 import PageHeader from "../../components/PageHeader";
 import { trpc } from "../../utils/trpc";
-import { extractIdFromQuery } from "../../utils/functions";
+import { extractIdFromQuery } from "../../utils";
 
 const Playlist: NextPage = () => {
   const [pageTitle, setPageTitle] = useState("Playlist");

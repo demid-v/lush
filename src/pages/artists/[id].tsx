@@ -7,7 +7,7 @@ import type {
 } from "next";
 import { useState } from "react";
 import Head from "next/head";
-import { encode, extractIdFromQuery, joinParam } from "../../utils/functions";
+import { extractIdFromQuery, joinParam } from "../../utils";
 import Tile from "../../components/Tile";
 import TracksBlock from "../../components/TracksBlock";
 import PageHeader from "../../components/PageHeader";
@@ -85,7 +85,7 @@ const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: artists.map(({ id, name }) => ({
       params: {
-        id: id + (name.match(/<|>|:|"|\?|\*/) ? "" : "+" + encode(name)),
+        id: id + (name.match(/<|>|:|"|\?|\*/) ? "" : "+" + name),
       },
     })),
     fallback: true,

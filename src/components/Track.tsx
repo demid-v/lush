@@ -1,5 +1,4 @@
 import type { FC, ReactNode } from "react";
-import { encode } from "../utils/functions";
 import Link from "next/link";
 import type { TrackData } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
@@ -108,9 +107,7 @@ const Track: FC<{
                 {artists
                   .map<ReactNode>(({ artist }) => (
                     <span key={artist.id}>
-                      <Link
-                        href={`/artists/${artist.id}+${encode(artist.name)}`}
-                      >
+                      <Link href={`/artists/${artist.id}+${artist.name}`}>
                         {artist.name}
                       </Link>
                     </span>
