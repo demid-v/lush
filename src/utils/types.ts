@@ -20,7 +20,6 @@ type DataUnit = TrackData | ArtistData | AlbumData | PlaylistData;
 type AttachedImage =
   RouterOutputs["artists"]["getArtists"][0]["artist_image_rel"][0]["artist_image"];
 
-type TracksProcedure = typeof trpc.tracks.getTracks;
 type ArtistsProcedure = typeof trpc.artists.getArtists;
 type AlbumsProcedure = typeof trpc.albums.getAlbums;
 type PlaylistsProcedure = typeof trpc.playlists.getPlaylists;

@@ -1,10 +1,5 @@
 import { useRouter } from "next/router";
-import type {
-  GetStaticPaths,
-  GetStaticPropsContext,
-  InferGetStaticPropsType,
-  NextPage,
-} from "next";
+import type { GetStaticPaths, NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import { extractIdFromQuery, joinParam } from "../../utils";
@@ -12,15 +7,12 @@ import Tile from "../../components/Tile";
 import TracksBlock from "../../components/TracksBlock";
 import PageHeader from "../../components/PageHeader";
 import { trpc } from "../../utils/trpc";
-import { prisma } from "../../server/db/client";
-import { ssg } from "../../server/trpc/ssg";
 
-const Artist: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
-  artistId,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Artist: NextPage = () => {
   const [pageTitle, setPageTitle] = useState("Artist");
 
-  const { q } = useRouter().query;
+  const { q, id } = useRouter().query;
+  const artistId = extractIdFromQuery(id);
 
   const { data } = trpc.artists.getArtist.useQuery(
     {
@@ -41,7 +33,7 @@ const Artist: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
     { refetchOnWindowFocus: false }
   );
 
-  if (artistId === undefined) return null;
+  if (Number.isNaN(artistId)) return null;
 
   return (
     <>
@@ -75,38 +67,11 @@ const Artist: NextPage<InferGetStaticPropsType<typeof getStaticProps>> = ({
 };
 
 const getStaticPaths: GetStaticPaths = async () => {
-  const artists = await prisma.artist.findMany({
-    select: {
-      id: true,
-      name: true,
-    },
-  });
-
   return {
-    paths: artists.map(({ id, name }) => ({
-      params: {
-        id: id + (name.match(/<|>|:|"|\?|\*/) ? "" : "+" + name),
-      },
-    })),
+    paths: [],
     fallback: true,
   };
 };
 
-const getStaticProps = async ({
-  params,
-}: GetStaticPropsContext<{ id: string }>) => {
-  const artistId = extractIdFromQuery(params?.id);
-
-  await ssg.artists.getArtist.prefetch({ artistId });
-  await ssg.albums.getAlbums.prefetch({ artistId, limit: 6 });
-
-  return {
-    props: {
-      trpcState: ssg.dehydrate(),
-      artistId,
-    },
-  };
-};
-
 export default Artist;
-export { getStaticPaths, getStaticProps };
+export { getStaticPaths };
