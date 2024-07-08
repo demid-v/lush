@@ -5,7 +5,7 @@ const albumsRouter = router({
   getAlbums: publicProcedure
     .input(
       z.object({
-        limit: z.number().nullish(),
+        limit: z.number().default(120),
         offset: z.number().nullish(),
         search: z.string().nullish(),
         albumId: z.number().nullish(),
@@ -13,10 +13,9 @@ const albumsRouter = router({
       })
     )
     .query(
-      async ({
-        ctx,
-        input: { limit = 120, offset, search, albumId, artistId },
-      }) => {
+      async ({ ctx, input: { limit, offset, search, albumId, artistId } }) => {
+        console.log(limit, offset, search, albumId, artistId);
+
         const albums = await ctx.prisma.album.findMany({
           select: {
             id: true,

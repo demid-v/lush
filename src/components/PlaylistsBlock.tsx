@@ -1,16 +1,20 @@
 import ContainerLayout from "../layouts/ContainerLayout";
-import type { PlaylistsData } from "../utils/types";
 import { trpc } from "../utils/trpc";
-import { useContent } from "../utils/hooks";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
+import { useRouter } from "next/router";
+import { joinParam } from "../utils";
+
+const defaultImage = "/assets/playlist.png";
 
 const PlaylistsBlock = () => {
-  const { isLoading, content } = useContent(trpc.playlists.getPlaylists, 120);
+  const search = joinParam(useRouter().query.q);
 
-  const playlists = content as PlaylistsData;
+  const { isLoading, data: playlists } = trpc.playlists.getPlaylists.useQuery({
+    search,
+  });
 
-  const defaultImage = "/assets/playlist.png";
+  if (playlists === undefined) return null;
 
   return (
     <ContainerLayout

@@ -1,16 +1,15 @@
 import ContainerLayout from "../layouts/ContainerLayout";
-import type { ArtistsData } from "../utils/types";
 import { trpc } from "../utils/trpc";
-import { useContent } from "../utils/hooks";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { joinParam } from "../utils";
 
+const defaultImage = "/assets/note.svg";
+
 const ArtistsBlock = () => {
-  const { q } = useRouter().query;
-  const search = joinParam(q);
+  const search = joinParam(useRouter().query.q);
 
   const { isLoading, data: artistsData } =
     trpc.artists.getArtists.useInfiniteQuery(
@@ -22,8 +21,6 @@ const ArtistsBlock = () => {
     () => artistsData?.pages.flatMap((page) => page.artists) ?? [],
     [artistsData?.pages]
   );
-
-  const defaultImage = "/assets/note.svg";
 
   return (
     <ContainerLayout
