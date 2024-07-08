@@ -6,7 +6,7 @@ type TracksData = RouterOutputs["tracks"]["getTracks"]["tracks"];
 type TrackData = TracksData[0];
 
 type ArtistsData = RouterOutputs["artists"]["getArtists"];
-type ArtistData = ArtistsData[0];
+type ArtistData = ArtistsData["artists"][0];
 
 type AlbumsData = RouterOutputs["albums"]["getAlbums"];
 type AlbumData = AlbumsData[0];
@@ -18,7 +18,11 @@ type Data = TracksData | ArtistsData | AlbumsData | PlaylistsData;
 type DataUnit = TrackData | ArtistData | AlbumData | PlaylistData;
 
 type AttachedImage =
-  RouterOutputs["artists"]["getArtists"][0]["artist_image_rel"][0]["artist_image"];
+  RouterOutputs["artists"]["getArtists"]["artists"][0]["artist_image_rels"][0]["artist_image"] & {
+    r?: number;
+    g?: number;
+    b?: number;
+  };
 
 type ArtistsProcedure = typeof trpc.artists.getArtists;
 type AlbumsProcedure = typeof trpc.albums.getAlbums;

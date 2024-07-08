@@ -4,11 +4,24 @@ import { trpc } from "../utils/trpc";
 import { useContent } from "../utils/hooks";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import { joinParam } from "../utils";
 
 const ArtistsBlock = () => {
-  const { isLoading, content } = useContent(trpc.artists.getArtists, 120);
+  const { q } = useRouter().query;
+  const search = joinParam(q);
 
-  const artists = content as ArtistsData;
+  const { isLoading, data: artistsData } =
+    trpc.artists.getArtists.useInfiniteQuery(
+      { search },
+      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
+
+  const artists = useMemo(
+    () => artistsData?.pages.flatMap((page) => page.artists) ?? [],
+    [artistsData?.pages]
+  );
 
   const defaultImage = "/assets/note.svg";
 
@@ -20,7 +33,7 @@ const ArtistsBlock = () => {
       image={defaultImage}
     >
       <GridLayout>
-        {artists.map(({ id, name, artist_image_rel: images }) => (
+        {artists.map(({ id, name, artist_image_rels: images }) => (
           <Tile
             key={id}
             data={{
