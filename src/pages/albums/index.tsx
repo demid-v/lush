@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import AlbumsBlock from "../components/AlbumsBlock";
+import AlbumsBlock from "../../components/AlbumsBlock";
 
 const Albums: NextPage = () => (
   <>

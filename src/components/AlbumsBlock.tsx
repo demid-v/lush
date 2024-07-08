@@ -1,16 +1,20 @@
 import ContainerLayout from "../layouts/ContainerLayout";
-import type { AlbumsData } from "../utils/types";
 import { trpc } from "../utils/trpc";
-import { useContent } from "../utils/hooks";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
+import { useRouter } from "next/router";
+import { joinParam } from "../utils";
+
+const defaultImage = "/assets/vynil.svg";
 
 const Albums = () => {
-  const { isLoading, content } = useContent(trpc.albums.getAlbums, 120);
+  const search = joinParam(useRouter().query.q);
 
-  const albums = content as AlbumsData;
+  const { isLoading, data: albums } = trpc.albums.getAlbums.useQuery({
+    search,
+  });
 
-  const defaultImage = "/assets/vynil.svg";
+  if (albums === undefined) return null;
 
   return (
     <ContainerLayout

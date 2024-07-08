@@ -1,79 +1,80 @@
-import type { PrismaClient } from "@prisma/client";
 import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
+import type { Db } from "../../db";
+import { and, desc, eq, like, lt } from "drizzle-orm";
+import { artist } from "../../db/schema";
 
 const getArtists = async (
-  prisma: PrismaClient,
+  db: Db,
   {
     limit,
-    offset,
+    cursor,
     search,
     artistId,
   }: {
-    limit?: number | null | undefined;
-    offset?: number | null | undefined;
+    limit?: number;
+    cursor?: number | null | undefined;
     search?: string | null | undefined;
     artistId?: number | null | undefined;
   }
 ) => {
-  const artists = await prisma.artist.findMany({
-    select: {
+  const artists = await db.query.artist.findMany({
+    columns: {
       id: true,
       name: true,
-      artist_image_rel: {
-        select: {
+    },
+    with: {
+      artist_image_rels: {
+        columns: {},
+        with: {
           artist_image: {
-            select: {
+            columns: {
               image_id: true,
-              domain: true,
               ...(artistId && { r: true, g: true, b: true }),
+            },
+            with: {
+              domain: true,
             },
           },
         },
-        where: { is_cover: true },
-        take: 1,
       },
     },
-    where: {
-      ...(artistId && { id: artistId }),
-      ...(search && { name: { contains: search } }),
-      deleted: false,
-    },
-    orderBy: { id: "desc" },
-    ...(limit && { take: limit }),
-    ...(offset && { skip: offset }),
+    where: and(
+      cursor != null ? lt(artist.id, cursor) : undefined,
+      artistId != null ? eq(artist.id, artistId) : undefined,
+      search != null ? like(artist.name, `%${search}%`) : undefined,
+      eq(artist.deleted, 0)
+    ),
+    orderBy: desc(artist.id),
+    limit,
   });
 
-  return artists;
+  const nextCursor = artists.at(-1)?.id ?? 0;
+
+  return { artists, nextCursor };
 };
 
 const artistsRouter = router({
   getArtists: publicProcedure
     .input(
       z.object({
-        limit: z.number().nullish(),
-        offset: z.number().nullish(),
+        limit: z.number().default(120),
+        cursor: z.number().nullish(),
         search: z.string().nullish(),
       })
     )
     .query(async ({ ctx, input }) => {
-      const artists = getArtists(ctx.prisma, input);
-
-      return artists;
+      return await getArtists(ctx.db, input);
     }),
   getArtist: publicProcedure
     .input(
       z.object({
         search: z.string().nullish(),
-        artistId: z.number().nullish(),
+        artistId: z.number(),
       })
     )
     .query(async ({ ctx, input }) => {
-      if (input.artistId === undefined) return [];
-
-      const artists = getArtists(ctx.prisma, input);
-
-      return artists;
+      return await getArtists(ctx.db, input);
     }),
 });
 

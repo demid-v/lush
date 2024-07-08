@@ -19,12 +19,14 @@
     "db:run:preview": "docker run --name lush-db-preview -p 3307:3307 -e MYSQL_TCP_PORT=3307 -e MYSQL_ROOT_PASSWORD=lush demidv/lush-db:preview-latest"
   },
   "dependencies": {
+    "@libsql/client": "^0.7.0",
     "@prisma/client": "^4.7.1",
     "@tanstack/react-query": "^4.16.0",
     "@trpc/client": "^10.0.0",
     "@trpc/next": "^10.0.0",
     "@trpc/react-query": "^10.0.0",
     "@trpc/server": "^10.0.0",
+    "drizzle-orm": "^0.31.2",
     "next": "13.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -43,6 +45,7 @@
     "autoprefixer": "^10.4.7",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
+    "drizzle-kit": "^0.22.8",
     "eslint": "^8.26.0",
     "eslint-config-next": "13.0.2",
     "postcss": "^8.4.14",
@@ -54,5 +57,6 @@
   },
   "ct3aMetadata": {
     "initVersion": "6.10.2"
-  }
+  },
+  "packageManager": "npm@10.4.0"
 }

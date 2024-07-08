@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { FC } from "react";
-import { encode } from "../utils/functions";
 import type { AttachedImage } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import FaultTolerantImage from "./FaultTolerantImage";
@@ -14,7 +13,7 @@ const Tile: FC<{
     defaultImage: string;
   };
 }> = ({ data: { id, domain, name, image, defaultImage } }) => {
-  const tileName = encode(name || "");
+  const tileName = name || "";
   const imageUrl =
     image &&
     image.domain.name + "/" + DOMAIN_MID_PATH[image.domain.id] + image.image_id;

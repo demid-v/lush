@@ -2,11 +2,11 @@ import type { RouterOutputs, trpc } from "./trpc";
 
 type ActiveTrack = { id: number; youtube_video_id: string };
 
-type TracksData = RouterOutputs["tracks"]["getTracks"];
+type TracksData = RouterOutputs["tracks"]["getTracks"]["tracks"];
 type TrackData = TracksData[0];
 
 type ArtistsData = RouterOutputs["artists"]["getArtists"];
-type ArtistData = ArtistsData[0];
+type ArtistData = ArtistsData["artists"][0];
 
 type AlbumsData = RouterOutputs["albums"]["getAlbums"];
 type AlbumData = AlbumsData[0];
@@ -18,18 +18,17 @@ type Data = TracksData | ArtistsData | AlbumsData | PlaylistsData;
 type DataUnit = TrackData | ArtistData | AlbumData | PlaylistData;
 
 type AttachedImage =
-  RouterOutputs["artists"]["getArtists"][0]["artist_image_rel"][0]["artist_image"];
+  RouterOutputs["artists"]["getArtists"]["artists"][0]["artist_image_rels"][0]["artist_image"] & {
+    r?: number;
+    g?: number;
+    b?: number;
+  };
 
-type TracksProcedure = typeof trpc.tracks.getTracks;
 type ArtistsProcedure = typeof trpc.artists.getArtists;
 type AlbumsProcedure = typeof trpc.albums.getAlbums;
 type PlaylistsProcedure = typeof trpc.playlists.getPlaylists;
 
-type ContentProcedure =
-  | TracksProcedure
-  | ArtistsProcedure
-  | AlbumsProcedure
-  | PlaylistsProcedure;
+type ContentProcedure = ArtistsProcedure | AlbumsProcedure | PlaylistsProcedure;
 
 export type {
   ActiveTrack,
