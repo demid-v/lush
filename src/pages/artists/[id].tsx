@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import type { GetStaticPaths, NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useState } from "react";
 import Head from "next/head";
 import { extractIdFromQuery, joinParam } from "../../utils";
@@ -66,12 +66,14 @@ const Artist: NextPage = () => {
   );
 };
 
-const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: true,
-  };
-};
+const getStaticPaths: GetStaticPaths = () => ({
+  paths: [],
+  fallback: true,
+});
+
+const getStaticProps: GetStaticProps = () => ({
+  props: {},
+});
 
 export default Artist;
-export { getStaticPaths };
+export { getStaticPaths, getStaticProps };
