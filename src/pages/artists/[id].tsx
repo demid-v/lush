@@ -24,7 +24,7 @@ const Artist: NextPage = () => {
   const { name, artist_image_rels: images } = data?.artists?.[0] ?? {};
   const image = images?.[0]?.artist_image;
 
-  const { data: albums } = trpc.albums.getAlbums.useQuery(
+  const { data: { albums } = {} } = trpc.albums.getAlbums.useQuery(
     {
       ...(q && { search: joinParam(q) }),
       artistId,
@@ -45,7 +45,7 @@ const Artist: NextPage = () => {
         {albums && albums.length > 0 && (
           <div className="mx-auto mb-5 box-content max-w-[95rem] px-20">
             <ul className="grid grid-cols-[repeat(6,calc((120rem-(12.5rem*2)-(2rem*5))/6))] gap-8 overflow-auto pb-5">
-              {albums.map(({ id, name, album_image_rel: images }) => (
+              {albums.map(({ id, name, album_image_rels: images }) => (
                 <Tile
                   key={id}
                   data={{

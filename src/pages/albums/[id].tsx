@@ -19,7 +19,7 @@ const Album: NextPage = () => {
     { refetchOnWindowFocus: false }
   );
 
-  const { name, album_image_rel: images } = data?.[0] ?? {};
+  const { name, album_image_rels: images } = data?.albums[0] ?? {};
   const image = images?.[0]?.album_image;
 
   return (

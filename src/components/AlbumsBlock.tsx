@@ -4,17 +4,23 @@ import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 import { useRouter } from "next/router";
 import { joinParam } from "../utils";
+import { useMemo } from "react";
 
 const defaultImage = "/assets/vynil.svg";
 
 const Albums = () => {
   const search = joinParam(useRouter().query.q);
 
-  const { isLoading, data: albums } = trpc.albums.getAlbums.useQuery({
-    search,
-  });
+  const { isLoading, data: albumsData } =
+    trpc.albums.getAlbums.useInfiniteQuery(
+      { search },
+      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
 
-  if (albums === undefined) return null;
+  const albums = useMemo(
+    () => albumsData?.pages.flatMap((page) => page.albums) ?? [],
+    [albumsData?.pages]
+  );
 
   return (
     <ContainerLayout
@@ -24,7 +30,7 @@ const Albums = () => {
       image={defaultImage}
     >
       <GridLayout>
-        {albums.map(({ id, name, album_image_rel: images }) => (
+        {albums.map(({ id, name, album_image_rels: images }) => (
           <Tile
             key={id}
             data={{
