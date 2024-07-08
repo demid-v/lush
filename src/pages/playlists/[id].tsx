@@ -19,7 +19,7 @@ const Playlist: NextPage = () => {
     { refetchOnWindowFocus: false }
   );
 
-  const { name, playlist_image_rel: images } = data?.[0] ?? {};
+  const { name, playlist_image_rels: images } = data?.playlists[0] ?? {};
   const image = images?.[0]?.playlist_image;
 
   return (

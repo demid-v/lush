@@ -4,17 +4,23 @@ import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 import { useRouter } from "next/router";
 import { joinParam } from "../utils";
+import { useMemo } from "react";
 
 const defaultImage = "/assets/playlist.png";
 
 const PlaylistsBlock = () => {
   const search = joinParam(useRouter().query.q);
 
-  const { isLoading, data: playlists } = trpc.playlists.getPlaylists.useQuery({
-    search,
-  });
+  const { isLoading, data: playlistsData } =
+    trpc.playlists.getPlaylists.useInfiniteQuery(
+      { search },
+      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
 
-  if (playlists === undefined) return null;
+  const playlists = useMemo(
+    () => playlistsData?.pages.flatMap((page) => page.playlists) ?? [],
+    [playlistsData?.pages]
+  );
 
   return (
     <ContainerLayout
@@ -24,7 +30,7 @@ const PlaylistsBlock = () => {
       image={defaultImage}
     >
       <GridLayout>
-        {playlists.map(({ id, name, playlist_image_rel: images }) => (
+        {playlists.map(({ id, name, playlist_image_rels: images }) => (
           <Tile
             key={id}
             data={{

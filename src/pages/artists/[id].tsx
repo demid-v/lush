@@ -21,7 +21,7 @@ const Artist: NextPage = () => {
     { refetchOnWindowFocus: false }
   );
 
-  const { name, artist_image_rels: images } = data?.artists?.[0] ?? {};
+  const { name, artist_image_rels: images } = data?.artists[0] ?? {};
   const image = images?.[0]?.artist_image;
 
   const { data: { albums } = {} } = trpc.albums.getAlbums.useQuery(

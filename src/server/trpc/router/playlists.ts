@@ -1,64 +1,54 @@
 import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
+import { eq, and, lt, like, desc } from "drizzle-orm";
 
 const playlistsRouter = router({
   getPlaylists: publicProcedure
     .input(
       z.object({
-        limit: z.number().nullish(),
-        offset: z.number().nullish(),
+        limit: z.number().default(120),
+        cursor: z.number().nullish(),
         search: z.string().nullish(),
         playlistId: z.number().nullish(),
       })
     )
-    .query(
-      async ({ ctx, input: { limit = 120, offset, search, playlistId } }) => {
-        const playlists = await ctx.prisma.playlist.findMany({
-          select: {
-            id: true,
-            name: true,
-            playlist_image_rel: {
-              select: {
-                playlist_image: {
-                  select: {
-                    image_id: true,
-                    domain: true,
-                    ...(playlistId && { r: true, g: true, b: true }),
-                  },
+    .query(async ({ ctx, input: { limit, cursor, search, playlistId } }) => {
+      const playlists = await ctx.db.query.playlist.findMany({
+        columns: {
+          id: true,
+          name: true,
+        },
+        with: {
+          playlist_image_rels: {
+            columns: {},
+            with: {
+              playlist_image: {
+                columns: {
+                  image_id: true,
+                  ...(playlistId && { r: true, g: true, b: true }),
                 },
+                with: { domain: true },
               },
-              where: { is_cover: true },
-              take: 1,
             },
-            track_playlist_rel: {
-              select: {
-                track: {
-                  select: {
-                    name: true,
-                    track_artist_rel: { select: { artist: true } },
-                    track_genre_rel: {
-                      select: { genre: { select: { name: true } } },
-                      where: { genre: { deleted: false } },
-                    },
-                  },
-                },
-              },
-              where: { track: { deleted: false } },
-            },
+            where: (playlistImageRel) => eq(playlistImageRel.is_cover, 1),
+            limit: 1,
           },
-          where: {
-            ...(playlistId && { id: playlistId }),
-            ...(search && { name: { contains: search } }),
-            deleted: false,
-          },
-          orderBy: { id: "desc" },
-          ...(limit && { take: limit }),
-          ...(offset && { skip: offset }),
-        });
+        },
+        where: (playlist) =>
+          and(
+            eq(playlist.deleted, 0),
+            cursor != null ? lt(playlist.id, cursor) : undefined,
+            search != null ? like(playlist.name, `%${search}%`) : undefined,
+            playlistId != null ? eq(playlist.id, playlistId) : undefined
+          ),
+        orderBy: (playlist) => desc(playlist.id),
+        limit,
+      });
 
-        return playlists;
-      }
-    ),
+      const nextCursor = playlists.at(-1)?.id ?? 0;
+
+      return { playlists, nextCursor };
+    }),
 });
 
 export { playlistsRouter };
