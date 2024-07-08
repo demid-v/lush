@@ -2,11 +2,13 @@ import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
 import { and, desc, eq, inArray, like, lt } from "drizzle-orm";
 import {
+  genre,
   track,
   trackAlbumRel,
   trackArtistRel,
   trackPlaylistRel,
 } from "../../db/schema";
+import { db } from "../../db";
 
 const tracksRouter = router({
   getTracks: publicProcedure
@@ -49,7 +51,17 @@ const tracksRouter = router({
                 },
               },
             },
-            track_genre_rels: { with: { genre: true } },
+            track_genre_rels: {
+              with: { genre: true },
+              where: (trackGenreRels) =>
+                inArray(
+                  trackGenreRels.genre_id,
+                  db
+                    .select({ id: genre.id })
+                    .from(genre)
+                    .where(eq(genre.deleted, 0))
+                ),
+            },
           },
           where: and(
             cursor != null ? lt(track.id, cursor) : undefined,
