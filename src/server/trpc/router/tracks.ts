@@ -1,7 +1,12 @@
 import { z } from "zod";
 import { router, publicProcedure } from "../trpc";
-import { and, desc, like, lt } from "drizzle-orm";
-import { track } from "../../db/schema";
+import { and, desc, eq, inArray, like, lt } from "drizzle-orm";
+import {
+  track,
+  trackAlbumRel,
+  trackArtistRel,
+  trackPlaylistRel,
+} from "../../db/schema";
 
 const tracksRouter = router({
   getTracks: publicProcedure
@@ -48,7 +53,34 @@ const tracksRouter = router({
           },
           where: and(
             cursor != null ? lt(track.id, cursor) : undefined,
-            search != null ? like(track.name, `%${search}%`) : undefined
+            search != null ? like(track.name, `%${search}%`) : undefined,
+            artistId != null
+              ? inArray(
+                  track.id,
+                  ctx.db
+                    .select({ id: trackArtistRel.track_id })
+                    .from(trackArtistRel)
+                    .where(eq(trackArtistRel.artist_id, artistId))
+                )
+              : undefined,
+            albumId != null
+              ? inArray(
+                  track.id,
+                  ctx.db
+                    .select({ id: trackAlbumRel.track_id })
+                    .from(trackAlbumRel)
+                    .where(eq(trackAlbumRel.album_id, albumId))
+                )
+              : undefined,
+            playlistId != null
+              ? inArray(
+                  track.id,
+                  ctx.db
+                    .select({ id: trackPlaylistRel.track_id })
+                    .from(trackPlaylistRel)
+                    .where(eq(trackPlaylistRel.playlist_id, playlistId))
+                )
+              : undefined
           ),
           orderBy: [desc(track.id)],
           limit,
