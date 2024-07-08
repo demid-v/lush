@@ -1,9 +1,8 @@
 import type { inferAsyncReturnType } from "@trpc/server";
 import { db } from "../db";
-import { prisma } from "../db/client";
 
 export const createContextInner = async () => {
-  return { prisma, db };
+  return { db };
 };
 
 export const createContext = async () => {
