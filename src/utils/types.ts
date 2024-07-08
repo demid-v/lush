@@ -25,11 +25,7 @@ type ArtistsProcedure = typeof trpc.artists.getArtists;
 type AlbumsProcedure = typeof trpc.albums.getAlbums;
 type PlaylistsProcedure = typeof trpc.playlists.getPlaylists;
 
-type ContentProcedure =
-  | TracksProcedure
-  | ArtistsProcedure
-  | AlbumsProcedure
-  | PlaylistsProcedure;
+type ContentProcedure = ArtistsProcedure | AlbumsProcedure | PlaylistsProcedure;
 
 export type {
   ActiveTrack,
