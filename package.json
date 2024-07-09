@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "lint": "next lint",
     "db": "cd ./src/server/db && turso db shell lush .dump > db.sql && sqlite3 db.db < db.sql && rm db.sql",
     "start": "next start"
