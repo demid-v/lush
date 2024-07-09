@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 import type { Db } from "../../db";
 import { and, desc, eq, like, lt } from "drizzle-orm";
 import { artist } from "../../db/schema";
@@ -16,7 +16,7 @@ const getArtists = async (
     cursor?: number | null | undefined;
     search?: string | null | undefined;
     artistId?: number | null | undefined;
-  }
+  },
 ) => {
   const artists = await db.query.artist.findMany({
     columns: {
@@ -43,7 +43,7 @@ const getArtists = async (
       cursor != null ? lt(artist.id, cursor) : undefined,
       artistId != null ? eq(artist.id, artistId) : undefined,
       search != null ? like(artist.name, `%${search}%`) : undefined,
-      eq(artist.deleted, 0)
+      eq(artist.deleted, 0),
     ),
     orderBy: desc(artist.id),
     limit,
@@ -54,28 +54,28 @@ const getArtists = async (
   return { artists, nextCursor };
 };
 
-const artistsRouter = router({
-  getArtists: publicProcedure
+const artistRouter = createTRPCRouter({
+  page: publicProcedure
     .input(
       z.object({
         limit: z.number().default(120),
         cursor: z.number().nullish(),
         search: z.string().nullish(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       return await getArtists(ctx.db, input);
     }),
-  getArtist: publicProcedure
+  one: publicProcedure
     .input(
       z.object({
         search: z.string().nullish(),
         artistId: z.number(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       return await getArtists(ctx.db, input);
     }),
 });
 
-export { artistsRouter };
+export { artistRouter };

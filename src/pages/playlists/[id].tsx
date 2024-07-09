@@ -12,11 +12,11 @@ const Playlist: NextPage = () => {
 
   const playlistId = extractIdFromQuery(useRouter().query.id);
 
-  const { data } = trpc.playlists.getPlaylists.useQuery(
+  const { data } = trpc.playlist.page.useQuery(
     {
       playlistId,
     },
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false },
   );
 
   const { name, playlist_image_rels: images } = data?.playlists[0] ?? {};

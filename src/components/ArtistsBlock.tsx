@@ -11,15 +11,14 @@ const defaultImage = "/assets/note.svg";
 const ArtistsBlock = () => {
   const search = joinParam(useRouter().query.q);
 
-  const { isLoading, data: artistsData } =
-    trpc.artists.getArtists.useInfiniteQuery(
-      { search },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor }
-    );
+  const { isLoading, data: artistsData } = trpc.artist.page.useInfiniteQuery(
+    { search },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
+  );
 
   const artists = useMemo(
     () => artistsData?.pages.flatMap((page) => page.artists) ?? [],
-    [artistsData?.pages]
+    [artistsData?.pages],
   );
 
   return (

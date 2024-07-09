@@ -14,23 +14,23 @@ const Artist: NextPage = () => {
   const { q, id } = useRouter().query;
   const artistId = extractIdFromQuery(id);
 
-  const { data } = trpc.artists.getArtist.useQuery(
+  const { data } = trpc.artist.one.useQuery(
     {
       artistId,
     },
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false },
   );
 
   const { name, artist_image_rels: images } = data?.artists[0] ?? {};
   const image = images?.[0]?.artist_image;
 
-  const { data: { albums } = {} } = trpc.albums.getAlbums.useQuery(
+  const { data: { albums } = {} } = trpc.album.page.useQuery(
     {
       ...(q && { search: joinParam(q) }),
       artistId,
       limit: 6,
     },
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false },
   );
 
   if (Number.isNaN(artistId)) return null;

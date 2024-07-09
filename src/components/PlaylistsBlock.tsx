@@ -12,14 +12,14 @@ const PlaylistsBlock = () => {
   const search = joinParam(useRouter().query.q);
 
   const { isLoading, data: playlistsData } =
-    trpc.playlists.getPlaylists.useInfiniteQuery(
+    trpc.playlist.page.useInfiniteQuery(
       { search },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor }
+      { getNextPageParam: (lastPage) => lastPage.nextCursor },
     );
 
   const playlists = useMemo(
     () => playlistsData?.pages.flatMap((page) => page.playlists) ?? [],
-    [playlistsData?.pages]
+    [playlistsData?.pages],
   );
 
   return (

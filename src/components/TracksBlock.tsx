@@ -17,16 +17,15 @@ const TracksBlock: FC<{
   const { q } = useRouter().query;
   const search = joinParam(q);
 
-  const { isLoading, data: tracksData } =
-    trpc.tracks.getTracks.useInfiniteQuery(
-      { ...params, search },
+  const { isLoading, data: tracksData } = trpc.track.page.useInfiniteQuery(
+    { ...params, search },
 
-      { getNextPageParam: (lastPage) => lastPage.nextCursor }
-    );
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
+  );
 
   const tracks = useMemo(
     () => tracksData?.pages.flatMap((page) => page.tracks) ?? [],
-    [tracksData?.pages]
+    [tracksData?.pages],
   );
 
   function handlePlayableTrackClick(id: number, youtube_video_id: string) {

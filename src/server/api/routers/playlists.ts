@@ -1,16 +1,16 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 import { eq, and, lt, like, desc } from "drizzle-orm";
 
-const playlistsRouter = router({
-  getPlaylists: publicProcedure
+const playlistRouter = createTRPCRouter({
+  page: publicProcedure
     .input(
       z.object({
         limit: z.number().default(120),
         cursor: z.number().nullish(),
         search: z.string().nullish(),
         playlistId: z.number().nullish(),
-      })
+      }),
     )
     .query(async ({ ctx, input: { limit, cursor, search, playlistId } }) => {
       const playlists = await ctx.db.query.playlist.findMany({
@@ -39,7 +39,7 @@ const playlistsRouter = router({
             eq(playlist.deleted, 0),
             cursor != null ? lt(playlist.id, cursor) : undefined,
             search != null ? like(playlist.name, `%${search}%`) : undefined,
-            playlistId != null ? eq(playlist.id, playlistId) : undefined
+            playlistId != null ? eq(playlist.id, playlistId) : undefined,
           ),
         orderBy: (playlist) => desc(playlist.id),
         limit,
@@ -51,4 +51,4 @@ const playlistsRouter = router({
     }),
 });
 
-export { playlistsRouter };
+export { playlistRouter };

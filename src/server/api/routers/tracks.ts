@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 import { and, desc, eq, inArray, like, lt } from "drizzle-orm";
 import {
   genre,
@@ -10,8 +10,8 @@ import {
 } from "../../db/schema";
 import { db } from "../../db";
 
-const tracksRouter = router({
-  getTracks: publicProcedure
+const trackRouter = createTRPCRouter({
+  page: publicProcedure
     .input(
       z.object({
         limit: z.number().default(100),
@@ -20,7 +20,7 @@ const tracksRouter = router({
         artistId: z.number().nullish(),
         albumId: z.number().nullish(),
         playlistId: z.number().nullish(),
-      })
+      }),
     )
     .query(
       async ({
@@ -59,7 +59,7 @@ const tracksRouter = router({
                   db
                     .select({ id: genre.id })
                     .from(genre)
-                    .where(eq(genre.deleted, 0))
+                    .where(eq(genre.deleted, 0)),
                 ),
             },
           },
@@ -72,7 +72,7 @@ const tracksRouter = router({
                   ctx.db
                     .select({ id: trackArtistRel.track_id })
                     .from(trackArtistRel)
-                    .where(eq(trackArtistRel.artist_id, artistId))
+                    .where(eq(trackArtistRel.artist_id, artistId)),
                 )
               : undefined,
             albumId != null
@@ -81,7 +81,7 @@ const tracksRouter = router({
                   ctx.db
                     .select({ id: trackAlbumRel.track_id })
                     .from(trackAlbumRel)
-                    .where(eq(trackAlbumRel.album_id, albumId))
+                    .where(eq(trackAlbumRel.album_id, albumId)),
                 )
               : undefined,
             playlistId != null
@@ -90,9 +90,9 @@ const tracksRouter = router({
                   ctx.db
                     .select({ id: trackPlaylistRel.track_id })
                     .from(trackPlaylistRel)
-                    .where(eq(trackPlaylistRel.playlist_id, playlistId))
+                    .where(eq(trackPlaylistRel.playlist_id, playlistId)),
                 )
-              : undefined
+              : undefined,
           ),
           orderBy: [desc(track.id)],
           limit,
@@ -101,8 +101,8 @@ const tracksRouter = router({
         const nextCursor = tracks.at(-1)?.id ?? 0;
 
         return { tracks, nextCursor };
-      }
+      },
     ),
 });
 
-export { tracksRouter };
+export { trackRouter };

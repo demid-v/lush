@@ -12,11 +12,11 @@ const Album: NextPage = () => {
 
   const albumId = extractIdFromQuery(useRouter().query.id);
 
-  const { data } = trpc.albums.getAlbums.useQuery(
+  const { data } = trpc.album.page.useQuery(
     {
       albumId,
     },
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false },
   );
 
   const { name, album_image_rels: images } = data?.albums[0] ?? {};

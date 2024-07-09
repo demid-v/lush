@@ -11,15 +11,14 @@ const defaultImage = "/assets/vynil.svg";
 const Albums = () => {
   const search = joinParam(useRouter().query.q);
 
-  const { isLoading, data: albumsData } =
-    trpc.albums.getAlbums.useInfiniteQuery(
-      { search },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor }
-    );
+  const { isLoading, data: albumsData } = trpc.album.page.useInfiniteQuery(
+    { search },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
+  );
 
   const albums = useMemo(
     () => albumsData?.pages.flatMap((page) => page.albums) ?? [],
-    [albumsData?.pages]
+    [albumsData?.pages],
   );
 
   return (

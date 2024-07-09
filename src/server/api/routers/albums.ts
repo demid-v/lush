@@ -1,11 +1,11 @@
 import { z } from "zod";
-import { router, publicProcedure } from "../trpc";
+import { createTRPCRouter, publicProcedure } from "../trpc";
 import { and, asc, desc, eq, inArray, like, lt } from "drizzle-orm";
 import { db } from "../../db";
 import { track, trackAlbumRel, trackArtistRel } from "../../db/schema";
 
-const albumsRouter = router({
-  getAlbums: publicProcedure
+const albumRouter = createTRPCRouter({
+  page: publicProcedure
     .input(
       z.object({
         limit: z.number().default(120),
@@ -13,7 +13,7 @@ const albumsRouter = router({
         search: z.string().nullish(),
         albumId: z.number().nullish(),
         artistId: z.number().nullish(),
-      })
+      }),
     )
     .query(
       async ({ ctx, input: { limit, cursor, search, albumId, artistId } }) => {
@@ -53,11 +53,11 @@ const albumsRouter = router({
                       .leftJoin(track, eq(trackAlbumRel.track_id, track.id))
                       .leftJoin(
                         trackArtistRel,
-                        eq(track.id, trackArtistRel.track_id)
+                        eq(track.id, trackArtistRel.track_id),
                       )
-                      .where(eq(trackArtistRel.artist_id, artistId))
+                      .where(eq(trackArtistRel.artist_id, artistId)),
                   )
-                : undefined
+                : undefined,
             ),
           orderBy: (album) =>
             artistId == null
@@ -74,8 +74,8 @@ const albumsRouter = router({
         const nextCursor = albums.at(-1)?.id ?? 0;
 
         return { albums, nextCursor };
-      }
+      },
     ),
 });
 
-export { albumsRouter };
+export { albumRouter };
