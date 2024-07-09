@@ -16,7 +16,10 @@ const globalForDb = globalThis as unknown as {
 const conn =
   globalForDb.conn ??
   createClient({
-    url: env.TURSO_DATABASE_URL,
+    url:
+      env.NODE_ENV === "production"
+        ? env.TURSO_DATABASE_URL
+        : "file:./src/server/db/db.db",
     authToken: env.TURSO_AUTH_TOKEN,
   });
 

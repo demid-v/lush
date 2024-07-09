@@ -5,6 +5,7 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
+    "db": "cd ./src/server/db && turso db shell lush .dump > db.sql && sqlite3 db.db < db.sql && rm db.sql",
     "start": "next start"
   },
   "dependencies": {
