@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createContext,
   type Dispatch,
@@ -45,7 +47,7 @@ const Tracks: FC<{ children: ReactNode }> = ({ children }) => {
 
   function setNextActiveTrack() {
     const activeTrackIndex = globalPlayableTracks.current.findIndex(
-      (tracks) => tracks.id === activeTrack?.id
+      (tracks) => tracks.id === activeTrack?.id,
     );
 
     if (activeTrackIndex === -1) return;

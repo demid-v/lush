@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef } from "react";
 import YouTube, { type YouTubeProps, type YouTubePlayer } from "react-youtube";
 import { useTracks } from "../contexts/Tracks";
@@ -59,7 +61,7 @@ const YoutubePlayer = () => {
       onEnd={setNextActiveTrack}
       onError={setNextActiveTrack}
       className={
-        "fixed right-2 bottom-3.5 z-20" +
+        "fixed bottom-3.5 right-2 z-20" +
         (activeTrack === null ? " hidden" : "")
       }
     />
