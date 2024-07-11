@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        header: "rgb(var(--color-header))",
+        header: "rgb(var(--color-header) / <alpha-value>)",
       },
     },
   },

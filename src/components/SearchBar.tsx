@@ -5,8 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const SearchBar = () => {
   const searchParams = useSearchParams();
-
-  const searchString = searchParams?.get("q")?.toString();
+  const queryParam = searchParams?.get("q")?.toString();
 
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -36,7 +35,7 @@ const SearchBar = () => {
           className="h-full w-full rounded-full pl-2 pr-7 text-sm"
           type="text"
           placeholder="search..."
-          value={searchString}
+          value={queryParam}
           onChange={handleSearch}
         />
         <button

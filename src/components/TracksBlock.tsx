@@ -1,10 +1,11 @@
+"use client";
+
 import { useMemo, type FC } from "react";
 import Track from "./Track";
 import ContainerLayout from "../layouts/ContainerLayout";
 import { trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
-import { useRouter } from "next/router";
-import { joinParam } from "../utils";
+import { useSearchParams } from "next/navigation";
 
 const TracksBlock: FC<{
   params?:
@@ -14,11 +15,11 @@ const TracksBlock: FC<{
 }> = ({ params }) => {
   const { setActiveTrack, setGlobalTracks, setShownTracks } = useTracks();
 
-  const { q } = useRouter().query;
-  const search = joinParam(q);
+  const searchParams = useSearchParams();
+  const queryParam = searchParams?.get("q")?.toString();
 
   const { isLoading, data: tracksData } = trpc.track.page.useInfiniteQuery(
-    { ...params, search },
+    { ...params, search: queryParam },
 
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
