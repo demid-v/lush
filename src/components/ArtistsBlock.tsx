@@ -1,18 +1,20 @@
+"use client";
+
 import ContainerLayout from "../layouts/ContainerLayout";
 import { trpc } from "../utils/trpc";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
-import { useRouter } from "next/router";
+import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
-import { joinParam } from "../utils";
 
 const defaultImage = "/assets/note.svg";
 
 const ArtistsBlock = () => {
-  const search = joinParam(useRouter().query.q);
+  const searchParams = useSearchParams();
+  const queryParam = searchParams?.get("q")?.toString();
 
   const { isLoading, data: artistsData } = trpc.artist.page.useInfiniteQuery(
-    { search },
+    { search: queryParam },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 

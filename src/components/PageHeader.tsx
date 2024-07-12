@@ -1,10 +1,6 @@
-import {
-  type Dispatch,
-  type FC,
-  type SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+"use client";
+
+import { type FC, useEffect, useState } from "react";
 import { useTheme } from "../contexts/Theme";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { AttachedImage } from "../utils/types";
@@ -14,18 +10,11 @@ import { useTracks } from "../contexts/Tracks";
 const PageHeader: FC<{
   name: string | undefined;
   image: AttachedImage | null | undefined;
-  setPageTitle: Dispatch<SetStateAction<string>>;
-}> = ({ name, image, setPageTitle }) => {
+}> = ({ name, image }) => {
   const { theme, setColor } = useTheme();
   const { setActiveTrackFromShown } = useTracks();
 
   const [imageLoaded, setImageLoaded] = useState(false);
-
-  useEffect(() => {
-    if (name !== undefined) {
-      setPageTitle(name);
-    }
-  }, [name, setPageTitle]);
 
   const { r = 255, g = 255, b = 255 } = image ?? {};
 
@@ -43,6 +32,7 @@ const PageHeader: FC<{
 
   return (
     <div className="relative mb-10 h-[25rem]">
+      <title>{name}</title>
       {imageUrl && (
         <Image
           src={imageUrl}
@@ -54,7 +44,7 @@ const PageHeader: FC<{
         />
       )}
       <div
-        className="absolute top-0 right-0 h-full w-full"
+        className="absolute right-0 top-0 h-full w-full"
         style={{
           background: `linear-gradient(rgba(${r}, ${g}, ${b}, 1), rgba(${r}, ${g}, ${b}, ${
             imageLoaded ? "0" : "1"
