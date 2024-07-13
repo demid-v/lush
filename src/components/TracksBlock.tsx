@@ -20,7 +20,6 @@ const TracksBlock: FC<{
 
   const { isLoading, data: tracksData } = trpc.track.page.useInfiniteQuery(
     { ...params, search: queryParam },
-
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 

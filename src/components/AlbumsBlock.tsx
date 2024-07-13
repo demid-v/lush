@@ -1,18 +1,20 @@
+"use client";
+
 import ContainerLayout from "../layouts/ContainerLayout";
 import { trpc } from "../utils/trpc";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
-import { useRouter } from "next/router";
-import { joinParam } from "../utils";
 import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 
 const defaultImage = "/assets/vynil.svg";
 
 const Albums = () => {
-  const search = joinParam(useRouter().query.q);
+  const searchParams = useSearchParams();
+  const queryParam = searchParams?.get("q")?.toString();
 
   const { isLoading, data: albumsData } = trpc.album.page.useInfiniteQuery(
-    { search },
+    { search: queryParam },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 
