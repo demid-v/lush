@@ -1,19 +1,21 @@
+"use client";
+
 import ContainerLayout from "../layouts/ContainerLayout";
 import { trpc } from "../utils/trpc";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
-import { useRouter } from "next/router";
-import { joinParam } from "../utils";
 import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 
 const defaultImage = "/assets/playlist.png";
 
 const PlaylistsBlock = () => {
-  const search = joinParam(useRouter().query.q);
+  const searchParams = useSearchParams();
+  const queryParam = searchParams?.get("q")?.toString();
 
   const { isLoading, data: playlistsData } =
     trpc.playlist.page.useInfiniteQuery(
-      { search },
+      { search: queryParam },
       { getNextPageParam: (lastPage) => lastPage.nextCursor },
     );
 
