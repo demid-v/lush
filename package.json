@@ -1,6 +1,7 @@
 {
   "name": "lush",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "next build",
     "dev": "next dev --turbo",
@@ -10,6 +11,7 @@
   },
   "dependencies": {
     "@libsql/client": "^0.7.0",
+    "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^4.36.1",
     "@trpc/client": "^10.45.2",
     "@trpc/next": "^10.45.2",
