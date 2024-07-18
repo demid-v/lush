@@ -22,7 +22,11 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
               <Suspense>
                 <Header />
               </Suspense>
-              <main className="z-10 pt-10">{children}</main>
+              <main className="z-10 pt-10">
+                <div className="mx-auto box-content max-w-[95rem] px-20 pb-2">
+                  {children}
+                </div>
+              </main>
             </Theme>
             <YoutubePlayer />
           </Tracks>
