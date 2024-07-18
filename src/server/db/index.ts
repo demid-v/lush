@@ -3,7 +3,7 @@ import * as relations from "./relations";
 import { drizzle } from "drizzle-orm/libsql";
 import type { Client } from "@libsql/client";
 import { createClient } from "@libsql/client";
-import { env } from "../../env/server.mjs";
+import { env } from "~/env";
 
 /**
  * Cache the database connection in development. This avoids creating a new connection on every HMR
