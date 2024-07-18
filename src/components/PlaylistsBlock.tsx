@@ -1,11 +1,11 @@
 "use client";
 
 import ContainerLayout from "../layouts/ContainerLayout";
-import { trpc } from "../utils/trpc";
 import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+import { api } from "~/trpc/react";
 
 const defaultImage = "/assets/playlist.png";
 
@@ -13,11 +13,10 @@ const PlaylistsBlock = () => {
   const searchParams = useSearchParams();
   const queryParam = searchParams?.get("q")?.toString();
 
-  const { isLoading, data: playlistsData } =
-    trpc.playlist.page.useInfiniteQuery(
-      { search: queryParam },
-      { getNextPageParam: (lastPage) => lastPage.nextCursor },
-    );
+  const { isLoading, data: playlistsData } = api.playlist.page.useInfiniteQuery(
+    { search: queryParam },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
+  );
 
   const playlists = useMemo(
     () => playlistsData?.pages.flatMap((page) => page.playlists) ?? [],

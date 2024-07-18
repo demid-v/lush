@@ -20,7 +20,7 @@ const ContainerLayout: FC<{
             <TileSkeleton key={i} image={image ?? ""} />
           ) : (
             <TrackSkeleton key={i} />
-          )
+          ),
         );
 
       if (isTiled) return <GridLayout>{skeleton}</GridLayout>;
@@ -43,7 +43,7 @@ const ContainerLayout: FC<{
   })();
 
   return (
-    <div className="mx-auto box-content max-w-[95rem] px-20 pb-2">
+    <div>
       {children}
       {loadingContent}
     </div>

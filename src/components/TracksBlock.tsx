@@ -3,9 +3,9 @@
 import { useMemo, type FC } from "react";
 import Track from "./Track";
 import ContainerLayout from "../layouts/ContainerLayout";
-import { trpc } from "../utils/trpc";
 import { useTracks } from "../contexts/Tracks";
 import { useSearchParams } from "next/navigation";
+import { api } from "~/trpc/react";
 
 const TracksBlock: FC<{
   params?:
@@ -18,7 +18,7 @@ const TracksBlock: FC<{
   const searchParams = useSearchParams();
   const queryParam = searchParams?.get("q")?.toString();
 
-  const { isLoading, data: tracksData } = trpc.track.page.useInfiniteQuery(
+  const { isLoading, data: tracksData } = api.track.page.useInfiniteQuery(
     { ...params, search: queryParam },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
