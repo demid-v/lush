@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "../contexts/Theme";
-import SearchBar from "./SearchBar";
+import { useTheme } from "../contexts/theme";
+import SearchBar from "./search-bar";
 
 const Header = () => {
   const { theme } = useTheme();

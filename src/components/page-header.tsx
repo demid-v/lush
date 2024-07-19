@@ -1,11 +1,11 @@
 "use client";
 
 import { type FC, useEffect, useState } from "react";
-import { useTheme } from "../contexts/Theme";
+import { useTheme } from "../contexts/theme";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { AttachedImage } from "../utils/types";
 import Image from "next/image";
-import { useTracks } from "../contexts/Tracks";
+import { useTracks } from "../contexts/tracks";
 
 const PageHeader: FC<{
   name?: string | undefined;

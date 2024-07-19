@@ -1,10 +1,10 @@
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import ArtistsBlock from "~/components/ArtistsBlock";
+import Artists from "~/components/artists";
 import { createSSRHelper } from "~/trpc/helpers";
 
-const Artists = async ({
+const ArtistsPage = async ({
   searchParams,
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
@@ -18,10 +18,10 @@ const Artists = async ({
   return (
     <Hydrate state={dehydrate(helpers.queryClient)}>
       <Suspense>
-        <ArtistsBlock />
+        <Artists />
       </Suspense>
     </Hydrate>
   );
 };
 
-export default Artists;
+export default ArtistsPage;

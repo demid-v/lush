@@ -3,8 +3,8 @@ import Link from "next/link";
 import type { TrackData } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
-import { useTracks } from "../contexts/Tracks";
-import FaultTolerantImage from "./FaultTolerantImage";
+import { useTracks } from "../contexts/tracks";
+import FaultTolerantImage from "./fault-tolerant-image";
 
 const Track: FC<{
   track: TrackData;

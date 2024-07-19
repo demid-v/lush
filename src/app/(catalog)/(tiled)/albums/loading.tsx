@@ -1,4 +1,4 @@
-import GridFallback from "~/components/GridFallback";
+import GridFallback from "~/components/grid-fallback";
 
 const AlbumsLoading = () => <GridFallback image="/assets/vynil.svg" />;
 

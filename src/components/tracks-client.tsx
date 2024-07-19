@@ -1,12 +1,12 @@
 "use client";
 
 import { useMemo } from "react";
-import Track from "./Track";
-import { useTracks } from "../contexts/Tracks";
+import Track from "./track";
+import { useTracks } from "../contexts/tracks";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 
-const TracksBlock = ({
+const TracksClient = ({
   params,
 }: {
   params?:
@@ -47,4 +47,4 @@ const TracksBlock = ({
   );
 };
 
-export default TracksBlock;
+export default TracksClient;

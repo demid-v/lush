@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import YouTube, { type YouTubeProps, type YouTubePlayer } from "react-youtube";
-import { useTracks } from "../contexts/Tracks";
+import { useTracks } from "../contexts/tracks";
 import type { ActiveTrack } from "../utils/types";
 
 const YoutubePlayer = () => {

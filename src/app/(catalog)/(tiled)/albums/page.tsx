@@ -1,10 +1,10 @@
-import AlbumsBlock from "~/components/AlbumsBlock";
+import AlbumsBlock from "~/components/albums";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { createSSRHelper } from "~/trpc/helpers";
 import { Suspense } from "react";
 import { notFound } from "next/navigation";
 
-const Albums = async ({
+const AlbumsPage = async ({
   searchParams,
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
@@ -24,4 +24,4 @@ const Albums = async ({
   );
 };
 
-export default Albums;
+export default AlbumsPage;

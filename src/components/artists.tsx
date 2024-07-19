@@ -1,13 +1,13 @@
 "use client";
 
-import Tile from "./Tile";
+import Tile from "./tile";
 import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import { api } from "~/trpc/react";
 
 const defaultImage = "/assets/note.svg";
 
-const ArtistsBlock = () => {
+const Artists = () => {
   const searchParams = useSearchParams();
   const q = searchParams?.get("q")?.toString();
 
@@ -39,4 +39,4 @@ const ArtistsBlock = () => {
   );
 };
 
-export default ArtistsBlock;
+export default Artists;

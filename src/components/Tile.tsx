@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { FC } from "react";
 import type { AttachedImage } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
-import FaultTolerantImage from "./FaultTolerantImage";
+import FaultTolerantImage from "./fault-tolerant-image";
 
 const Tile: FC<{
   data: {

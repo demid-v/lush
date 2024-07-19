@@ -1,4 +1,4 @@
-import TileSkeleton from "./TileSkeleton";
+import TileSkeleton from "./tile-skeleton";
 
 const GridFallback = ({ image }: { image: string }) => (
   <>

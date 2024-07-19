@@ -1,6 +1,6 @@
 import { type ChangeEvent } from "react";
 import Image from "next/image";
-import { useTheme } from "../contexts/Theme";
+import { useTheme } from "../contexts/theme";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const SearchBar = () => {

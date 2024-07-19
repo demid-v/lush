@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "~/trpc/react";
-import Tile from "./Tile";
+import Tile from "./tile";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 

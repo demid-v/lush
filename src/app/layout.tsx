@@ -1,9 +1,9 @@
 import { Suspense, type ReactNode } from "react";
 import "../styles/globals.css";
-import Header from "../components/Header";
-import Theme from "../contexts/Theme";
-import Tracks from "../contexts/Tracks";
-import YoutubePlayer from "../components/YoutubePlayer";
+import Header from "../components/header";
+import Theme from "../contexts/theme";
+import Tracks from "../contexts/tracks";
+import YoutubePlayer from "../components/youtube-player";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata = {

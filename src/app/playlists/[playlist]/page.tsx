@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import PageHeader from "~/components/PageHeader";
+import PageHeader from "~/components/page-header";
 import Tracks from "~/components/tracks";
 import { api } from "~/trpc/server";
 import { extractIdFromQuery } from "~/utils";
@@ -20,7 +20,7 @@ const PlaylistHeader = async ({
   return <PageHeader name={name} image={image} />;
 };
 
-const Playlist = async ({
+const PlaylistPage = async ({
   params: { playlist },
 }: {
   params: { playlist: string };
@@ -39,4 +39,4 @@ const Playlist = async ({
   );
 };
 
-export default Playlist;
+export default PlaylistPage;

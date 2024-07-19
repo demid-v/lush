@@ -1,10 +1,10 @@
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import PlaylistsBlock from "~/components/PlaylistsBlock";
+import PlaylistsBlock from "~/components/playlists-block";
 import { createSSRHelper } from "~/trpc/helpers";
 
-const Playlists = async ({
+const PlaylistsPage = async ({
   searchParams,
 }: {
   searchParams?: Record<string, string | string[] | undefined>;
@@ -24,4 +24,4 @@ const Playlists = async ({
   );
 };
 
-export default Playlists;
+export default PlaylistsPage;

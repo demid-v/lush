@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { createSSRHelper } from "~/trpc/helpers";
-import TracksBlock from "./TracksBlock";
-import TrackSkeleton from "./TrackSkeleton";
+import TracksClient from "./tracks-client";
+import TrackSkeleton from "./track-skeleton";
 
 const TracksPrefetcher = async ({
   searchParams,
@@ -28,7 +28,7 @@ const TracksPrefetcher = async ({
   return (
     <Hydrate state={dehydrate(helpers.queryClient)}>
       <Suspense>
-        <TracksBlock params={params} />
+        <TracksClient params={params} />
       </Suspense>
     </Hydrate>
   );

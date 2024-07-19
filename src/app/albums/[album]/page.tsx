@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import PageHeader from "~/components/PageHeader";
+import PageHeader from "~/components/page-header";
 import Tracks from "~/components/tracks";
 import { api } from "~/trpc/server";
 import { extractIdFromQuery } from "~/utils";
@@ -20,7 +20,11 @@ const AlbumHeader = async ({
   return <PageHeader name={name} image={image} />;
 };
 
-const Album = async ({ params: { album } }: { params: { album: string } }) => {
+const AlbumPage = async ({
+  params: { album },
+}: {
+  params: { album: string };
+}) => {
   const albumId = extractIdFromQuery(album);
 
   if (Number.isNaN(albumId)) return notFound();
@@ -35,4 +39,4 @@ const Album = async ({ params: { album } }: { params: { album: string } }) => {
   );
 };
 
-export default Album;
+export default AlbumPage;

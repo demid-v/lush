@@ -1,10 +1,10 @@
 import { api } from "~/trpc/server";
-import Tile from "~/components/Tile";
+import Tile from "~/components/tile";
 import { extractIdFromQuery, joinParam } from "~/utils";
 import Tracks from "~/components/tracks";
-import PageHeader from "~/components/PageHeader";
+import PageHeader from "~/components/page-header";
 import { Suspense } from "react";
-import TileSkeleton from "~/components/TileSkeleton";
+import TileSkeleton from "~/components/tile-skeleton";
 
 const ArtistHeader = async ({
   params: { artist },
@@ -71,7 +71,7 @@ const AlbumsSkeleton = () => (
   </div>
 );
 
-const Artist = async ({
+const ArtistPage = async ({
   params: { artist },
 }: {
   params: { artist: string };
@@ -95,4 +95,4 @@ const Artist = async ({
   );
 };
 
-export default Artist;
+export default ArtistPage;
