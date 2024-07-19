@@ -1,8 +1,8 @@
-import { extractIdFromQuery, joinParam } from "../../../utils";
-import Tile from "../../../components/Tile";
-import TracksBlock from "../../../components/TracksBlock";
-import PageHeader from "../../../components/PageHeader";
 import { api } from "~/trpc/server";
+import PageHeader from "~/components/PageHeader";
+import Tile from "~/components/Tile";
+import { extractIdFromQuery, joinParam } from "~/utils";
+import TracksWithFallback from "~/components/TracksWithFallback";
 
 const Artist = async ({
   params: { artist },
@@ -49,7 +49,7 @@ const Artist = async ({
             </ul>
           </div>
         )}
-        <TracksBlock params={{ artistId }} />
+        <TracksWithFallback params={{ artistId }} />
       </div>
     </>
   );

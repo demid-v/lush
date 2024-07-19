@@ -1,5 +1,5 @@
 import PageHeader from "~/components/PageHeader";
-import TracksBlock from "~/components/TracksBlock";
+import TracksWithFallback from "~/components/TracksWithFallback";
 import { api } from "~/trpc/server";
 import { extractIdFromQuery, joinParam } from "~/utils";
 
@@ -24,7 +24,7 @@ const Album = async ({
   return (
     <div>
       <PageHeader name={name} image={image} />
-      <TracksBlock params={{ albumId }} />
+      <TracksWithFallback params={{ albumId }} />
     </div>
   );
 };

@@ -1,14 +1,9 @@
-import { Suspense } from "react";
-import TracksBlock from "~/components/TracksBlock";
+import TracksWithFallback from "~/components/TracksWithFallback";
 
 export const metadata = {
   title: "Lush - Tracks",
 };
 
-const Tracks = () => (
-  <Suspense>
-    <TracksBlock />
-  </Suspense>
-);
+const TracksPage = () => <TracksWithFallback />;
 
-export default Tracks;
+export default TracksPage;
