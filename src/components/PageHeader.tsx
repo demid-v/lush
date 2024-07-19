@@ -8,8 +8,8 @@ import Image from "next/image";
 import { useTracks } from "../contexts/Tracks";
 
 const PageHeader: FC<{
-  name: string | undefined;
-  image: AttachedImage | null | undefined;
+  name?: string | undefined;
+  image?: AttachedImage | null | undefined;
 }> = ({ name, image }) => {
   const { theme, setColor } = useTheme();
   const { setActiveTrackFromShown } = useTracks();
