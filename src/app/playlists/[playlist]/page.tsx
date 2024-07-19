@@ -1,29 +1,39 @@
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import PageHeader from "~/components/PageHeader";
 import TracksWithFallback from "~/components/TracksWithFallback";
 import { api } from "~/trpc/server";
-import { extractIdFromQuery, joinParam } from "~/utils";
+import { extractIdFromQuery } from "~/utils";
 
-const Playlist = async ({
+const PlaylistHeader = async ({
   params: { playlist },
-  searchParams,
 }: {
   params: { playlist: string };
-  searchParams?: Record<string, string | string[] | undefined>;
 }) => {
   const playlistId = extractIdFromQuery(playlist);
-  const { q } = searchParams ?? {};
 
-  const data = await api.playlist.page({
-    ...(q && { search: joinParam(q) }),
-    playlistId,
-  });
+  const data = await api.playlist.page({ playlistId });
 
   const { name, playlist_image_rels: images } = data?.playlists[0] ?? {};
   const image = images?.[0]?.playlist_image;
 
+  return <PageHeader name={name} image={image} />;
+};
+
+const Playlist = async ({
+  params: { playlist },
+}: {
+  params: { playlist: string };
+}) => {
+  const playlistId = extractIdFromQuery(playlist);
+
+  if (Number.isNaN(playlistId)) return notFound();
+
   return (
     <div>
-      <PageHeader name={name} image={image} />
+      <Suspense fallback={<PageHeader />}>
+        <PlaylistHeader params={{ playlist }} />
+      </Suspense>
       <TracksWithFallback params={{ playlistId }} />
     </div>
   );

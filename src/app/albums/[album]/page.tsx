@@ -12,9 +12,7 @@ const AlbumHeader = async ({
 }) => {
   const albumId = extractIdFromQuery(album);
 
-  const data = await api.album.page({
-    albumId,
-  });
+  const data = await api.album.page({ albumId });
 
   const { name, album_image_rels: images } = data?.albums[0] ?? {};
   const image = images?.[0]?.album_image;
