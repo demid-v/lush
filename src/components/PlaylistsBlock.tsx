@@ -1,7 +1,5 @@
 "use client";
 
-import ContainerLayout from "../layouts/ContainerLayout";
-import GridLayout from "../layouts/GridLayout";
 import Tile from "./Tile";
 import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
@@ -11,10 +9,10 @@ const defaultImage = "/assets/playlist.png";
 
 const PlaylistsBlock = () => {
   const searchParams = useSearchParams();
-  const queryParam = searchParams?.get("q")?.toString();
+  const q = searchParams?.get("q")?.toString();
 
-  const { isLoading, data: playlistsData } = api.playlist.page.useInfiniteQuery(
-    { search: queryParam },
+  const { data: playlistsData } = api.playlist.page.useInfiniteQuery(
+    { search: q, limit: 120 },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 
@@ -24,27 +22,20 @@ const PlaylistsBlock = () => {
   );
 
   return (
-    <ContainerLayout
-      contentLength={playlists.length}
-      isLoading={isLoading}
-      isTiled={true}
-      image={defaultImage}
-    >
-      <GridLayout>
-        {playlists.map(({ id, name, playlist_image_rels: images }) => (
-          <Tile
-            key={id}
-            data={{
-              id,
-              domain: "playlists",
-              name,
-              image: images[0]?.playlist_image,
-              defaultImage,
-            }}
-          />
-        ))}
-      </GridLayout>
-    </ContainerLayout>
+    <>
+      {playlists.map(({ id, name, playlist_image_rels: images }) => (
+        <Tile
+          key={id}
+          data={{
+            id,
+            domain: "playlists",
+            name,
+            image: images[0]?.playlist_image,
+            defaultImage,
+          }}
+        />
+      ))}
+    </>
   );
 };
 
