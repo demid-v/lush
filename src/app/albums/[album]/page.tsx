@@ -1,29 +1,37 @@
+import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import PageHeader from "~/components/PageHeader";
 import TracksWithFallback from "~/components/TracksWithFallback";
 import { api } from "~/trpc/server";
-import { extractIdFromQuery, joinParam } from "~/utils";
+import { extractIdFromQuery } from "~/utils";
 
-const Album = async ({
+const AlbumHeader = async ({
   params: { album },
-  searchParams,
 }: {
   params: { album: string };
-  searchParams?: Record<string, string | string[] | undefined>;
 }) => {
   const albumId = extractIdFromQuery(album);
-  const { q } = searchParams ?? {};
 
   const data = await api.album.page({
-    ...(q && { search: joinParam(q) }),
     albumId,
   });
 
   const { name, album_image_rels: images } = data?.albums[0] ?? {};
   const image = images?.[0]?.album_image;
 
+  return <PageHeader name={name} image={image} />;
+};
+
+const Album = async ({ params: { album } }: { params: { album: string } }) => {
+  const albumId = extractIdFromQuery(album);
+
+  if (Number.isNaN(albumId)) return notFound();
+
   return (
     <div>
-      <PageHeader name={name} image={image} />
+      <Suspense fallback={<PageHeader />}>
+        <AlbumHeader params={{ album }} />
+      </Suspense>
       <TracksWithFallback params={{ albumId }} />
     </div>
   );
