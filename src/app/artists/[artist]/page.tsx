@@ -1,7 +1,7 @@
 import { api } from "~/trpc/server";
 import Tile from "~/components/Tile";
 import { extractIdFromQuery, joinParam } from "~/utils";
-import TracksWithFallback from "~/components/TracksWithFallback";
+import Tracks from "~/components/tracks";
 import PageHeader from "~/components/PageHeader";
 import { Suspense } from "react";
 import TileSkeleton from "~/components/TileSkeleton";
@@ -89,7 +89,7 @@ const Artist = async ({
         <Suspense fallback={<AlbumsSkeleton />}>
           <Albums params={{ artist }} />
         </Suspense>
-        <TracksWithFallback params={{ artistId }} />
+        <Tracks params={{ artistId }} />
       </div>
     </>
   );

@@ -1,9 +1,9 @@
-import TracksWithFallback from "~/components/TracksWithFallback";
+import Tracks from "~/components/tracks";
 
 export const metadata = {
   title: "Lush - Tracks",
 };
 
-const TracksPage = () => <TracksWithFallback />;
+const TracksPage = () => <Tracks />;
 
 export default TracksPage;

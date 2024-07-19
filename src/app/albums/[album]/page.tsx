@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import PageHeader from "~/components/PageHeader";
-import TracksWithFallback from "~/components/TracksWithFallback";
+import Tracks from "~/components/tracks";
 import { api } from "~/trpc/server";
 import { extractIdFromQuery } from "~/utils";
 
@@ -30,7 +30,7 @@ const Album = async ({ params: { album } }: { params: { album: string } }) => {
       <Suspense fallback={<PageHeader />}>
         <AlbumHeader params={{ album }} />
       </Suspense>
-      <TracksWithFallback params={{ albumId }} />
+      <Tracks params={{ albumId }} />
     </div>
   );
 };
