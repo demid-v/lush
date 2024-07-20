@@ -1,7 +1,7 @@
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import PlaylistsBlock from "~/components/playlists-block";
+import Playlists from "~/components/playlists";
 import { createSSRHelper } from "~/trpc/helpers";
 
 const PlaylistsPage = async ({
@@ -18,7 +18,7 @@ const PlaylistsPage = async ({
   return (
     <Hydrate state={dehydrate(helpers.queryClient)}>
       <Suspense>
-        <PlaylistsBlock />
+        <Playlists />
       </Suspense>
     </Hydrate>
   );

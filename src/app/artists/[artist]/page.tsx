@@ -1,10 +1,11 @@
 import { api } from "~/trpc/server";
 import Tile from "~/components/tile";
-import { extractIdFromQuery, joinParam } from "~/utils";
+import { extractIdFromQuery } from "~/utils";
 import Tracks from "~/components/tracks";
 import PageHeader from "~/components/page-header";
 import { Suspense } from "react";
 import TileSkeleton from "~/components/tile-skeleton";
+import { notFound } from "next/navigation";
 
 const ArtistHeader = async ({
   params: { artist },
@@ -31,8 +32,10 @@ const Albums = async ({
   const artistId = extractIdFromQuery(artist);
   const { q } = searchParams ?? {};
 
+  if (Array.isArray(q)) return notFound();
+
   const { albums } = await api.album.page({
-    ...(q && { search: joinParam(q) }),
+    search: q,
     artistId,
     limit: 6,
   });

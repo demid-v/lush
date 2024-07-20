@@ -1,7 +1,9 @@
-const joinParam = (param: string | string[] | undefined) =>
-  Array.isArray(param) ? param.join("") : param;
+import { notFound } from "next/navigation";
 
-const extractIdFromQuery = (id: string | string[] | undefined) =>
-  parseInt(joinParam(id)?.split("+")[0] ?? "");
+export const extractIdFromQuery = (slug: string) => {
+  const id = parseInt(slug.split("+")[0] ?? "", 10);
 
-export { joinParam, extractIdFromQuery };
+  if (Number.isNaN(id)) return notFound();
+
+  return id;
+};
