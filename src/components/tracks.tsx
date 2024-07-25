@@ -5,6 +5,8 @@ import { createSSRHelper } from "~/trpc/helpers";
 import TracksClient from "./tracks-client";
 import TrackSkeleton from "./track-skeleton";
 
+const tracksLimit = 100;
+
 const TracksPrefetcher = async ({
   searchParams,
   params,
@@ -20,9 +22,9 @@ const TracksPrefetcher = async ({
 
   const helpers = createSSRHelper();
   await helpers.track.page.prefetchInfinite({
-    search: q,
-    limit: 120,
     ...params,
+    search: q,
+    limit: tracksLimit,
   });
 
   return (
@@ -36,7 +38,7 @@ const TracksPrefetcher = async ({
 
 const TracksFallback = () => (
   <>
-    {new Array(100).fill(0).map((_item, index) => (
+    {new Array(tracksLimit).fill(0).map((_item, index) => (
       <TrackSkeleton key={index} />
     ))}
   </>
