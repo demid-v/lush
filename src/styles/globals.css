@@ -10,8 +10,4 @@
   :root {
     --color-header: 255 255 255;
   }
-
-  html {
-    font-family: Quicksand, Montserrat, sans-serif;
-  }
 }

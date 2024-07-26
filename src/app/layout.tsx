@@ -5,6 +5,12 @@ import Theme from "../contexts/theme";
 import Tracks from "../contexts/tracks";
 import YoutubePlayer from "../components/youtube-player";
 import { TRPCReactProvider } from "~/trpc/react";
+import { Quicksand } from "next/font/google";
+
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  fallback: ["Montserrat"],
+});
 
 export const metadata = {
   title: "Lush",
@@ -15,7 +21,7 @@ export const metadata = {
 const RootLayout = ({ children }: { children: ReactNode }) => {
   return (
     <html lang="en">
-      <body>
+      <body className={`${quicksand.className}`}>
         <TRPCReactProvider>
           <Tracks>
             <Theme>
