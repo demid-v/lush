@@ -29,12 +29,7 @@ const TracksClient = ({
     hasNextPage,
   } = api.track.page.useInfiniteQuery(
     { ...params, search: q, limit: tracksLimit },
-    {
-      getNextPageParam: (lastPage) =>
-        lastPage.tracks.length === tracksLimit
-          ? lastPage.nextCursor
-          : undefined,
-    },
+    { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 
   const tracks = useMemo(

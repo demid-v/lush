@@ -98,7 +98,8 @@ const trackRouter = createTRPCRouter({
           limit,
         });
 
-        const nextCursor = tracks.at(-1)?.id ?? 0;
+        const nextCursor =
+          tracks.length < limit ? undefined : tracks.at(-1)?.id;
 
         return { tracks, nextCursor };
       },
