@@ -1,4 +1,4 @@
-import AlbumsBlock from "~/components/albums";
+import Albums from "~/components/albums";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { createSSRHelper } from "~/trpc/helpers";
 import { Suspense } from "react";
@@ -18,7 +18,7 @@ const AlbumsPage = async ({
   return (
     <Hydrate state={dehydrate(helpers.queryClient)}>
       <Suspense>
-        <AlbumsBlock />
+        <Albums />
       </Suspense>
     </Hydrate>
   );
