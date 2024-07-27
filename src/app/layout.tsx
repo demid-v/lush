@@ -3,12 +3,16 @@ import "../styles/globals.css";
 import Header from "../components/header";
 import Theme from "../contexts/theme";
 import Tracks from "../contexts/tracks";
-import YoutubePlayer from "../components/youtube-player";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Quicksand } from "next/font/google";
+import dynamic from "next/dynamic";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
+});
+
+const YoutubePlayer = dynamic(() => import("../components/youtube-player"), {
+  ssr: false,
 });
 
 export const metadata = {
