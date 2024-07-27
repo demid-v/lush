@@ -7,7 +7,6 @@ import { useInView } from "react-intersection-observer";
 import { api } from "~/trpc/react";
 
 const defaultImage = "/assets/note.svg";
-const artistsLimit = 120;
 
 const Artists = () => {
   const searchParams = useSearchParams();
@@ -19,7 +18,7 @@ const Artists = () => {
     hasNextPage,
     fetchNextPage,
   } = api.artist.page.useInfiniteQuery(
-    { search: q, limit: artistsLimit },
+    { search: q, limit: 120 },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 
@@ -37,16 +36,12 @@ const Artists = () => {
     },
   });
 
-  const shouldObserve = (index: number) =>
-    artistsData?.pages.at(-1)?.artists.length === artistsLimit &&
-    index === artists.length - 1;
-
   return (
     <>
       {artists.map(({ id, name, artist_image_rels: images }, index) => (
         <Tile
           key={id}
-          ref={shouldObserve(index) ? artistsRef : null}
+          ref={index === artists.length - 1 ? artistsRef : null}
           data={{
             id,
             domain: "artists",

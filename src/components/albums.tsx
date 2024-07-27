@@ -7,7 +7,6 @@ import { useSearchParams } from "next/navigation";
 import { useInView } from "react-intersection-observer";
 
 const defaultImage = "/assets/vynil.svg";
-const albumsLimit = 120;
 
 const Albums = () => {
   const searchParams = useSearchParams();
@@ -19,7 +18,7 @@ const Albums = () => {
     hasNextPage,
     fetchNextPage,
   } = api.album.page.useInfiniteQuery(
-    { search: q, limit: albumsLimit },
+    { search: q, limit: 120 },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 
@@ -37,16 +36,12 @@ const Albums = () => {
     },
   });
 
-  const shouldObserve = (index: number) =>
-    albumsData?.pages.at(-1)?.albums.length === albumsLimit &&
-    index === albums.length - 1;
-
   return (
     <>
       {albums.map(({ id, name, album_image_rels: images }, index) => (
         <Tile
           key={id}
-          ref={shouldObserve(index) ? albumsRef : null}
+          ref={index === albums.length - 1 ? albumsRef : null}
           data={{
             id,
             domain: "albums",

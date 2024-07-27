@@ -7,8 +7,6 @@ import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { useInView } from "react-intersection-observer";
 
-const tracksLimit = 100;
-
 const TracksClient = ({
   params,
 }: {
@@ -28,7 +26,7 @@ const TracksClient = ({
     isFetching,
     hasNextPage,
   } = api.track.page.useInfiniteQuery(
-    { ...params, search: q, limit: tracksLimit },
+    { ...params, search: q, limit: 100 },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
   );
 
@@ -46,10 +44,6 @@ const TracksClient = ({
     },
   });
 
-  const shouldObserve = (index: number) =>
-    tracksData?.pages.at(-1)?.tracks.length === tracksLimit &&
-    index === tracks.length - 1;
-
   function handlePlayableTrackClick(id: number, youtube_video_id: string) {
     setGlobalTracks(tracks);
     setActiveTrack({ id, youtube_video_id });
@@ -60,7 +54,7 @@ const TracksClient = ({
       {tracks.map((track, index) => (
         <Track
           key={track.id}
-          ref={shouldObserve(index) ? trackRef : null}
+          ref={index === tracks.length - 1 ? trackRef : null}
           track={track}
           handlePlayableTrackClick={handlePlayableTrackClick}
         />
