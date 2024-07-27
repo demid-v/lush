@@ -74,7 +74,7 @@ const PageHeader: FC<{
                 className="mr-2.5 w-3.5"
               />
               <div
-                className="font-['Open_Sans'] text-xs font-bold uppercase tracking-wider"
+                className="text-xs font-bold uppercase tracking-wider"
                 onClick={setActiveTrackFromShown}
               >
                 Play tracks
