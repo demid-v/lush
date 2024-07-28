@@ -1,21 +1,9 @@
-# Lush
+<p align="center">
+	<img src="./public/assets/logos/logo256.png" alt="Page of artist Soccer Mommy">
+</p>
 
-Music website.
+<h1 align="center">
+  Lush
+</h1>
 
-![Page of artist Soccer Mommy](/screenshots/artist.png)
-
-### Install dependencies and start preview
-
-Recommended for a quick look at the project.
-
-```sh
-npm run init:preview
-```
-
-### Install dependencies and start
-
-Installs and runs docker image of the full database. Takes a lot of time.
-
-```sh
-npm run init
-```
+<p align="center">Music website.</p>
