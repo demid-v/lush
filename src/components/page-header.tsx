@@ -1,11 +1,11 @@
 "use client";
 
-import { type FC, useEffect, useState } from "react";
-import { useTheme } from "../contexts/theme";
+import { type FC, useLayoutEffect, useState } from "react";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { AttachedImage } from "../utils/types";
 import Image from "next/image";
 import { useTracks } from "../contexts/tracks";
+import { useTheme } from "~/utils/hooks";
 
 const PageHeader: FC<{
   name?: string | undefined;
@@ -22,10 +22,8 @@ const PageHeader: FC<{
     image &&
     image.domain.name + "/" + DOMAIN_MID_PATH[image.domain.id] + image.image_id;
 
-  useEffect(() => {
-    if (r !== undefined && g !== undefined && b !== undefined) {
-      setColor(r, g, b);
-    }
+  useLayoutEffect(() => {
+    setColor(r, g, b);
 
     return () => setColor(255, 255, 255);
   }, [r, g, b, setColor]);

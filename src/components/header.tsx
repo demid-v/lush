@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "../contexts/theme";
 import SearchBar from "./search-bar";
+import { useTheme } from "~/utils/hooks";
+import { Suspense } from "react";
 
 const Header = () => {
   const { theme } = useTheme();
 
   return (
-    <header className="fixed z-20 flex h-10 w-full items-center justify-between bg-header px-9">
+    <header className="bg-background fixed z-20 flex h-10 w-full items-center justify-between px-9">
       <Link
         href="/"
         className={
@@ -19,7 +20,9 @@ const Header = () => {
         Lush
       </Link>
       <div className="flex items-center">
-        <SearchBar />
+        <Suspense>
+          <SearchBar />
+        </Suspense>
         <nav
           className={"text-[0.9rem]" + (theme === "dark" ? " text-white" : "")}
         >

@@ -1,7 +1,6 @@
-import { Suspense, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import "../styles/globals.css";
 import Header from "../components/header";
-import Theme from "../contexts/theme";
 import Tracks from "../contexts/tracks";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Quicksand } from "next/font/google";
@@ -27,12 +26,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
       <body className={`${quicksand.className}`}>
         <TRPCReactProvider>
           <Tracks>
-            <Theme>
-              <Suspense>
-                <Header />
-              </Suspense>
-              <main className="z-10 pt-10">{children}</main>
-            </Theme>
+            <Header />
+            <main className="z-10 pt-10">{children}</main>
             <YoutubePlayer />
           </Tracks>
         </TRPCReactProvider>

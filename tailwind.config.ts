@@ -5,7 +5,7 @@ const config = {
   theme: {
     extend: {
       colors: {
-        header: "rgb(var(--color-header) / <alpha-value>)",
+        background: "rgb(var(--background))",
       },
     },
   },
