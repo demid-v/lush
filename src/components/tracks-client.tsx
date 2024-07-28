@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import Track from "./track";
-import { useTracks } from "../contexts/tracks";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { useInView } from "react-intersection-observer";
+import { useSetAtom } from "jotai";
+import { playableTracksAtom } from "~/utils/state";
 
 const TracksClient = ({
   params,
@@ -15,16 +16,14 @@ const TracksClient = ({
     | { albumId: number | undefined }
     | { playlistId: number | undefined };
 }) => {
-  const { setActiveTrack, setGlobalTracks } = useTracks();
-
   const searchParams = useSearchParams();
   const q = searchParams?.get("q")?.toString();
 
   const {
     data: tracksData,
-    fetchNextPage,
     isFetching,
     hasNextPage,
+    fetchNextPage,
   } = api.track.page.useInfiniteQuery(
     { ...params, search: q, limit: 100 },
     { getNextPageParam: (lastPage) => lastPage.nextCursor },
@@ -35,6 +34,18 @@ const TracksClient = ({
     [tracksData?.pages],
   );
 
+  const setPlayableTracks = useSetAtom(playableTracksAtom);
+
+  useEffect(() => {
+    const playableTracks = tracks.reduce<string[]>(
+      (acc, track) =>
+        track.youtube_video_id ? [...acc, track.youtube_video_id] : acc,
+      [],
+    );
+
+    setPlayableTracks(playableTracks);
+  }, [tracks, setPlayableTracks]);
+
   const { ref: trackRef } = useInView({
     triggerOnce: true,
     onChange(inView) {
@@ -44,11 +55,6 @@ const TracksClient = ({
     },
   });
 
-  function handlePlayableTrackClick(id: number, youtube_video_id: string) {
-    setGlobalTracks(tracks);
-    setActiveTrack({ id, youtube_video_id });
-  }
-
   return (
     <ul>
       {tracks.map((track, index) => (
@@ -56,7 +62,6 @@ const TracksClient = ({
           key={track.id}
           ref={index === tracks.length - 1 ? trackRef : null}
           track={track}
-          handlePlayableTrackClick={handlePlayableTrackClick}
         />
       ))}
     </ul>

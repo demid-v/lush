@@ -3,22 +3,13 @@ import Link from "next/link";
 import type { TrackData } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
-import { useTracks } from "../contexts/tracks";
 import FaultTolerantImage from "./fault-tolerant-image";
+import { useAtom } from "jotai";
+import { activeTrackAtom } from "~/utils/state";
 
 const Track = forwardRef(
-  (
-    {
-      track,
-      handlePlayableTrackClick,
-    }: {
-      track: TrackData;
-      handlePlayableTrackClick: (id: number, youtube_video_id: string) => void;
-    },
-    ref: ForwardedRef<HTMLLIElement>,
-  ) => {
+  ({ track }: { track: TrackData }, ref: ForwardedRef<HTMLLIElement>) => {
     const {
-      id,
       name,
       duration,
       youtube_video_id,
@@ -27,7 +18,7 @@ const Track = forwardRef(
       track_album_rels: albums,
     } = track;
 
-    const { activeTrack } = useTracks();
+    const [activeTrack, setActiveTrack] = useAtom(activeTrackAtom);
 
     const durationStr = (() => {
       if (duration === null) return;
@@ -67,14 +58,13 @@ const Track = forwardRef(
       );
     })();
 
-    function handleActiveTrack() {
-      if (youtube_video_id !== null) {
-        handlePlayableTrackClick(id, youtube_video_id);
-      }
-    }
+    const handleActiveTrack = () => {
+      if (youtube_video_id === null) return;
+      setActiveTrack(youtube_video_id);
+    };
 
     const getVisibilityClass = (truthyClass: string, falsyClass = "") =>
-      activeTrack?.id === id ? truthyClass : falsyClass;
+      activeTrack === youtube_video_id ? truthyClass : falsyClass;
 
     return (
       <li
@@ -89,7 +79,7 @@ const Track = forwardRef(
         >
           <div
             className="absolute left-0 top-0 z-10 h-full w-full cursor-pointer"
-            onClick={handleActiveTrack}
+            onClick={youtube_video_id ? handleActiveTrack : undefined}
           ></div>
 
           <div className="flex h-full gap-2 whitespace-nowrap">

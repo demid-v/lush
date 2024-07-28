@@ -1,7 +1,5 @@
 import type { RouterOutputs } from "./trpc";
 
-export type ActiveTrack = { id: number; youtube_video_id: string };
-
 export type TracksData = RouterOutputs["track"]["page"]["tracks"];
 export type TrackData = TracksData[0];
 

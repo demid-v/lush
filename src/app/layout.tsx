@@ -1,10 +1,10 @@
 import { type ReactNode } from "react";
 import "../styles/globals.css";
 import Header from "../components/header";
-import Tracks from "../contexts/tracks";
 import { TRPCReactProvider } from "~/trpc/react";
 import { Quicksand } from "next/font/google";
 import dynamic from "next/dynamic";
+import { Provider as JotaiProvider } from 'jotai'
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -25,11 +25,11 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
     <html lang="en">
       <body className={`${quicksand.className}`}>
         <TRPCReactProvider>
-          <Tracks>
+          <JotaiProvider>
             <Header />
             <main className="z-10 pt-10">{children}</main>
             <YoutubePlayer />
-          </Tracks>
+          </JotaiProvider>
         </TRPCReactProvider>
       </body>
     </html>

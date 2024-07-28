@@ -1,52 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useTracks } from "../contexts/tracks";
-import type { ActiveTrack } from "../utils/types";
+import { useAtom, useAtomValue } from "jotai";
+import { useRef } from "react";
 import ReactPlayer from "react-player/youtube";
 import type YouTubePlayer from "react-player/youtube";
-
-const youtubeLink = "https://www.youtube.com/watch?v=";
+import {
+  activeTrackAtom,
+  isTrackPlayingAtom,
+  trackYoutubeUrlAtom,
+  useNextActiveTrack,
+} from "~/utils/state";
 
 const YoutubePlayer = () => {
-  const { activeTrack, setNextActiveTrack } = useTracks();
+  const activeTrack = useAtomValue(activeTrackAtom);
 
-  const prevActiveTrack = useRef<ActiveTrack | null>(null);
+  const { setNextActiveTrack } = useNextActiveTrack();
 
   const player = useRef<YouTubePlayer>(null);
 
-  const [url, setUrl] = useState<string>();
-  const [isPlaying, setIsPlaying] = useState(false);
+  const url = useAtomValue(trackYoutubeUrlAtom);
+  const [isTrackPlaying, setIsTrackPlayingAtom] = useAtom(isTrackPlayingAtom);
 
-  const playTrack = () => setIsPlaying(true);
-  const pauseTrack = () => setIsPlaying(false);
-
-  useEffect(() => {
-    if (!activeTrack) return;
-
-    const isSameTrack =
-      JSON.stringify(activeTrack) === JSON.stringify(prevActiveTrack.current);
-
-    if (isSameTrack) {
-      setIsPlaying((prevState) => !prevState);
-      return;
-    }
-
-    setUrl(`${youtubeLink}${activeTrack.youtube_video_id}`);
-    playTrack();
-
-    prevActiveTrack.current = activeTrack;
-  }, [activeTrack]);
+  const playTrack = () => setIsTrackPlayingAtom(true);
+  const pauseTrack = () => setIsTrackPlayingAtom(false);
 
   return (
     <ReactPlayer
       ref={player}
       url={url}
-      playing={isPlaying}
+      playing={isTrackPlaying}
       controls={true}
       width={500}
       height={280}
       playsinline={false}
+      onReady={playTrack}
       onPlay={playTrack}
       onPause={pauseTrack}
       onEnded={setNextActiveTrack}

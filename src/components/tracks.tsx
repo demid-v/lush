@@ -21,6 +21,7 @@ const TracksPrefetcher = async ({
   if (Array.isArray(q)) return notFound();
 
   const helpers = createSSRHelper();
+
   await helpers.track.page.prefetchInfinite({
     ...params,
     search: q,

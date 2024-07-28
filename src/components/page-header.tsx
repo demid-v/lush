@@ -4,7 +4,6 @@ import { type FC, useLayoutEffect, useState } from "react";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import type { AttachedImage } from "../utils/types";
 import Image from "next/image";
-import { useTracks } from "../contexts/tracks";
 import { useTheme } from "~/utils/hooks";
 
 const PageHeader: FC<{
@@ -12,7 +11,6 @@ const PageHeader: FC<{
   image?: AttachedImage | null | undefined;
 }> = ({ name, image }) => {
   const { theme, setColor } = useTheme();
-  const { setActiveTrackFromShown } = useTracks();
 
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -71,10 +69,7 @@ const PageHeader: FC<{
                 height={54}
                 className="mr-2.5 w-3.5"
               />
-              <div
-                className="text-xs font-bold uppercase tracking-wider"
-                onClick={setActiveTrackFromShown}
-              >
+              <div className="text-xs font-bold uppercase tracking-wider">
                 Play tracks
               </div>
             </div>
