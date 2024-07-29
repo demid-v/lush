@@ -4,11 +4,11 @@ import { useAtom, useAtomValue } from "jotai";
 import { useRef } from "react";
 import ReactPlayer from "react-player/youtube";
 import type YouTubePlayer from "react-player/youtube";
+import { useNextActiveTrack } from "~/utils/hooks";
 import {
   activeTrackAtom,
   isTrackPlayingAtom,
   trackYoutubeUrlAtom,
-  useNextActiveTrack,
 } from "~/utils/state";
 
 const YoutubePlayer = () => {

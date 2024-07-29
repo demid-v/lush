@@ -1,8 +1,8 @@
 import { useEffect, useRef, type ChangeEvent } from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
 import { useTheme } from "~/utils/hooks";
-import { useDebounceCallback } from "usehooks-ts";
 
 const SearchBar = () => {
   const searchParams = useSearchParams();
@@ -28,7 +28,7 @@ const SearchBar = () => {
     push(`${pathname}?${newSearchParams.toString()}`);
   };
 
-  const handleSearch = useDebounceCallback(setSearch, 300);
+  const handleSearch = useDebouncedCallback(setSearch, 300);
 
   const clearField = () => {
     push(`${pathname}`);

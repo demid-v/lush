@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import SearchBar from "./search-bar";
-import { useTheme } from "~/utils/hooks";
 import { Suspense } from "react";
+import { useTheme } from "~/utils/hooks";
 
 const Header = () => {
   const { theme } = useTheme();
 
   return (
-    <header className="bg-background fixed z-20 flex h-10 w-full items-center justify-between px-9">
+    <header className="fixed z-20 flex h-10 w-full items-center justify-between bg-background px-9">
       <Link
         href="/"
         className={

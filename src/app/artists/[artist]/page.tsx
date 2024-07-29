@@ -76,8 +76,10 @@ const AlbumsSkeleton = () => (
 
 const ArtistPage = async ({
   params: { artist },
+  searchParams,
 }: {
   params: { artist: string };
+  searchParams?: Record<string, string | string[] | undefined>;
 }) => {
   const artistId = extractIdFromQuery(artist);
 
@@ -90,7 +92,7 @@ const ArtistPage = async ({
       </Suspense>
       <div>
         <Suspense fallback={<AlbumsSkeleton />}>
-          <Albums params={{ artist }} />
+          <Albums params={{ artist }} searchParams={searchParams} />
         </Suspense>
         <Tracks params={{ artistId }} />
       </div>

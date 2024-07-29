@@ -1,9 +1,9 @@
-import { atom, useAtomValue, useSetAtom } from "jotai";
+import { atom } from "jotai";
 
 export const playableTracksAtom = atom<string[]>([]);
 
 const baseActiveTrackAtom = atom<string | null>(null);
-let hasNextPlayableTrack = true;
+export let hasNextPlayableTrack = true;
 
 export const activeTrackAtom = atom(
   (get) => get(baseActiveTrackAtom),
@@ -31,19 +31,6 @@ export const activeTrackAtom = atom(
 );
 
 export const nextPlayableTrackAtom = atom<string | null>(null);
-
-export const useNextActiveTrack = () => {
-  const setActiveTrack = useSetAtom(activeTrackAtom);
-  const nextPlayableTrack = useAtomValue(nextPlayableTrackAtom);
-
-  const setNextActiveTrack = () => {
-    if (!hasNextPlayableTrack || nextPlayableTrack === null) return;
-
-    setActiveTrack(nextPlayableTrack);
-  };
-
-  return { setNextActiveTrack };
-};
 
 export const trackYoutubeUrlAtom = atom(
   (get) => `https://www.youtube.com/watch?v=${get(activeTrackAtom)}`,
