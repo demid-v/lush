@@ -1,41 +1,53 @@
-import { type ChangeEvent } from "react";
+import { useEffect, useRef, type ChangeEvent } from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTheme } from "~/utils/hooks";
+import { useDebounceCallback } from "usehooks-ts";
 
 const SearchBar = () => {
   const searchParams = useSearchParams();
   const queryParam = searchParams?.get("q")?.toString();
 
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const { push } = useRouter();
 
   const { theme } = useTheme();
 
-  if (searchParams === null) return null;
+  const searchBar = useRef<HTMLInputElement>(null);
 
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+  const setSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const newSearchParams = new URLSearchParams(searchParams);
 
-    if (value === "") newSearchParams.delete("q");
-    else newSearchParams.set("q", value);
+    if (value === "") {
+      newSearchParams.delete("q");
+    } else {
+      newSearchParams.set("q", value);
+    }
 
-    replace(`${pathname}?${newSearchParams.toString()}`);
+    push(`${pathname}?${newSearchParams.toString()}`);
   };
+
+  const handleSearch = useDebounceCallback(setSearch, 300);
 
   const clearField = () => {
-    replace(`${pathname}`);
+    push(`${pathname}`);
   };
+
+  useEffect(() => {
+    if (!searchBar.current) return;
+
+    searchBar.current.value = queryParam ?? "";
+  }, [queryParam]);
 
   return (
     <div className="mr-3 flex gap-4">
       <div className="relative flex h-5 w-36 overflow-hidden rounded-full border border-gray-300">
         <input
+          ref={searchBar}
           className="h-full w-full rounded-full pl-2 pr-7 text-sm"
           type="text"
           placeholder="search..."
-          value={queryParam}
           onChange={handleSearch}
         />
         <button

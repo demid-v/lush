@@ -64,7 +64,9 @@ const Track = forwardRef(
     };
 
     const getVisibilityClass = (truthyClass: string, falsyClass = "") =>
-      activeTrack === youtube_video_id ? truthyClass : falsyClass;
+      activeTrack !== null && activeTrack === youtube_video_id
+        ? truthyClass
+        : falsyClass;
 
     return (
       <li
