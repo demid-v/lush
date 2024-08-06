@@ -46,7 +46,7 @@ const Track = forwardRef(
 
     const imageUrl = (() => {
       const image =
-        albums?.[0]?.album.album_image_rels?.[0]?.album_image ||
+        albums?.[0]?.album.album_image_rels?.[0]?.album_image ??
         artists?.[0]?.artist.artist_image_rels?.[0]?.artist_image;
 
       return (
@@ -91,7 +91,7 @@ const Track = forwardRef(
                   url: imageUrl,
                   alt:
                     "Image of " +
-                    (artists[0]?.artist.name || "the track's artist or album"),
+                    (artists[0]?.artist.name ?? "the track's artist or album"),
                   width: 48,
                   height: 48,
                 }}

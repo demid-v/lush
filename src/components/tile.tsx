@@ -20,7 +20,7 @@ const Tile = forwardRef(
     },
     ref: ForwardedRef<HTMLLIElement>,
   ) => {
-    const tileName = name || "";
+    const tileName = name ?? "";
     const imageUrl =
       image &&
       image.domain.name +

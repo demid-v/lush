@@ -9,7 +9,7 @@ const SearchBar = () => {
   const queryParam = searchParams.get("q")?.toString();
 
   const pathname = usePathname();
-  const { push } = useRouter();
+  const router = useRouter();
 
   const { theme } = useTheme();
 
@@ -25,13 +25,13 @@ const SearchBar = () => {
       newSearchParams.set("q", value);
     }
 
-    push(`${pathname}?${newSearchParams.toString()}`);
+    router.push(`${pathname}?${newSearchParams.toString()}`);
   };
 
   const handleSearch = useDebouncedCallback(setSearch, 300);
 
   const clearField = () => {
-    push(`${pathname}`);
+    router.push(`${pathname}`);
   };
 
   useEffect(() => {
