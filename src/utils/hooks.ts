@@ -1,15 +1,10 @@
-import { useSetAtom, useAtomValue, useAtom } from "jotai";
-import {
-  activeTrackAtom,
-  isTrackPlayingAtom,
-  nextPlayableTrackAtom,
-  themeAtom,
-} from "./state";
+import { useAtom } from "jotai";
+import { useTracksStore, themeAtom, useNextPlayableTrack } from "./state";
 
 export const useNextActiveTrack = () => {
-  const setActiveTrack = useSetAtom(activeTrackAtom);
-  const nextPlayableTrack = useAtomValue(nextPlayableTrackAtom);
-  const setIsTrackPlaying = useSetAtom(isTrackPlayingAtom);
+  const setActiveTrack = useTracksStore((store) => store.setActiveTrack);
+  const nextPlayableTrack = useNextPlayableTrack();
+  const setIsTrackPlaying = useTracksStore((store) => store.setIsTrackPlaying);
 
   const setNextActiveTrack = () => {
     if (nextPlayableTrack === null) {

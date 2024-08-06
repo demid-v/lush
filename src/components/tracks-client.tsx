@@ -5,8 +5,7 @@ import Track from "./track";
 import { useSearchParams } from "next/navigation";
 import { api } from "~/trpc/react";
 import { useInView } from "react-intersection-observer";
-import { useSetAtom } from "jotai";
-import { playableTracksAtom } from "~/utils/state";
+import { useTracksStore } from "~/utils/state";
 
 const TracksClient = ({
   params,
@@ -34,7 +33,7 @@ const TracksClient = ({
     [tracksData?.pages],
   );
 
-  const setPlayableTracks = useSetAtom(playableTracksAtom);
+  const setPlayableTracks = useTracksStore((store) => store.setPlayableTracks);
 
   useEffect(() => {
     const playableTracks = tracks.reduce<string[]>(

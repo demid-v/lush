@@ -1,39 +1,41 @@
-import { atom } from "jotai";
+import { create } from "zustand";
 
-export const playableTracksAtom = atom<string[]>([]);
+type TracksStore = {
+  playableTracks: string[];
+  activeTrack: string | null;
+  isTrackPlaying: boolean;
+  setPlayableTracks: (playableTracks: string[]) => void;
+  setActiveTrack: (activeTrack: string) => void;
+  setIsTrackPlaying: (isTrackPlaying: boolean) => void;
+};
 
-const baseActiveTrackAtom = atom<string | null>(null);
+export const useTracksStore = create<TracksStore>((set, get) => ({
+  playableTracks: [],
+  activeTrack: null,
+  isTrackPlaying: true,
+  setPlayableTracks: (playableTracks) => set({ playableTracks }),
+  setActiveTrack: (activeTrack) => {
+    const prevActiveTrack = get().activeTrack;
+    set({ activeTrack });
 
-export const activeTrackAtom = atom(
-  (get) => get(baseActiveTrackAtom),
-  (get, set, newValue: string) => {
-    const prevActiveTrack = get(activeTrackAtom);
-
-    set(baseActiveTrackAtom, newValue);
-
-    if (newValue !== prevActiveTrack) return;
-
-    set(isTrackPlayingAtom, !get(isTrackPlayingAtom));
+    if (activeTrack !== prevActiveTrack) return;
+    set({ isTrackPlaying: !get().isTrackPlaying });
   },
-);
+  setIsTrackPlaying: (isTrackPlaying) => set({ isTrackPlaying }),
+}));
 
-export const nextPlayableTrackAtom = atom<string | null>((get) => {
-  const activeTrack = get(activeTrackAtom);
+export const useNextPlayableTrack = () =>
+  useTracksStore(({ activeTrack, playableTracks }) => {
+    if (activeTrack === null) return null;
 
-  if (activeTrack === null) return null;
+    const activeTrackIndex = playableTracks.indexOf(activeTrack);
+    if (activeTrackIndex === -1) return null;
 
-  const playableTracksValue = get(playableTracksAtom);
-  const activeTrackIndex = playableTracksValue.indexOf(activeTrack);
+    const nextPlayableTrackIndex = activeTrackIndex + 1;
+    return playableTracks.at(nextPlayableTrackIndex) ?? null;
+  });
 
-  if (activeTrackIndex === -1) return null;
-
-  const nextPlayableTrackIndex = activeTrackIndex + 1;
-
-  return playableTracksValue.at(nextPlayableTrackIndex) ?? null;
-});
-
-export const trackYoutubeUrlAtom = atom(
-  (get) => `https://www.youtube.com/watch?v=${get(activeTrackAtom)}`,
-);
-
-export const isTrackPlayingAtom = atom(true);
+export const useTrackYoutubeUrl = () =>
+  useTracksStore(
+    (state) => `https://www.youtube.com/watch?v=${state.activeTrack}`,
+  );

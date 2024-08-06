@@ -1,25 +1,23 @@
 "use client";
 
-import { useAtom, useAtomValue } from "jotai";
 import { useRef } from "react";
 import ReactPlayer from "react-player/youtube";
 import type YouTubePlayer from "react-player/youtube";
 import { useNextActiveTrack } from "~/utils/hooks";
-import {
-  activeTrackAtom,
-  isTrackPlayingAtom,
-  trackYoutubeUrlAtom,
-} from "~/utils/state";
+import { useTracksStore, useTrackYoutubeUrl } from "~/utils/state";
 
 const YoutubePlayer = () => {
-  const activeTrack = useAtomValue(activeTrackAtom);
+  const activeTrack = useTracksStore((store) => store.activeTrack);
 
   const { setNextActiveTrack } = useNextActiveTrack();
 
   const player = useRef<YouTubePlayer>(null);
 
-  const url = useAtomValue(trackYoutubeUrlAtom);
-  const [isTrackPlaying, setIsTrackPlayingAtom] = useAtom(isTrackPlayingAtom);
+  const url = useTrackYoutubeUrl();
+  const isTrackPlaying = useTracksStore((store) => store.isTrackPlaying);
+  const setIsTrackPlayingAtom = useTracksStore(
+    (store) => store.setIsTrackPlaying,
+  );
 
   const playTrack = () => setIsTrackPlayingAtom(true);
   const pauseTrack = () => setIsTrackPlayingAtom(false);

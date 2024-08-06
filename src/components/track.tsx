@@ -4,8 +4,7 @@ import type { TrackData } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
 import Image from "next/image";
 import FaultTolerantImage from "./fault-tolerant-image";
-import { useAtom } from "jotai";
-import { activeTrackAtom } from "~/utils/state";
+import { useTracksStore } from "~/utils/state";
 
 const Track = forwardRef(
   ({ track }: { track: TrackData }, ref: ForwardedRef<HTMLLIElement>) => {
@@ -18,7 +17,8 @@ const Track = forwardRef(
       track_album_rels: albums,
     } = track;
 
-    const [activeTrack, setActiveTrack] = useAtom(activeTrackAtom);
+    const activeTrack = useTracksStore((store) => store.activeTrack);
+    const setActiveTrack = useTracksStore((store) => store.setActiveTrack);
 
     const durationStr = (() => {
       if (duration === null) return;
