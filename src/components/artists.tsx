@@ -10,7 +10,7 @@ const defaultImage = "/assets/note.svg";
 
 const Artists = () => {
   const searchParams = useSearchParams();
-  const q = searchParams?.get("q")?.toString();
+  const q = searchParams.get("q")?.toString();
 
   const {
     data: artistsData,

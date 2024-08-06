@@ -6,7 +6,7 @@ import { useTheme } from "~/utils/hooks";
 
 const SearchBar = () => {
   const searchParams = useSearchParams();
-  const queryParam = searchParams?.get("q")?.toString();
+  const queryParam = searchParams.get("q")?.toString();
 
   const pathname = usePathname();
   const { push } = useRouter();

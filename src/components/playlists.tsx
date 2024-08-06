@@ -10,7 +10,7 @@ const defaultImage = "/assets/playlist.png";
 
 const PlaylistsBlock = () => {
   const searchParams = useSearchParams();
-  const q = searchParams?.get("q")?.toString();
+  const q = searchParams.get("q")?.toString();
 
   const {
     data: playlistsData,

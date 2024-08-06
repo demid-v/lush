@@ -16,7 +16,7 @@ const TracksClient = ({
     | { playlistId: number | undefined };
 }) => {
   const searchParams = useSearchParams();
-  const q = searchParams?.get("q")?.toString();
+  const q = searchParams.get("q")?.toString();
 
   const {
     data: tracksData,
