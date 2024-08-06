@@ -1,11 +1,11 @@
-import { api } from "~/trpc/server";
-import Tile from "~/components/tile";
-import { extractIdFromQuery } from "~/utils";
-import Tracks from "~/components/tracks";
-import PageHeader from "~/components/page-header";
-import { Suspense } from "react";
-import TileSkeleton from "~/components/tile-skeleton";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import PageHeader from "~/components/page-header";
+import Tile from "~/components/tile";
+import TileSkeleton from "~/components/tile-skeleton";
+import Tracks from "~/components/tracks";
+import { api } from "~/trpc/server";
+import { extractIdFromQuery } from "~/utils";
 
 const ArtistHeader = async ({
   params: { artist },

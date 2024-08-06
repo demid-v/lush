@@ -4,7 +4,7 @@ import { useRef } from "react";
 import ReactPlayer from "react-player/youtube";
 import type YouTubePlayer from "react-player/youtube";
 import { useNextActiveTrack } from "~/utils/hooks";
-import { useTracksStore, useTrackYoutubeUrl } from "~/utils/state";
+import { useTrackYoutubeUrl, useTracksStore } from "~/utils/state";
 
 const YoutubePlayer = () => {
   const activeTrack = useTracksStore((store) => store.activeTrack);

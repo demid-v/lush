@@ -1,6 +1,4 @@
-import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
-import { and, desc, eq, inArray, like, lt } from "drizzle-orm";
+import { db } from "../../db";
 import {
   genre,
   track,
@@ -8,7 +6,9 @@ import {
   trackArtistRel,
   trackPlaylistRel,
 } from "../../db/schema";
-import { db } from "../../db";
+import { createTRPCRouter, publicProcedure } from "../trpc";
+import { and, desc, eq, inArray, like, lt } from "drizzle-orm";
+import { z } from "zod";
 
 const trackRouter = createTRPCRouter({
   page: publicProcedure

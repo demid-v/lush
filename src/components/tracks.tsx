@@ -1,9 +1,9 @@
-import { Suspense } from "react";
+import TrackSkeleton from "./track-skeleton";
+import TracksClient from "./tracks-client";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import { createSSRHelper } from "~/trpc/helpers";
-import TracksClient from "./tracks-client";
-import TrackSkeleton from "./track-skeleton";
 
 const tracksLimit = 100;
 

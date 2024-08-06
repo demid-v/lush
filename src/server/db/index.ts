@@ -1,8 +1,8 @@
-import * as schema from "./schema";
 import * as relations from "./relations";
-import { drizzle } from "drizzle-orm/libsql";
+import * as schema from "./schema";
 import type { Client } from "@libsql/client";
 import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 import { env } from "~/env";
 
 /**
@@ -16,10 +16,7 @@ const globalForDb = globalThis as unknown as {
 const conn =
   globalForDb.conn ??
   createClient({
-    url:
-      env.NODE_ENV === "production"
-        ? env.TURSO_DATABASE_URL
-        : "file:./src/server/db/db.db",
+    url: env.TURSO_DATABASE_URL,
     authToken: env.TURSO_AUTH_TOKEN,
   });
 

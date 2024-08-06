@@ -1,8 +1,8 @@
-import { createCallerFactory, createTRPCRouter } from "./trpc";
 import { albumRouter } from "./routers/albums";
 import { artistRouter } from "./routers/artists";
 import { playlistRouter } from "./routers/playlists";
 import { trackRouter } from "./routers/tracks";
+import { createCallerFactory, createTRPCRouter } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   track: trackRouter,

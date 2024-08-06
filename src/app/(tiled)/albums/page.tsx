@@ -1,8 +1,8 @@
-import Albums from "~/components/albums";
 import { Hydrate, dehydrate } from "@tanstack/react-query";
-import { createSSRHelper } from "~/trpc/helpers";
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
+import Albums from "~/components/albums";
+import { createSSRHelper } from "~/trpc/helpers";
 
 const AlbumsPage = async ({
   searchParams,

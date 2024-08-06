@@ -1,6 +1,6 @@
-import { useEffect, useRef, type ChangeEvent } from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { type ChangeEvent, useEffect, useRef } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useTheme } from "~/utils/hooks";
 

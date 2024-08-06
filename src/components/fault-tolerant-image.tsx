@@ -1,5 +1,5 @@
-import { type FC } from "react";
 import Image from "next/image";
+import { type FC } from "react";
 
 const FaultTolerantImage: FC<{
   image: {

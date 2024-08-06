@@ -1,10 +1,10 @@
 "use client";
 
-import { api } from "~/trpc/react";
 import Tile from "./tile";
-import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+import { api } from "~/trpc/react";
 
 const defaultImage = "/assets/vynil.svg";
 

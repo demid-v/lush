@@ -1,9 +1,9 @@
-import { type ForwardedRef, forwardRef, type ReactNode } from "react";
-import Link from "next/link";
-import type { TrackData } from "../utils/types";
 import { DOMAIN_MID_PATH } from "../utils/globals";
-import Image from "next/image";
+import type { TrackData } from "../utils/types";
 import FaultTolerantImage from "./fault-tolerant-image";
+import Image from "next/image";
+import Link from "next/link";
+import { type ForwardedRef, type ReactNode, forwardRef } from "react";
 import { useTracksStore } from "~/utils/state";
 
 const Track = forwardRef(

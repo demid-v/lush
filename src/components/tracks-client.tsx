@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
 import Track from "./track";
 import { useSearchParams } from "next/navigation";
-import { api } from "~/trpc/react";
+import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+import { api } from "~/trpc/react";
 import { useTracksStore } from "~/utils/state";
 
 const TracksClient = ({

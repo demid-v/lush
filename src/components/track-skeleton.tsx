@@ -9,7 +9,7 @@ const TrackSkeleton = () => (
           alt="Galaxy - Lush logo"
           width={32}
           height={32}
-          className="absolute top-0 right-0 bottom-0 left-0 m-auto w-4/5"
+          className="absolute bottom-0 left-0 right-0 top-0 m-auto w-4/5"
         />
       </div>
       <div className="flex flex-grow animate-pulse gap-24">

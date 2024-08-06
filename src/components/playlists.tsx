@@ -1,10 +1,10 @@
 "use client";
 
 import Tile from "./tile";
-import { useMemo } from "react";
 import { useSearchParams } from "next/navigation";
-import { api } from "~/trpc/react";
+import { useMemo } from "react";
 import { useInView } from "react-intersection-observer";
+import { api } from "~/trpc/react";
 
 const defaultImage = "/assets/playlist.png";
 

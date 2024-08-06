@@ -1,5 +1,5 @@
+import { themeAtom, useNextPlayableTrack, useTracksStore } from "./state";
 import { useAtom } from "jotai";
-import { useTracksStore, themeAtom, useNextPlayableTrack } from "./state";
 
 export const useNextActiveTrack = () => {
   const setActiveTrack = useTracksStore((store) => store.setActiveTrack);

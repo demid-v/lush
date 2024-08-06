@@ -1,8 +1,8 @@
-import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
 import type { Db } from "../../db";
-import { and, desc, eq, like, lt } from "drizzle-orm";
 import { artist } from "../../db/schema";
+import { createTRPCRouter, publicProcedure } from "../trpc";
+import { and, desc, eq, like, lt } from "drizzle-orm";
+import { z } from "zod";
 
 const getArtists = async (
   db: Db,

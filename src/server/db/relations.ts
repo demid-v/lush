@@ -1,27 +1,27 @@
-import { relations } from "drizzle-orm/relations";
 import {
-  domain,
-  albumImage,
-  artistImage,
-  playlistImage,
-  albumFormat,
   album,
-  version,
-  track,
+  albumFormat,
+  albumImage,
   albumImageRel,
-  artistImageRel,
   artist,
-  playlistImageRel,
+  artistImage,
+  artistImageRel,
+  artistRole,
+  domain,
+  genre,
+  language,
   playlist,
+  playlistImage,
+  playlistImageRel,
+  track,
   trackAlbumRel,
   trackArtistRel,
-  artistRole,
   trackGenreRel,
-  genre,
   trackLanguageRel,
-  language,
   trackPlaylistRel,
+  version,
 } from "./schema";
+import { relations } from "drizzle-orm/relations";
 
 export const albumImageRelations = relations(albumImage, ({ one, many }) => ({
   domain: one(domain, {
@@ -53,7 +53,7 @@ export const playlistImageRelations = relations(
       references: [domain.id],
     }),
     playlist_image_rels: many(playlistImageRel),
-  })
+  }),
 );
 
 export const albumRelations = relations(album, ({ one, many }) => ({
@@ -123,7 +123,7 @@ export const playlistImageRelRelations = relations(
       fields: [playlistImageRel.playlist_id],
       references: [playlist.id],
     }),
-  })
+  }),
 );
 
 export const playlistRelations = relations(playlist, ({ many }) => ({
@@ -187,7 +187,7 @@ export const trackLanguageRelRelations = relations(
       fields: [trackLanguageRel.language_id],
       references: [language.id],
     }),
-  })
+  }),
 );
 
 export const languageRelations = relations(language, ({ many }) => ({
@@ -205,5 +205,5 @@ export const trackPlaylistRelRelations = relations(
       fields: [trackPlaylistRel.playlist_id],
       references: [playlist.id],
     }),
-  })
+  }),
 );

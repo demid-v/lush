@@ -1,14 +1,14 @@
-import {
-  sqliteTable,
-  uniqueIndex,
-  integer,
-  index,
-  text,
-  numeric,
-  real,
-  primaryKey,
-} from "drizzle-orm/sqlite-core";
 import { sql } from "drizzle-orm";
+import {
+  index,
+  integer,
+  numeric,
+  primaryKey,
+  real,
+  sqliteTable,
+  text,
+  uniqueIndex,
+} from "drizzle-orm/sqlite-core";
 
 export const albumFormat = sqliteTable(
   "album_format",
@@ -20,7 +20,7 @@ export const albumFormat = sqliteTable(
     return {
       name_UNIQUE: uniqueIndex("name_UNIQUE").on(table.name),
     };
-  }
+  },
 );
 
 export const artistRole = sqliteTable("artist_role", {
@@ -54,7 +54,7 @@ export const version = sqliteTable(
     return {
       content_UNIQUE: uniqueIndex("content_UNIQUE").on(table.name),
     };
-  }
+  },
 );
 
 export const albumImage = sqliteTable(
@@ -74,7 +74,7 @@ export const albumImage = sqliteTable(
     return {
       domain_id_INDEX: index("domain_id_INDEX").on(table.domain_id),
     };
-  }
+  },
 );
 
 export const artistImage = sqliteTable("artist_image", {
@@ -106,7 +106,7 @@ export const playlistImage = sqliteTable(
     return {
       domain_id_idx: index("domain_id_idx").on(table.domain_id),
     };
-  }
+  },
 );
 
 export const album = sqliteTable(
@@ -130,10 +130,10 @@ export const album = sqliteTable(
     return {
       id_UNIQUE: uniqueIndex("id_UNIQUE").on(table.id),
       album_format_id_INDEX: index("album_album_format_id_INDEX").on(
-        table.album_format_id
+        table.album_format_id,
       ),
     };
-  }
+  },
 );
 
 export const artist = sqliteTable("artist", {
@@ -177,7 +177,7 @@ export const track = sqliteTable(
     return {
       version_id_INDEX: index("version_id_INDEX").on(table.version_id),
     };
-  }
+  },
 );
 
 export const albumImageRel = sqliteTable(
@@ -199,7 +199,7 @@ export const albumImageRel = sqliteTable(
         name: "album_image_rel_album_id_image_id_pk",
       }),
     };
-  }
+  },
 );
 
 export const artistImageRel = sqliteTable(
@@ -222,7 +222,7 @@ export const artistImageRel = sqliteTable(
         name: "artist_image_rel_artist_id_image_id_pk",
       }),
     };
-  }
+  },
 );
 
 export const playlistImageRel = sqliteTable(
@@ -244,7 +244,7 @@ export const playlistImageRel = sqliteTable(
         name: "playlist_image_rel_image_id_playlist_id_pk",
       }),
     };
-  }
+  },
 );
 
 export const trackAlbumRel = sqliteTable(
@@ -266,7 +266,7 @@ export const trackAlbumRel = sqliteTable(
         name: "track_album_rel_album_id_track_id_track_position_pk",
       }),
     };
-  }
+  },
 );
 
 export const trackArtistRel = sqliteTable(
@@ -292,7 +292,7 @@ export const trackArtistRel = sqliteTable(
         name: "track_artist_rel_artist_id_track_id_pk",
       }),
     };
-  }
+  },
 );
 
 export const trackGenreRel = sqliteTable(
@@ -314,7 +314,7 @@ export const trackGenreRel = sqliteTable(
         name: "track_genre_rel_genre_id_track_id_pk",
       }),
     };
-  }
+  },
 );
 
 export const trackLanguageRel = sqliteTable(
@@ -335,7 +335,7 @@ export const trackLanguageRel = sqliteTable(
         name: "track_language_rel_language_id_track_id_pk",
       }),
     };
-  }
+  },
 );
 
 export const trackPlaylistRel = sqliteTable(
@@ -356,5 +356,5 @@ export const trackPlaylistRel = sqliteTable(
         name: "track_playlist_rel_playlist_id_track_id_pk",
       }),
     };
-  }
+  },
 );

@@ -1,10 +1,10 @@
-import { type ReactNode } from "react";
-import "../styles/globals.css";
 import Header from "../components/header";
-import { TRPCReactProvider } from "~/trpc/react";
-import { Quicksand } from "next/font/google";
+import "../styles/globals.css";
+import { Provider as JotaiProvider } from "jotai";
 import dynamic from "next/dynamic";
-import { Provider as JotaiProvider } from 'jotai'
+import { Quicksand } from "next/font/google";
+import { type ReactNode } from "react";
+import { TRPCReactProvider } from "~/trpc/react";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
