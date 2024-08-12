@@ -1,6 +1,6 @@
 import TrackSkeleton from "./track-skeleton";
 import TracksClient from "./tracks-client";
-import { Hydrate, dehydrate } from "@tanstack/react-query";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { createSSRHelper } from "~/trpc/helpers";
@@ -29,11 +29,11 @@ const TracksPrefetcher = async ({
   });
 
   return (
-    <Hydrate state={dehydrate(helpers.queryClient)}>
+    <HydrationBoundary state={dehydrate(helpers.queryClient)}>
       <Suspense>
         <TracksClient params={params} />
       </Suspense>
-    </Hydrate>
+    </HydrationBoundary>
   );
 };
 

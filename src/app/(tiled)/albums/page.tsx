@@ -1,4 +1,4 @@
-import { Hydrate, dehydrate } from "@tanstack/react-query";
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import Albums from "~/components/albums";
@@ -16,11 +16,11 @@ const AlbumsPage = async ({
   await helpers.album.page.prefetchInfinite({ search: q, limit: 120 });
 
   return (
-    <Hydrate state={dehydrate(helpers.queryClient)}>
+    <HydrationBoundary state={dehydrate(helpers.queryClient)}>
       <Suspense>
         <Albums />
       </Suspense>
-    </Hydrate>
+    </HydrationBoundary>
   );
 };
 
