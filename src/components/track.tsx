@@ -1,10 +1,10 @@
-import { DOMAIN_MID_PATH } from "../utils/globals";
-import type { TrackData } from "../utils/types";
 import FaultTolerantImage from "./fault-tolerant-image";
 import Image from "next/image";
 import Link from "next/link";
 import { type ForwardedRef, type ReactNode, forwardRef } from "react";
+import { DOMAIN_MID_PATH } from "~/utils/globals";
 import { useTracksStore } from "~/utils/state";
+import { type TrackData } from "~/utils/types";
 
 const Track = forwardRef(
   ({ track }: { track: TrackData }, ref: ForwardedRef<HTMLLIElement>) => {

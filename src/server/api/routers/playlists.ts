@@ -1,6 +1,6 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
 import { and, desc, eq, like, lt } from "drizzle-orm";
 import { z } from "zod";
+import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 const playlistRouter = createTRPCRouter({
   page: publicProcedure

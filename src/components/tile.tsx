@@ -1,9 +1,9 @@
-import { DOMAIN_MID_PATH } from "../utils/globals";
-import type { AttachedImage } from "../utils/types";
 import FaultTolerantImage from "./fault-tolerant-image";
 import Link from "next/link";
 import type { ForwardedRef } from "react";
 import { forwardRef } from "react";
+import { DOMAIN_MID_PATH } from "~/utils/globals";
+import { type AttachedImage } from "~/utils/types";
 
 const Tile = forwardRef(
   (
