@@ -1,4 +1,4 @@
-import FaultTolerantImage from "./fault-tolerant-image";
+import ImageWithFallback from "./image-with-fallback";
 import Link from "next/link";
 import type { ForwardedRef } from "react";
 import { forwardRef } from "react";
@@ -37,17 +37,13 @@ const Tile = forwardRef(
             className="mb-3 block"
           >
             <div className="relative pb-[100%]">
-              <FaultTolerantImage
-                image={{
-                  url: imageUrl,
-                  alt: "Image of " + name,
-                  width: 256,
-                  height: 256,
-                }}
-                defaultImage={{
-                  url: defaultImage,
-                  w: "w-[45%]",
-                }}
+              <ImageWithFallback
+                src={imageUrl}
+                alt={"Image of " + name}
+                width={256}
+                height={256}
+                defaultImageSrc={defaultImage}
+                defaultImageStyle="w-[45%]"
               />
             </div>
           </Link>

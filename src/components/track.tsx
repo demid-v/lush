@@ -1,4 +1,4 @@
-import FaultTolerantImage from "./fault-tolerant-image";
+import ImageWithFallback from "./image-with-fallback";
 import Image from "next/image";
 import Link from "next/link";
 import { forwardRef } from "react";
@@ -86,19 +86,16 @@ const Track = forwardRef(
 
           <div className="flex h-full gap-2 whitespace-nowrap">
             <div className="relative aspect-square h-full overflow-hidden">
-              <FaultTolerantImage
-                image={{
-                  url: imageUrl,
-                  alt:
-                    "Image of " +
-                    (artists[0]?.artist.name ?? "the track's artist or album"),
-                  width: 48,
-                  height: 48,
-                }}
-                defaultImage={{
-                  url: "/assets/logos/logo32.png",
-                  w: "w-4/5",
-                }}
+              <ImageWithFallback
+                src={imageUrl}
+                alt={
+                  "Image of " +
+                  (artists[0]?.artist.name ?? "the track's artist or album")
+                }
+                width={48}
+                height={48}
+                defaultImageSrc="/assets/logos/logo32.png"
+                defaultImageStyle="w-4/5"
               />
             </div>
 
