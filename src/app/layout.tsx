@@ -1,7 +1,6 @@
 import { Provider as JotaiProvider } from "jotai";
 import dynamic from "next/dynamic";
 import { Quicksand } from "next/font/google";
-import { type ReactNode } from "react";
 import Header from "~/components/header";
 import "~/styles/globals.css";
 import { TRPCReactProvider } from "~/trpc/react";
@@ -20,7 +19,7 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-const RootLayout = ({ children }: { children: ReactNode }) => {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
       <body className={`${quicksand.className}`}>

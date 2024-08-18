@@ -1,15 +1,18 @@
 "use client";
 
 import Image from "next/image";
-import { type FC, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { DOMAIN_MID_PATH } from "~/utils/globals";
 import { useTheme } from "~/utils/hooks";
-import { type AttachedImage } from "~/utils/types";
+import type { AttachedImage } from "~/utils/types";
 
-const PageHeader: FC<{
+const PageHeader = ({
+  name,
+  image,
+}: {
   name?: string | undefined;
   image?: AttachedImage | null | undefined;
-}> = ({ name, image }) => {
+}) => {
   const { theme, setColor } = useTheme();
 
   const [imageLoaded, setImageLoaded] = useState(false);

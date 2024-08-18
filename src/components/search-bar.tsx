@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { type ChangeEvent, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { useTheme } from "~/utils/hooks";
 
@@ -15,7 +15,7 @@ const SearchBar = () => {
 
   const searchBar = useRef<HTMLInputElement>(null);
 
-  const setSearch = (event: ChangeEvent<HTMLInputElement>) => {
+  const setSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const newSearchParams = new URLSearchParams(searchParams);
 

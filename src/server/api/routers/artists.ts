@@ -1,7 +1,7 @@
 import { and, desc, eq, like, lt } from "drizzle-orm";
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
-import { type Db } from "~/server/db";
+import type { Db } from "~/server/db";
 import { artist } from "~/server/db/schema";
 
 const getArtists = async (

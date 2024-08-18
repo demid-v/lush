@@ -1,13 +1,13 @@
 import FaultTolerantImage from "./fault-tolerant-image";
 import Image from "next/image";
 import Link from "next/link";
-import { type ForwardedRef, type ReactNode, forwardRef } from "react";
+import { forwardRef } from "react";
 import { DOMAIN_MID_PATH } from "~/utils/globals";
 import { useTracksStore } from "~/utils/state";
-import { type TrackData } from "~/utils/types";
+import type { TrackData } from "~/utils/types";
 
 const Track = forwardRef(
-  ({ track }: { track: TrackData }, ref: ForwardedRef<HTMLLIElement>) => {
+  ({ track }: { track: TrackData }, ref: React.ForwardedRef<HTMLLIElement>) => {
     const {
       name,
       duration,
@@ -107,7 +107,7 @@ const Track = forwardRef(
                 <span className="z-10 w-min">{name}</span>
                 <div className="z-10 w-min text-sm text-gray-500">
                   {artists
-                    .map<ReactNode>(({ artist }) => (
+                    .map<React.ReactNode>(({ artist }) => (
                       <span key={artist.id}>
                         <Link href={`/artists/${artist.id}+${artist.name}`}>
                           {artist.name}

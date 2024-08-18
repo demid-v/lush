@@ -1,7 +1,9 @@
 import Image from "next/image";
-import { type FC } from "react";
 
-const FaultTolerantImage: FC<{
+const FaultTolerantImage = ({
+  image,
+  defaultImage,
+}: {
   image: {
     url: string | undefined;
     alt: string;
@@ -15,7 +17,7 @@ const FaultTolerantImage: FC<{
     height?: number;
     w: string;
   };
-}> = ({ image, defaultImage }) => {
+}) => {
   return (
     <>
       {image.url !== undefined ? (
