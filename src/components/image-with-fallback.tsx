@@ -25,6 +25,7 @@ const ImageWithFallback = ({
         <Image
           src={src}
           alt={alt}
+          unoptimized={true}
           width={width}
           height={height}
           className="absolute h-full w-full object-cover"
@@ -34,6 +35,7 @@ const ImageWithFallback = ({
         <Image
           src={defaultImageSrc}
           alt=""
+          unoptimized={true}
           width={width}
           height={height}
           className={cn(

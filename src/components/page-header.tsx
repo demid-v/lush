@@ -36,6 +36,7 @@ const PageHeader = ({
         <Image
           src={imageUrl}
           alt={"Image of " + name}
+          unoptimized={true}
           width={1920}
           height={400}
           className="h-full w-full object-cover object-[0%_25%]"
