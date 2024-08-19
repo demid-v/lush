@@ -151,6 +151,7 @@ const Track = forwardRef(
                     <Image
                       src="/assets/note-2.png"
                       alt=""
+                      unoptimized={true}
                       width={16}
                       height={16}
                       title="This track has a Youtube video"
