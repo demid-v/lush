@@ -12,7 +12,10 @@ export const env = createEnv({
       .default("development"),
 
     TURSO_DATABASE_URL: z.string().url(),
-    TURSO_AUTH_TOKEN: z.string(),
+    TURSO_AUTH_TOKEN:
+      process.env.NODE_ENV !== "development"
+        ? z.string()
+        : z.string().optional(),
   },
 
   /**
