@@ -14,10 +14,13 @@ const SearchBar = () => {
   const { theme } = useTheme();
 
   const searchBar = useRef<HTMLInputElement>(null);
+  const isInputChanged = useRef(false);
 
   const setSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     const newSearchParams = new URLSearchParams(searchParams);
+
+    isInputChanged.current = true;
 
     if (value === "") {
       newSearchParams.delete("q");
@@ -36,6 +39,10 @@ const SearchBar = () => {
 
   useEffect(() => {
     if (!searchBar.current) return;
+    if (isInputChanged.current) {
+      isInputChanged.current = false;
+      return;
+    }
 
     searchBar.current.value = queryParam ?? "";
   }, [queryParam]);
